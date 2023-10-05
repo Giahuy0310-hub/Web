@@ -1,0 +1,6 @@
+ID	
+ten_san_pham	
+link_hinh_anh	
+gia	
+ID_DM	
+loaisanpham

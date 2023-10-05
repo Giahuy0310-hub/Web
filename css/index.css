@@ -169,3 +169,20 @@ body {
     font-family: 'Times New Roman', Times, serif;
     color: black;
 }
+
+
+
+
+.product-detail-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.product-detail-image {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.product-detail-price {
+    font-weight: bold;
+}

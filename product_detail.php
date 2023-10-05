@@ -47,8 +47,14 @@ $conn->close();
         }
 
         .product-detail-image {
-            max-width: 300px;
-            margin: 0 auto;
+            max-width: 1000px;
+            max-height: 400px; 
+            float: left ; 
+            margin-right: 20px; 
+        }
+
+        .product-detail-info {
+            overflow: hidden; 
         }
 
         .product-detail-price {
@@ -69,9 +75,11 @@ $conn->close();
         <div class="product-detail-container">
             <?php
             if (isset($productDetail)) {
-                echo "<h2>" . $productDetail['TenSanPham'] . "</h2>";
-                echo "<img class='product-detail-image' src='" . $productDetail['LinkHinhAnh'] . "' alt='" . $productDetail['TenSanPham'] . "'>";
-                echo "<p class='product-detail-price'>Giá: " . $productDetail['Gia'] . "</p>";
+                echo "<div class='product-detail-info'>";
+                echo "<img class='product-detail-image' src='" . $productDetail['link_hinh_anh'] . "' alt='" . $productDetail['ten_san_pham'] . "'>";
+                echo "<h2>" . $productDetail['ten_san_pham'] . "</h2>";
+                echo "<p class='product-detail-price'>Giá: " . $productDetail['gia'] . "</p>";
+                echo "</div>";
             }
             ?>
         </div>
@@ -81,3 +89,4 @@ $conn->close();
     </div>
 </body>
 </html>
+
