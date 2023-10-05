@@ -1,47 +1,45 @@
-@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
-
-body, h1, h2, p {
-    margin: 0;
-    padding: 0;
-}
-
-/* Style header */
-header {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 20px;
-}
-
-/* Style main content */
-main {
+/* Add styles for the container to center the content and add background color */
+.container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    padding: 20px;
-}
+    flex-direction: column;
 
-.product {
-    border: 1px solid #ccc;
-    padding: 20px;
-    margin: 20px;
-    text-align: center;
+    height: 100vh; /* 100% viewport height to center vertically */
+    background-color: #f5f5f5; /* Background color for the container */
 }
+ul{
+    text-align: right;
 
-.product img {
-    max-width: 100%;
-    height: auto;
 }
-
-.buy-button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
+/* Move individual list items to the right */
+li {
+    position:relative;
+    display: inline-block;
     cursor: pointer;
+    overflow: hidden;
+    margin-right: 30px; /* Adjust the value as needed to move list items to the right */
 }
 
-.buy-button:hover {
-    background-color: #0056b3;
+header {
+    text-align: center; /* Center-align the header text */
+}
+
+li::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: #f10697;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    transition: transform 1s;
+}
+
+li:hover::before {
+    transform: translateX(0);
+    background-color: #dd4747;
+}
+
+li:hover {
+    color: #dd4747;
 }

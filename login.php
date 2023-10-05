@@ -25,14 +25,11 @@ if (isset($_POST['action']) && $_POST['action'] === 'login') {
             $_SESSION['user_email'] = $email;
             echo "success"; // Trả kết quả về cho JavaScript
         } else {
-            http_response_code(400); // Đăng nhập thất bại, trả mã lỗi HTTP 400
             echo "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập.";
         }
     } else {
-        http_response_code(400); // Đăng nhập thất bại, trả mã lỗi HTTP 400
         echo "Đăng nhập thất bại. Tài khoản không tồn tại.";
     }
-
 } elseif (isset($_POST['action']) && $_POST['action'] === 'register') {
     $fullname = mysqli_real_escape_string($conn, $_POST['name']);
     $phone_number = mysqli_real_escape_string($conn, $_POST['phone']);
@@ -42,7 +39,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'login') {
     // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu chưa
     $check_query = "SELECT * FROM login WHERE email = '$email'";
     $check_result = $conn->query($check_query);
-    
+
     if ($check_result->num_rows > 0) {
         echo "Đăng ký thất bại. Email đã tồn tại.";
     } else {
@@ -59,7 +56,6 @@ if (isset($_POST['action']) && $_POST['action'] === 'login') {
         }
     }
 }
-
 
 $conn->close();
 ?>

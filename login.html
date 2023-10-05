@@ -25,8 +25,8 @@
                                             <h4 class="mb-4 pb-3">Log In</h4>
                                             <div id="error-message" class="error-message" style="display: none;"></div>
 
-                                            <!-- Các phần còn lại của trang -->
-                                            <form action="login.php" method="post">
+                                            <!-- Login Form -->
+                                            <form id="login-form" method="post">
                                                 <div class="form-group">
                                                     <input type="email" class="form-style" placeholder="Email" name="email">
                                                     <i class="input-icon uil uil-at"></i>
@@ -35,10 +35,10 @@
                                                     <input type="password" class="form-style" placeholder="Password" name="pass">
                                                     <i class="input-icon uil uil-lock-alt"></i>
                                                 </div>
-                                                <input type="hidden" name="action" value="login"> <!-- Xác định hành động là login -->
-                                                <button type="button" class="btn mt-4" id="login-button">Login</button>
+                                                <input type="hidden" name="action" value="login">
+                                                <button type="submit" class="btn mt-4">Login</button>
                                             </form>
-                                            <p id="message-box" class="mt-3"></p>
+                                            <p id="login-message-box" class="mt-3"></p>
                                             <p class="mb-0 mt-4 text-center"><a href="forgot_password.php" class="link">Forgot your password?</a></p>
                                         </div>
                                     </div>
@@ -46,7 +46,8 @@
                                 <div class="card-back">
                                     <div class="center-wrap">
                                         <div class="section text-center">
-                                            <form action="login.php" method="post">
+                                            <!-- Registration Form -->
+                                            <form id="registration-form" method="post">
                                                 <h4 class="mb-3 pb-3">Sign Up</h4>
                                                 <div class="form-group">
                                                     <input type="text" class="form-style" placeholder="Full Name" name="name">
@@ -65,8 +66,9 @@
                                                     <i class="input-icon uil uil-lock-alt"></i>
                                                 </div>
                                                 <input type="hidden" name="action" value="register">
-                                                <button type="button" class="btn mt-4" id="register-button" name="send">Register</button>
+                                                <button type="submit" class="btn mt-4">Register</button>
                                             </form>
+                                            <p id="register-message-box" class="mt-3"></p>
                                         </div>
                                     </div>
                                 </div>
@@ -79,16 +81,20 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var errorMessage = document.getElementById('error-message');
-            
-            // Ẩn thông báo lỗi ban đầu
-            errorMessage.style.display = 'none';
-        
-            document.getElementById('login-button').addEventListener('click', function(e) {
+            // Function to display error messages
+            function displayMessage(elementId, message, isError) {
+                var messageBox = document.getElementById(elementId);
+                messageBox.textContent = message;
+                messageBox.style.color = isError ? 'red' : 'green';
+                messageBox.style.display = 'block';
+            }
+
+            // Login form submission
+            document.getElementById('login-form').addEventListener('submit', function(e) {
                 e.preventDefault();
                 var email = document.getElementsByName('email')[0].value;
                 var password = document.getElementsByName('pass')[0].value;
-        
+
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', 'login.php', true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -96,29 +102,57 @@
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
                             var response = xhr.responseText;
-                            var messageBox = document.getElementById('message-box');
                             if (response === 'success') {
-                                // Đăng nhập thành công, hiển thị thông báo thành công
-                                messageBox.textContent = "Đăng nhập thành công.";
-                                messageBox.style.color = 'green';
-                                messageBox.style.display = 'block';
-                                 // Đợi 2 giây trước khi chuyển hướng
-                                 setTimeout(function() {
-                                    window.location.href = 'index.html';
-                                }, 2000);
+                                // Successful login
+                                displayMessage('login-message-box', 'Đăng nhập thành công.', false);
+                                setTimeout(function() {
+                                    window.location.href = 'index.html'; // Redirect to another page
+                                }, 500);
                             } else {
-                                // Đăng nhập thất bại, hiển thị thông báo lỗi
-                                messageBox.textContent = response;
-                                messageBox.style.color = 'red';
-                                messageBox.style.display = 'block';
+                                // Login failed, display error
+                                displayMessage('login-message-box', response, true);
                             }
                         } else {
-                            // Xử lý lỗi khi gửi yêu cầu AJAX
-                            displayMessage("Lỗi kết nối đến máy chủ.");
+                            // Handle AJAX request error
+                            displayMessage('login-message-box', 'Lỗi kết nối đến máy chủ.', true);
                         }
                     }
                 };
                 var data = 'email=' + email + '&pass=' + password + '&action=login';
+                xhr.send(data);
+            });
+
+            // Registration form submission
+            document.getElementById('registration-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                var name = document.getElementsByName('name')[0].value;
+                var phone = document.getElementsByName('phone')[0].value;
+                var email = document.getElementsByName('email')[0].value;
+                var password = document.getElementsByName('pass')[0].value;
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'login.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            var response = xhr.responseText;
+                            if (response === 'success') {
+                                // Successful registration
+                                displayMessage('register-message-box', 'Đăng ký thành công.', false);
+                                // Clear form fields
+                                document.getElementById('registration-form').reset();
+                            } else {
+                                // Registration failed, display error
+                                displayMessage('register-message-box', response, true);
+                            }
+                        } else {
+                            // Handle AJAX request error
+                            displayMessage('register-message-box', 'Lỗi kết nối đến máy chủ.', true);
+                        }
+                    }
+                };
+                var data = 'name=' + name + '&phone=' + phone + '&email=' + email + '&pass=' + password + '&action=register';
                 xhr.send(data);
             });
         });
