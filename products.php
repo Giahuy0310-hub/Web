@@ -10,27 +10,38 @@ if ($conn->connect_error) {
     die("Kết nối không thành công: " . $conn->connect_error);
 }
 
-// Trích xuất tham số category từ URL
-$category = isset($_GET['category']) ? $_GET['category'] : null;
+// Trích xuất tham số từ URL
+$loaisanpham = isset($_GET['loaisanpham']) ? $_GET['loaisanpham'] : null;
+$id_dm = isset($_GET['ID_DM']) ? $_GET['ID_DM'] : null;
 
-// Truy vấn sản phẩm dựa trên tham số category
-if ($category) {
-    $sqlProducts = "SELECT * FROM products WHERE ID_DM = $category";
-    $resultProducts = $conn->query($sqlProducts);
+if ($loaisanpham) {
+    // Nếu có tham số loaisanpham, thực hiện truy vấn dựa trên loaisanpham
+    $sqlProducts = "SELECT * FROM products WHERE loaisanpham = '$loaisanpham'";
+} elseif ($id_dm) {
+    // Nếu có tham số ID_DM, thực hiện truy vấn dựa trên ID_DM
+    $sqlProducts = "SELECT * FROM products WHERE ID_DM = '$id_dm'";
+} else {
+    // Nếu không có tham số nào, hiển thị tất cả sản phẩm
+    $sqlProducts = "SELECT * FROM products";
+}
 
-    // Tạo danh sách sản phẩm
-    $productList = [];
-    if ($resultProducts->num_rows > 0) {
-        while ($row = $resultProducts->fetch_assoc()) {
-            $productList[] = [
-                'ID_DM' => $row['ID_DM'],
-                'TenSanPham' => $row['TenSanPham'],
-            ];
-        }
+$resultProducts = $conn->query($sqlProducts);
+
+$productList = [];
+if ($resultProducts->num_rows > 0) {
+    while ($row = $resultProducts->fetch_assoc()) {
+        $productList[] = [
+            'ID' => $row['ID'],
+            'ID_DM' => $row['ID_DM'],
+            'TenSanPham' => $row['ten_san_pham'],
+            'LinkHinhAnh' => $row['link_hinh_anh'],
+            'Gia' => $row['gia'],
+        ];
     }
 } else {
     $productList = [];
 }
+
 
 $conn->close();
 ?>
@@ -40,34 +51,65 @@ $conn->close();
 <head>
     <title>Website Bán Hàng</title>
     <link rel="stylesheet" href="css/index.css">
+    <style>
+        
+    </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Website Bán Hàng</h1>
+            <h1>Four men</h1>
         </header>
         <ul>
             <li>Home</li>
             <li>Contact</li>
             <li>About</li>
         </ul>
-        <div class="product-list">
-            <!-- Container chứa các nút danh mục -->
-            <div class="category-container">
-                <a class="category-button" href="products.php?category=1">Quần</a>
-                <a class="category-button" href="products.php?category=2">Áo</a>
-                <a class="category-button" href="products.php?category=3">Giày</a>
+        <div class="category-container">
+            <div class="dropdown">
+                <a class="category-button" href="products.php?ID_DM=2">Áo</a>
+                <div class="dropdown-menu">
+                    <a href="products.php?loaisanpham=SM">Áo sơ mi</a>
+                    <a href="products.php?loaisanpham=PL">Áo polo</a>
+                    <a href="products.php?loaisanpham=AT">Áo thun</a>
+                </div>
             </div>
-            <!-- Hiển thị danh sách sản phẩm -->
-            <ul>
-                <?php foreach ($productList as $product) : ?>
-                    <li><?php echo $product['TenSanPham']; ?></li>
-                <?php endforeach; ?>
-            </ul>
+            <div class="dropdown">
+                <a class="category-button" href="products.php?ID_DM=1">Quần</a>
+                <div class="dropdown-menu">
+                    <a href="products.php?loaisanpham=QJ">Quần jean</a>
+                    <a href="products.php?loaisanpham=QK">Quần kaki</a>
+                    <a href="products.php?loaisanpham=QT">Quần thể thao</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a class="category-button" href="products.php?ID_DM=3">Giày</a>
+                <div class="dropdown-menu">
+                    <a href="products.php?loaisanpham=GY">Giày thể thao</a>
+                    <a href="products.php?loaisanpham=GL">Giày lười</a>
+                    <a href="products.php?loaisanpham=GC">Giày cao gót</a>
+                </div>
+            </div>
         </div>
+        
+        <div id="product-info" style="white-space: nowrap; margin-top: 35px;">
+        <div class="product-container">
+    <?php
+    foreach ($productList as $product) {
+        echo "<div class='product'>";
+        echo "<a href='product_detail.php?product_id=" . $product['ID'] . "'>";
+        echo "<img src='" . $product['LinkHinhAnh'] . "' alt='" . $product['TenSanPham'] . "'>";
+        echo "<p>" . $product['TenSanPham'] . "</p>";
+        echo "<p>Giá: " . $product['Gia'] . "</p>";
+        echo "</a>";
+        echo "</div>";
+    }
+    ?>
+</div>
+
+        <footer>
+            <p>&copy; 2023 Website Bán Hàng</p>
+        </footer>
     </div>
-    <footer>
-        <p>&copy; 2023 Website Bán Hàng</p>
-    </footer>
 </body>
 </html>

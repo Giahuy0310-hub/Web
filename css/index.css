@@ -101,19 +101,71 @@ body {
 }
 
 
-.product-list {
-    display: flex;
-    justify-content: center; /* Để căn giữa ngang */
-    align-items: center; /* Để căn giữa dọc */
-    gap: 10px; /* Khoảng cách giữa các sản phẩm */
+/* CSS của bạn */
+.product-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    justify-content: center;
 }
-
 .product {
-    /* border: 1px solid #ccc; */
-    padding: 5px;
-    max-width: 150px; /* Sử dụng max-width thay vì width */
     text-align: center;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.2s;
+}
+.product img {
+    width: 200px;
+    height: 200px;
+    display: block;
+    margin: 0 auto;
+}
+.product p {
+    text-align: center;
 }
 
+.menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #333; /* Màu nền của menu */
+    padding: 10px 0;
+    margin: 0;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-menu a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+.dropdown a {
+    text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f1f1f1;
+}
+
+
+
+.product a {
+    text-decoration: none;
+    font-family: 'Times New Roman', Times, serif;
+    color: black;
+}
