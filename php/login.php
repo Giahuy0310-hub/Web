@@ -50,7 +50,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'login') {
         $insert_query = "INSERT INTO login (fullname, phone_number, email, password) VALUES ('$fullname', '$phone_number', '$email', '$hashed_password')";
 
         if ($conn->query($insert_query) === TRUE) {
-            echo "success"; // Trả kết quả về cho JavaScript
+            echo "success";
         } else {
             echo "Đăng ký thất bại. Lỗi: " . $conn->error;
         }

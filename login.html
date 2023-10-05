@@ -6,7 +6,7 @@
     <title>Webleb</title>
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.9/css/unicons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/login.css">
+    <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
     <div class="section">
@@ -23,16 +23,16 @@
                                     <div class="center-wrap">
                                         <div class="section text-center">
                                             <h4 class="mb-4 pb-3">Log In</h4>
-                                            <div id="error-message" class="error-message" style="display: none;"></div>
+                                            <div id="login-error-message" class="error-message" style="display: none;"></div>
 
                                             <!-- Login Form -->
                                             <form id="login-form" method="post">
                                                 <div class="form-group">
-                                                    <input type="email" class="form-style" placeholder="Email" name="email">
+                                                    <input type="email" class="form-style" placeholder="Email" name="login_email">
                                                     <i class="input-icon uil uil-at"></i>
                                                 </div>
                                                 <div class="form-group mt-2">
-                                                    <input type="password" class="form-style" placeholder="Password" name="pass">
+                                                    <input type="password" class="form-style" placeholder="Password" name="login_pass">
                                                     <i class="input-icon uil uil-lock-alt"></i>
                                                 </div>
                                                 <input type="hidden" name="action" value="login">
@@ -50,19 +50,19 @@
                                             <form id="registration-form" method="post">
                                                 <h4 class="mb-3 pb-3">Sign Up</h4>
                                                 <div class="form-group">
-                                                    <input type="text" class="form-style" placeholder="Full Name" name="name">
+                                                    <input type="text" class="form-style" placeholder="Full Name" name="register_name">
                                                     <i class="input-icon uil uil-user"></i>
                                                 </div>
                                                 <div class="form-group mt-2">
-                                                    <input type="tel" class="form-style" placeholder="Phone Number" name="phone">
+                                                    <input type="tel" class="form-style" placeholder="Phone Number" name="register_phone">
                                                     <i class="input-icon uil uil-phone"></i>
                                                 </div>
                                                 <div class="form-group mt-2">
-                                                    <input type="email" class="form-style" placeholder="Email" name="email">
+                                                    <input type="email" class="form-style" placeholder="Email" name="register_email">
                                                     <i class="input-icon uil uil-at"></i>
                                                 </div>
                                                 <div class="form-group mt-2">
-                                                    <input type="password" class="form-style" placeholder="Password" name="pass">
+                                                    <input type="password" class="form-style" placeholder="Password" name="register_pass">
                                                     <i class="input-icon uil uil-lock-alt"></i>
                                                 </div>
                                                 <input type="hidden" name="action" value="register">
@@ -87,16 +87,19 @@
                 messageBox.textContent = message;
                 messageBox.style.color = isError ? 'red' : 'green';
                 messageBox.style.display = 'block';
+                setTimeout(function() {
+                    messageBox.style.display = 'none';
+                }, 2000);
             }
 
             // Login form submission
             document.getElementById('login-form').addEventListener('submit', function(e) {
                 e.preventDefault();
-                var email = document.getElementsByName('email')[0].value;
-                var password = document.getElementsByName('pass')[0].value;
+                var email = document.getElementsByName('login_email')[0].value;
+                var password = document.getElementsByName('login_pass')[0].value;
 
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'login.php', true);
+                xhr.open('POST', 'php/login.php', true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4) {
@@ -110,11 +113,11 @@
                                 }, 500);
                             } else {
                                 // Login failed, display error
-                                displayMessage('login-message-box', response, true);
+                                displayMessage('login-error-message', response, true);
                             }
                         } else {
                             // Handle AJAX request error
-                            displayMessage('login-message-box', 'Lỗi kết nối đến máy chủ.', true);
+                            displayMessage('login-error-message', 'Lỗi kết nối đến máy chủ.', true);
                         }
                     }
                 };
@@ -125,13 +128,20 @@
             // Registration form submission
             document.getElementById('registration-form').addEventListener('submit', function(e) {
                 e.preventDefault();
-                var name = document.getElementsByName('name')[0].value;
-                var phone = document.getElementsByName('phone')[0].value;
-                var email = document.getElementsByName('email')[0].value;
-                var password = document.getElementsByName('pass')[0].value;
+                var name = document.getElementsByName('register_name')[0].value;
+                var phone = document.getElementsByName('register_phone')[0].value;
+                var email = document.getElementsByName('register_email')[0].value;
+                var password = document.getElementsByName('register_pass')[0].value;
 
+                // Kiểm tra xem các trường nhập liệu có trống không
+                if (name.trim() === '' || phone.trim() === '' || email.trim() === '' || password.trim() === '') {
+                    displayMessage('register-message-box', 'Vui lòng điền đầy đủ thông tin.', true);
+                    return;
+                }
+
+                // Gửi dữ liệu đăng ký đến máy chủ
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'login.php', true);
+                xhr.open('POST', 'php/login.php', true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4) {
