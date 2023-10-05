@@ -1,6 +1,7 @@
 /* Add styles for the container to center the content and add background color */
 .container {
     display: flex;
+    flex:1;
     flex-direction: column;
 
     height: 100vh; /* 100% viewport height to center vertically */
@@ -43,3 +44,76 @@ li:hover::before {
 li:hover {
     color: #dd4747;
 }
+
+
+
+.product:hover {
+    background-color: #f0f0f0;
+    transform: scale(0.95);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    
+}
+
+.category-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.category-button {
+    justify-content: center;
+    gap: 10px;
+    background-color: #f5f5f5;
+    padding: 5px;
+    width: 150px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: inline-block;
+    margin: 0 10px;
+    border: 0px;
+    position: relative; /* Thêm thuộc tính position */
+}
+
+.category-button::before {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: transparent;
+    transform: scaleX(0); /* Khởi đầu ẩn đi */
+    transform-origin: right;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.category-button:hover::before {
+    transform: scaleX(1); /* Khi hover, hiển thị dòng chạy */
+    background-color: #dd4747;
+}
+
+
+.product-list {
+    display: flex;
+    justify-content: center; /* Để căn giữa ngang */
+    align-items: center; /* Để căn giữa dọc */
+    gap: 10px; /* Khoảng cách giữa các sản phẩm */
+}
+
+.product {
+    /* border: 1px solid #ccc; */
+    padding: 5px;
+    max-width: 150px; /* Sử dụng max-width thay vì width */
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
