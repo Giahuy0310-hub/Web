@@ -4,3 +4,8 @@ link_hinh_anh
 gia	
 ID_DM	
 loaisanpham
+small_image_1
+small_image_2
+small_image_3
+small_image_4
+

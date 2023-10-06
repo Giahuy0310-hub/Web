@@ -38,29 +38,8 @@ $conn->close();
 <html>
 <head>
     <title>Chi Tiết Sản Phẩm</title>
-    <link rel="stylesheet" href="css/index.css">
-    <style>
-        /* CSS của bạn */
-        .product-detail-container {
-            text-align: center;
-            margin-top: 20px;
-        }
+    <link rel="stylesheet" href="css/products_detail.css">
 
-        .product-detail-image {
-            max-width: 1000px;
-            max-height: 400px; 
-            float: left ; 
-            margin-right: 20px; 
-        }
-
-        .product-detail-info {
-            overflow: hidden; 
-        }
-
-        .product-detail-price {
-            font-weight: bold;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -68,18 +47,30 @@ $conn->close();
             <h1>Chi Tiết Sản Phẩm</h1>
         </header>
         <ul>
-            <li><a href="index.php">Trang chủ</a></li>
+            <li><a href="products.php">Trang chủ</a></li>
             <li>Liên hệ</li>
             <li>Giới thiệu</li>
         </ul>
         <div class="product-detail-container">
             <?php
             if (isset($productDetail)) {
-                echo "<div class='product-detail-info'>";
-                echo "<img class='product-detail-image' src='" . $productDetail['link_hinh_anh'] . "' alt='" . $productDetail['ten_san_pham'] . "'>";
-                echo "<h2>" . $productDetail['ten_san_pham'] . "</h2>";
-                echo "<p class='product-detail-price'>Giá: " . $productDetail['gia'] . "</p>";
+                echo "<div class='additional-data'>";
+                // Chèn 4 hình ảnh vào đây
+                echo "<img class='small-image' src='https://4men.com.vn/images/thumbs/2023/08/ao-so-mi-modal-tron-chong-nhan-form-regular-sm137-mau-trang-18201-slide-products-64d36830e4e6e.jpg' alt='Hình ảnh 1' onclick='showLargeImage(\"https://4men.com.vn/images/thumbs/2023/08/ao-so-mi-modal-tron-chong-nhan-form-regular-sm137-mau-trang-18201-slide-products-64d36830e4e6e.jpg\")'>";
+                echo "<img class='small-image' src='https://4men.com.vn/images/thumbs/2023/08/ao-so-mi-modal-tron-chong-nhan-form-regular-sm137-mau-trang-18201-slide-products-64d36830d4887.jpg' alt='Hình ảnh 2' onclick='showLargeImage(\"https://4men.com.vn/images/thumbs/2023/08/ao-so-mi-modal-tron-chong-nhan-form-regular-sm137-mau-trang-18201-slide-products-64d36830e4e6e.jpg\")'>";
+                echo "<img class='small-image' src='https://4men.com.vn/images/thumbs/2023/08/ao-so-mi-modal-tron-chong-nhan-form-regular-sm137-mau-trang-18201-slide-products-64d36830c5d60.jpg' alt='Hình ảnh 3' onclick='showLargeImage(\"https://4men.com.vn/images/thumbs/2023/08/ao-so-mi-modal-tron-chong-nhan-form-regular-sm137-mau-trang-18201-slide-products-64d36830c5d60.jpg\")'>";
+                echo "<img class='small-image' src='https://4men.com.vn/images/thumbs/2023/08/ao-so-mi-modal-tron-chong-nhan-form-regular-sm137-mau-trang-18201-slide-products-64d3683134cf4.jpg' alt='Hình ảnh 4' onclick='showLargeImage(\"https://4men.com.vn/images/thumbs/2023/08/ao-so-mi-modal-tron-chong-nhan-form-regular-sm137-mau-trang-18201-slide-products-64d36830e4e6e.jpg\")'>";
                 echo "</div>";
+
+                echo "<div class='product-detail-image'>";
+                echo "<img id='largeImage' src='" . $productDetail['link_hinh_anh'] . "' alt='" . $productDetail['ten_san_pham'] . "' onclick='openModal()'>";
+                echo "</div>";
+
+                echo "<div class='product-detail-info'>";
+                echo "<h2>" . $productDetail['ten_san_pham'] . "</h2>";
+                echo "<div class='product-detail-price'>Giá: " . $productDetail['gia'] . "</div>";
+                echo "</div>";
+                
             }
             ?>
         </div>
@@ -87,6 +78,64 @@ $conn->close();
             <p>&copy; 2023 Website Bán Hàng</p>
         </footer>
     </div>
+
+<!-- Modal cho ảnh lớn -->
+<div id="imageModal" class="modal">
+    <span class="closeModal" onclick="closeModal()">&times;</span>
+    <img id="modalImage" src="" alt="Ảnh lớn" class="modal-content">
+</div>
+
+<script>
+    var originalLargeImageSrc = ""; // Biến trung gian lưu trữ nguồn ảnh lớn ban đầu
+    var modalImageSrc = ""; // Biến để lưu trữ nguồn ảnh của ảnh modal
+
+    function showLargeImage(imageSrc) {
+        // Lấy đối tượng ảnh lớn
+        var largeImage = document.getElementById('largeImage');
+
+        if (originalLargeImageSrc === "") {
+            originalLargeImageSrc = largeImage.src;
+        }
+
+        // Lưu nguồn ảnh của ảnh modal
+        modalImageSrc = imageSrc;
+
+        // Thay đổi nguồn ảnh của ảnh lớn thành nguồn ảnh được click
+        largeImage.src = imageSrc;
+    }
+
+    function resetLargeImage() {
+        // Đặt lại ảnh lớn về nguồn ảnh ban đầu
+        var largeImage = document.getElementById('largeImage');
+        largeImage.src = originalLargeImageSrc;
+    }
+
+    function openModal() {
+    var modal = document.getElementById('imageModal');
+    modal.style.display = 'block';
+
+    // Lấy đối tượng ảnh modal
+    var modalImage = document.getElementById('modalImage');
+    modalImage.src = modalImageSrc;
+
+    // Căn giữa ảnh lớn trong modal
+    modalImage.style.marginTop = (modal.clientHeight - modalImage.clientHeight) / 2 + 'px';
+}
+
+function closeModal() {
+    var modal = document.getElementById('imageModal');
+    modal.style.display = 'none';
+
+    // Đặt lại nguồn ảnh lớn về nguồn ảnh lớn hiện tại
+    originalLargeImageSrc = document.getElementById('largeImage').src;
+
+    // Đặt lại nguồn ảnh của ảnh modal và margin-top
+    var modalImage = document.getElementById('modalImage');
+    modalImage.src = "";
+    modalImage.style.marginTop = '0';
+}
+</script>
+
+
 </body>
 </html>
-

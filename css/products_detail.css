@@ -1,0 +1,152 @@
+/* CSS chung */
+body{
+    font-family:'Times New Roman', Times, serif;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header h1 {
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: flex-end; /* Đưa danh sách menu về phía bên phải */
+    background-color: #333;
+    padding: 10px;
+}
+
+ul li {
+    margin: 0 10px;
+    color: white;
+    cursor: pointer;
+}
+
+.product-detail-container {
+    text-align: center;
+    margin-top: 20px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.product-detail-info {
+    flex: 1;
+    padding: 20px;
+    text-align: left;
+    font-size: 20px;
+    position: relative; /* Đặt vị trí là tương đối */
+    top: -25px; /* Đặt top là giá trị âm để dịch lên trên */
+}
+
+.product-detail-price {
+    font-weight: bold;
+    font-size: 28px;
+}
+
+/* Lớp CSS cho 4 hình ảnh nhỏ */
+.additional-data {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.small-image {
+    width: 105px;
+    height: 105px;
+    margin-bottom: 7px;
+    margin-right: 20px;
+    margin-top: 20px; /* Thêm margin-top để dịch ảnh xuống */
+}
+
+
+/* CSS cho ảnh lớn */
+#largeImage {
+    margin-top: 20px; /* Thêm margin-top để dịch ảnh xuống */
+    margin-right:10px ;
+    max-width: 700px; /* Đặt kích thước tối đa cho ảnh lớn */
+    max-height: 73.5vh; /* Đặt kích thước tối đa cho chiều cao */
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* CSS cho modal */
+/* CSS cho modal container */
+#imageModal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+    overflow: auto; /* Thêm dòng này để cho phép cuộn nếu nội dung quá dài */
+}
+
+
+/* CSS cho modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9);
+}
+
+/* CSS cho nội dung modal */
+.modal-content {
+    display: block;
+    margin: 0 auto; /* Căn giữa theo chiều ngang */
+    max-width: 80%; /* Giới hạn chiều rộng của ảnh lớn */
+    max-height: 80%; /* Giới hạn chiều cao của ảnh lớn */
+}
+
+/* CSS cho nút đóng modal */
+.closeModal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* CSS cho ảnh modal */
+#modalImage {
+    max-height: 90%; 
+    max-width: 90%; 
+}
+
+/* CSS cho icon đóng modal */
+.closeModal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    color: white;
+}
+
+/* CSS cho chữ trên ảnh lớn */
+.product-detail-image h2,
+.product-detail-image p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1;
+}
