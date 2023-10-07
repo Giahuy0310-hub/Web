@@ -37,7 +37,7 @@ ul li {
     flex: 1;
     padding: 20px;
     text-align: left;
-    font-size: 20px;
+    font-size: 18px;
     position: relative; /* Đặt vị trí là tương đối */
     top: -25px; /* Đặt top là giá trị âm để dịch lên trên */
 }
@@ -60,18 +60,21 @@ ul li {
     margin-bottom: 7px;
     margin-right: 20px;
     margin-top: 20px; /* Thêm margin-top để dịch ảnh xuống */
+    transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
 }
+
 
 
 /* CSS cho ảnh lớn */
 #largeImage {
-    margin-top: 20px; /* Thêm margin-top để dịch ảnh xuống */
-    margin-right:10px ;
-    max-width: 700px; /* Đặt kích thước tối đa cho ảnh lớn */
-    max-height: 73.5vh; /* Đặt kích thước tối đa cho chiều cao */
+    margin-top: 20px;
+    margin-right: 10px;
+    max-width: 900px;
+    max-height: 83.5vh;
     cursor: pointer;
-    transition: transform 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out; /* Thêm transition cho opacity */
 }
+
 
 /* CSS cho modal */
 /* CSS cho modal container */
@@ -149,4 +152,37 @@ ul li {
     padding: 10px;
     border-radius: 5px;
     z-index: 1;
+}
+
+
+
+.product-detail-rating {
+    padding: 20px;
+    border-top: 1px solid #ccc;
+    /* text-align: center; */
+    text-align: left;
+}
+
+.star-rating {
+    font-size: 24px;
+}
+
+
+.star {
+    color: #ccc; /* Màu mặc định của sao */
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+/* Đổi màu sao thành màu vàng khi được chọn */
+.star.selected {
+    color: gold;
+}
+
+.write-review-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
 }

@@ -4,8 +4,15 @@ link_hinh_anh
 gia	
 ID_DM	
 loaisanpham
-small_image_1
-small_image_2
-small_image_3
-small_image_4
+img1
+img2
+img3
+img4
+
+
+
+ALTER TABLE products
+ADD COLUMN rating DECIMAL(3, 1) DEFAULT 0.0,
+ADD COLUMN so_danh_gia INT DEFAULT 0;
+
 
