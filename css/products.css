@@ -69,10 +69,11 @@ body {
 .category-button {
     justify-content: center;
     gap: 10px;
-    background-color: #f5f5f5;
-    padding: 5px;
+    background-color: transparent; /* Sửa thành màu không */
+    padding: 8px;
     width: 150px;
     text-align: center;
+    color:black;
     cursor: pointer;
     transition: background-color 0.2s;
     display: inline-block;
@@ -125,18 +126,17 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #333; /* Màu nền của menu */
+    background-color: #ffffff;
     padding: 10px 0;
     margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 .dropdown {
     position: relative;
     display: inline-block;
-}
-
-.dropdown:hover .dropdown-menu {
-    display: block;
 }
 
 .dropdown-menu {
@@ -145,7 +145,6 @@ body {
     background-color: #f9f9f9;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
 }
 
 .dropdown-menu a {
@@ -154,12 +153,15 @@ body {
     text-decoration: none;
     display: block;
 }
+
 .dropdown a {
     text-decoration: none;
 }
 
-.dropdown-menu a:hover {
-    background-color: #f1f1f1;
+.dropdown:hover .dropdown-menu,
+.dropdown:focus-within .dropdown-menu,
+.dropdown.active .dropdown-menu {
+    display: block;
 }
 
 

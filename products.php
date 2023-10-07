@@ -43,9 +43,8 @@ $conn->close();
 <head>
     <title>Website Bán Hàng</title>
     <link rel="stylesheet" href="css/index.css">
-    <style>
-        
-    </style>
+    <link rel="icon" href="Pink And Blue Retro Modern Y2K Streetwear Logo (1).png" type="image/x-icon">
+
 </head>
 <body>
     <div class="container">
@@ -53,36 +52,36 @@ $conn->close();
             <h1>Four men</h1>
         </header>
         <ul>
-            <li>Home</li>
+        <li><a href="products.php">Home</a></li>
             <li>Contact</li>
             <li>About</li>
         </ul>
-        <div class="category-container">
-            <div class="dropdown">
-                <a class="category-button" href="products.php?ID_DM=2">Áo</a>
-                <div class="dropdown-menu">
-                    <a href="products.php?loaisanpham=SM">Áo sơ mi</a>
-                    <a href="products.php?loaisanpham=PL">Áo polo</a>
-                    <a href="products.php?loaisanpham=AT">Áo thun</a>
-                </div>
-            </div>
-            <div class="dropdown">
-                <a class="category-button" href="products.php?ID_DM=1">Quần</a>
-                <div class="dropdown-menu">
-                    <a href="products.php?loaisanpham=QJ">Quần jean</a>
-                    <a href="products.php?loaisanpham=QK">Quần kaki</a>
-                    <a href="products.php?loaisanpham=QT">Quần thể thao</a>
-                </div>
-            </div>
-            <div class="dropdown">
-                <a class="category-button" href="products.php?ID_DM=3">Giày</a>
-                <div class="dropdown-menu">
-                    <a href="products.php?loaisanpham=GY">Giày thể thao</a>
-                    <a href="products.php?loaisanpham=GL">Giày lười</a>
-                    <a href="products.php?loaisanpham=GC">Giày cao gót</a>
-                </div>
+        <div class="menu">
+        <div class="dropdown">
+            <a class="category-button" href="products.php?ID_DM=2">Áo</a>
+            <div class="dropdown-menu">
+                <a href="products.php?loaisanpham=SM">Áo sơ mi</a>
+                <a href="products.php?loaisanpham=PL">Áo polo</a>
+                <a href="products.php?loaisanpham=AT">Áo thun</a>
             </div>
         </div>
+        <div class="dropdown">
+            <a class="category-button" href="products.php?ID_DM=1">Quần</a>
+            <div class="dropdown-menu">
+                <a href="products.php?loaisanpham=QJ">Quần jean</a>
+                <a href="products.php?loaisanpham=QK">Quần kaki</a>
+                <a href="products.php?loaisanpham=QT">Quần thể thao</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a class="category-button" href="products.php?ID_DM=3">Giày</a>
+            <div class="dropdown-menu">
+                <a href="products.php?loaisanpham=GY">Giày thể thao</a>
+                <a href="products.php?loaisanpham=GL">Giày lười</a>
+                <a href="products.php?loaisanpham=GC">Giày cao gót</a>
+            </div>
+        </div>
+    </div>
         
         <div id="product-info" style="white-space: nowrap; margin-top: 35px;">
         <div class="product-container">
@@ -103,5 +102,7 @@ $conn->close();
             <p>&copy; 2023 Website Bán Hàng</p>
         </footer>
     </div>
+    <script src="js/products.js"></script>
+
 </body>
 </html>
