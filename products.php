@@ -1,14 +1,6 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "testt";
+require_once('db_connection.php'); // Đảm bảo đường dẫn tới tệp là chính xác
 
-$conn = new mysqli($servername, $username, $password, $database);
-
-if ($conn->connect_error) {
-    die("Kết nối không thành công: " . $conn->connect_error);
-}
 
 // Trích xuất tham số từ URL
 $loaisanpham = isset($_GET['loaisanpham']) ? $_GET['loaisanpham'] : null;

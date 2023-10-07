@@ -1,15 +1,6 @@
 <?php
-// Kết nối đến cơ sở dữ liệu (giống như bạn đã làm trong trang products.php)
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "testt";
+require_once('db_connection.php'); // Đảm bảo đường dẫn tới tệp là chính xác
 
-$conn = new mysqli($servername, $username, $password, $database);
-
-if ($conn->connect_error) {
-    die("Kết nối không thành công: " . $conn->connect_error);
-}
 
 // Trích xuất tham số product_id từ URL
 $product_id = isset($_GET['product_id']) ? $_GET['product_id'] : null;
@@ -104,29 +95,29 @@ $conn->close();
                     echo "<h3>Đánh giá sản phẩm</h3>";
                     echo "<div class='star-rating'>";
 
-$rating = $productDetail['rating'];
+                    $rating = $productDetail['rating'];
 
-// Tính toán số sao nguyên và phần thập phân
-$wholeStars = floor($rating);
-$decimalPart = $rating - $wholeStars;
+                    // Tính toán số sao nguyên và phần thập phân
+                    $wholeStars = floor($rating);
+                    $decimalPart = $rating - $wholeStars;
 
-// Hiển thị các sao đánh giá
-for ($i = 1; $i <= 5; $i++) {
-    $selectedClass = ($i <= $wholeStars) ? 'selected' : ''; // Đánh dấu sao đã được chọn
+                    // Hiển thị các sao đánh giá
+                    for ($i = 1; $i <= 5; $i++) {
+                        $selectedClass = ($i <= $wholeStars) ? 'selected' : ''; // Đánh dấu sao đã được chọn
 
-    // Sử dụng biểu tượng Unicode của ngôi sao và ngôi sao trống (nếu cần)
-    echo "<span class='star $selectedClass' onclick='rateProduct($i)'>";
-    
-    if ($i <= $wholeStars) {
-        echo "&#9733;"; // Hiển thị sao đầy đủ
-    } elseif ($i - 1 < $wholeStars && $i - 0.5 > $wholeStars) {
-        echo "&#9734;&#188;"; // Hiển thị nửa phần thứ 5 của sao
-    } else {
-        echo "&#9734;"; // Hiển thị sao trống
-    }
-    
-    echo "</span>";
-}
+                        // Sử dụng biểu tượng Unicode của ngôi sao và ngôi sao trống (nếu cần)
+                        echo "<span class='star $selectedClass' onclick='rateProduct($i)'>";
+                        
+                        if ($i <= $wholeStars) {
+                            echo "&#9733;"; // Hiển thị sao đầy đủ
+                        } elseif ($i - 1 < $wholeStars && $i - 0.5 > $wholeStars) {
+                            echo "&#9734;&#188;"; // Hiển thị nửa phần thứ 5 của sao
+                        } else {
+                            echo "&#9734;"; // Hiển thị sao trống
+                        }
+                        
+                        echo "</span>";
+                    }
                     echo "</div>";
                     
                     // Kiểm tra xem khóa "so_danh_gia" có tồn tại trong mảng $productDetail không
@@ -134,12 +125,11 @@ for ($i = 1; $i <= 5; $i++) {
                         echo "<p>" . number_format($productDetail['rating'], 1) . " / 5.0 (Đánh giá từ " . $productDetail['so_danh_gia'] . " người dùng)</p>";
                     }
                     
-                    
                     echo "<button class='write-review-button' onclick='showReviewForm()'>Viết đánh giá</button>";
                     echo "</div>";
                 }
                 echo "</div>";
-            }                
+            }
             ?>
         </div>
         <footer>
@@ -153,63 +143,51 @@ for ($i = 1; $i <= 5; $i++) {
         <img id="modalImage" src="" alt="Ảnh lớn" class="modal-content">
     </div>
 
-    <!-- Biểu mẫu viết đánh giá -->
-    <!-- <div id="reviewForm" class="modal" style="display: none;">
-        <span class="closeModal" onclick="closeReviewForm()">&times;</span>
-        <h3>Viết đánh giá</h3>
-        <div class="star-rating"> -->
-            <!-- Thêm sao đánh giá ở đây -->
-        <!-- </div>
-        <button onclick="submitReview()">Gửi đánh giá</button>
-    </div> -->
-
     <script>
         var originalLargeImageSrc = ""; 
         var modalImageSrc = ""; 
         var ratingValue = 0.0; 
         var modalVisible = false; 
-        
 
         function showLargeImage(imageSrc) {
-        var largeImage = document.getElementById('largeImage');
+            var largeImage = document.getElementById('largeImage');
 
-        if (originalLargeImageSrc === "") {
-            originalLargeImageSrc = largeImage.src;
-        }
+            if (originalLargeImageSrc === "") {
+                originalLargeImageSrc = largeImage.src;
+            }
 
-        modalImageSrc = imageSrc;
+            modalImageSrc = imageSrc;
 
-        // Đặt độ trong suốt của ảnh lớn thành 0 trước khi thay đổi nguồn ảnh
-        largeImage.style.opacity = "0";
+            // Đặt độ trong suốt của ảnh lớn thành 0 trước khi thay đổi nguồn ảnh
+            largeImage.style.opacity = "0";
 
-        // Sau một khoảng thời gian ngắn, đặt lại nguồn ảnh của ảnh lớn và độ trong suốt
-        setTimeout(function () {
-            largeImage.src = imageSrc;
-            largeImage.style.opacity = "1"; // Đặt lại độ trong suốt
-        }, 200); // 200 milliseconds
+            // Sau một khoảng thời gian ngắn, đặt lại nguồn ảnh của ảnh lớn và độ trong suốt
+            setTimeout(function () {
+                largeImage.src = imageSrc;
+                largeImage.style.opacity = "1"; // Đặt lại độ trong suốt
+            }, 200); // 200 milliseconds
 
-        modalVisible = true; // Đánh dấu modal đã mở
+            modalVisible = true; // Đánh dấu modal đã mở
         }
 
         function rateProduct(rating) {
-    // Gán giá trị đánh giá từ số sao đã chọn (sử dụng giá trị với thập phân)
-    ratingValue = rating;
+            // Gán giá trị đánh giá từ số sao đã chọn (sử dụng giá trị với thập phân)
+            ratingValue = rating;
 
-    // Xóa tất cả các lớp 'selected' trên các sao
-    var stars = document.querySelectorAll('.star');
-    stars.forEach(function (star) {
-        star.classList.remove('selected');
-    });
+            // Xóa tất cả các lớp 'selected' trên các sao
+            var stars = document.querySelectorAll('.star');
+            stars.forEach(function (star) {
+                star.classList.remove('selected');
+            });
 
-    // Làm tròn giá trị đánh giá với thập phân để đặt lớp 'selected' cho các sao
-    var roundedRating = Math.round(rating * 2) / 2;
-    var starIndex = (roundedRating - 1) * 2; // Tính toán chỉ số của sao
+            // Làm tròn giá trị đánh giá với thập phân để đặt lớp 'selected' cho các sao
+            var roundedRating = Math.round(rating * 2) / 2;
+            var starIndex = (roundedRating - 1) * 2; // Tính toán chỉ số của sao
 
-    for (var i = 0; i <= starIndex; i++) {
-        stars[i].classList.add('selected');
-    }
-}
-
+            for (var i = 0; i <= starIndex; i++) {
+                stars[i].classList.add('selected');
+            }
+        }
 
         function openModal() {
             if (modalVisible) {
@@ -241,8 +219,6 @@ for ($i = 1; $i <= 5; $i++) {
         window.addEventListener('load', function () {
             closeModal();
         });
-
-
     </script>
 
     <!-- Thêm một form để xử lý load lại trang -->
