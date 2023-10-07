@@ -42,7 +42,7 @@ $conn->close();
 <html>
 <head>
     <title>Website Bán Hàng</title>
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/products.css">
     <link rel="icon" href="Pink And Blue Retro Modern Y2K Streetwear Logo (1).png" type="image/x-icon">
 
 </head>
@@ -91,7 +91,7 @@ $conn->close();
         echo "<a href='product_detail.php?product_id=" . $product['ID'] . "'>";
         echo "<img src='" . $product['LinkHinhAnh'] . "' alt='" . $product['TenSanPham'] . "'>";
         echo "<p>" . $product['TenSanPham'] . "</p>";
-        echo "<p>Giá: " . $product['Gia'] . "</p>";
+        echo "<p class='product-price'>Giá: " . $product['Gia'] . "</p>";
         echo "</a>";
         echo "</div>";
     }
