@@ -17,49 +17,44 @@ if ($resultCategories->num_rows > 0) {
     }
 }
 
-// Xác định danh mục sản phẩm được chọn (nếu có) từ tham số truy vấn
+// Xác định danh mục sản phẩm và danh mục con được chọn (nếu có) từ tham số truy vấn
 $selectedCategory = isset($_GET['ID_DM']) ? $_GET['ID_DM'] : null;
+$selectedSubcategory = isset($_GET['loaisanpham']) ? $_GET['loaisanpham'] : null;
 
-// Truy vấn cơ sở dữ liệu để lấy danh sách sản phẩm dựa trên danh mục sản phẩm được chọn
-if ($selectedCategory) {
-    $sqlProducts = "SELECT * FROM products WHERE ID_DM = ?";
-    $stmt = $conn->prepare($sqlProducts);
+// Truy vấn cơ sở dữ liệu để lấy danh sách sản phẩm dựa trên danh mục sản phẩm và danh mục con được chọn
+$sqlProducts = "SELECT * FROM products WHERE 1=1"; // Sử dụng "WHERE 1=1" để dễ dàng thêm điều kiện
+
+if (!empty($selectedCategory)) {
+    $sqlProducts .= " AND ID_DM = ?";
+}
+
+if (!empty($selectedSubcategory)) {
+    $sqlProducts .= " AND loaisanpham = ?";
+}
+
+$stmt = $conn->prepare($sqlProducts);
+
+if (!empty($selectedCategory) && !empty($selectedSubcategory)) {
+    $stmt->bind_param('is', $selectedCategory, $selectedSubcategory);
+} elseif (!empty($selectedCategory)) {
     $stmt->bind_param('i', $selectedCategory);
-    $stmt->execute();
-    $resultProducts = $stmt->get_result();
+} elseif (!empty($selectedSubcategory)) {
+    $stmt->bind_param('s', $selectedSubcategory);
+}
 
-    $productList = [];
-    if ($resultProducts->num_rows > 0) {
-        while ($row = $resultProducts->fetch_assoc()) {
-            $productList[] = [
-                'ID' => $row['ID'],
-                'ID_DM' => $row['ID_DM'],
-                'TenSanPham' => $row['ten_san_pham'],
-                'LinkHinhAnh' => $row['link_hinh_anh'],
-                'Gia' => $row['gia'],
-            ];
-        }
-    } else {
-        $productList = [];
-    }
-} else {
-    // Nếu không có danh mục sản phẩm được chọn, hiển thị tất cả sản phẩm
-    $sqlProducts = "SELECT * FROM products";
-    $resultProducts = $conn->query($sqlProducts);
+$stmt->execute();
+$resultProducts = $stmt->get_result();
 
-    $productList = [];
-    if ($resultProducts->num_rows > 0) {
-        while ($row = $resultProducts->fetch_assoc()) {
-            $productList[] = [
-                'ID' => $row['ID'],
-                'ID_DM' => $row['ID_DM'],
-                'TenSanPham' => $row['ten_san_pham'],
-                'LinkHinhAnh' => $row['link_hinh_anh'],
-                'Gia' => $row['gia'],
-            ];
-        }
-    } else {
-        $productList = [];
+$productList = [];
+if ($resultProducts->num_rows > 0) {
+    while ($row = $resultProducts->fetch_assoc()) {
+        $productList[] = [
+            'ID' => $row['ID'],
+            'ID_DM' => $row['ID_DM'],
+            'TenSanPham' => $row['ten_san_pham'],
+            'LinkHinhAnh' => $row['link_hinh_anh'],
+            'Gia' => $row['gia'],
+        ];
     }
 }
 
@@ -67,8 +62,12 @@ if ($selectedCategory) {
 $subcategories = [];
 foreach ($categoryList as $category) {
     $categoryID = $category['ID_DM'];
-    $sqlSubcategories = "SELECT DISTINCT loaisanpham FROM products WHERE ID_DM = $categoryID";
-    $resultSubcategories = $conn->query($sqlSubcategories);
+    $sqlSubcategories = "SELECT DISTINCT loaisanpham FROM products WHERE ID_DM = ?";
+    $stmt = $conn->prepare($sqlSubcategories);
+    $stmt->bind_param('i', $categoryID);
+    $stmt->execute();
+    $resultSubcategories = $stmt->get_result();
+
     if ($resultSubcategories->num_rows > 0) {
         $subcategoryList = [];
         while ($row = $resultSubcategories->fetch_assoc()) {
@@ -114,7 +113,8 @@ $conn->close();
                 if (isset($subcategories[$categoryID])) {
                     echo "<div class='dropdown-menu'>";
                     foreach ($subcategories[$categoryID] as $subcategory) {
-                        echo "<a href='products.php?loaisanpham=$subcategory'>$subcategory</a>";
+                        $subcategoryLink = "products.php?ID_DM=$categoryID&loaisanpham=" . urlencode($subcategory);
+                        echo "<a href='$subcategoryLink'>$subcategory</a>";
                     }
                     echo "</div>";
                 }
