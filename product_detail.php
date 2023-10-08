@@ -1,14 +1,5 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "testt";
-
-$conn = new mysqli($servername, $username, $password, $database);
-
-if ($conn->connect_error) {
-    die("Kết nối không thành công: " . $conn->connect_error);
-}
+require_once('db_connection.php'); // Đảm bảo đường dẫn tới tệp là chính xác
 
 // Trích xuất tham số product_id từ URL
 $product_id = isset($_GET['product_id']) ? $_GET['product_id'] : null;

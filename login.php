@@ -1,12 +1,5 @@
 <?php
-session_start();
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "testt";
-
-$conn = new mysqli($servername, $username, $password, $database);
+require_once('db_connection.php'); // Đảm bảo đường dẫn tới tệp là chính xác
 
 if ($conn->connect_error) {
     die("Kết nối không thành công: " . $conn->connect_error);
