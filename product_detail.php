@@ -1,5 +1,4 @@
 <?php
-// Kết nối đến cơ sở dữ liệu (giống như bạn đã làm trong trang products.php)
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -60,7 +59,7 @@ $conn->close();
 <head>
     <title>Chi Tiết Sản Phẩm</title>
     <link rel="stylesheet" href="css/products_detail.css">
-    <link rel="icon" href="Pink And Blue Retro Modern Y2K Streetwear Logo (1).png" type="image/x-icon">
+    <link rel="icon" href="1.jpg" type="image/x-icon">
 
 </head>
 <body>
@@ -72,7 +71,7 @@ $conn->close();
             <li><a href="products.php">Trang chủ</a></li>
             <li>Liên hệ</li>
             <li>Giới thiệu</li>
-        </ul>
+        </ul>   
         <div class="product-detail-container">
             <?php
             // Kiểm tra nếu trang được tải lại

@@ -9,6 +9,9 @@ img2
 img3
 img4
 
+bgwk bnqx civw tyrh
+
+https://getcomposer.org/download/
 
 
 ALTER TABLE products

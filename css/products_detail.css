@@ -12,6 +12,11 @@ header h1 {
     text-align: center;
 }
 
+link[rel="icon"] {
+    width: 100px;
+    height: 100px;
+}
+
 ul {
     list-style-type: none;
     display: flex;

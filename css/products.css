@@ -93,6 +93,10 @@ body {
     background-color: #dd4747;
 }
 
+link[rel="icon"] {
+    width: 32px;
+    height: 32px;
+}
 
 
 .menu {
