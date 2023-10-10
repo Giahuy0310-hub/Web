@@ -3,6 +3,7 @@ var modalImageSrc = "";
 var ratingValue = 0.0; 
 var modalVisible = false; 
 
+
 function showLargeImage(imageSrc) {
     var largeImage = document.getElementById('largeImage');
 

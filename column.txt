@@ -1,15 +1,68 @@
-ID	
-ten_san_pham	
-link_hinh_anh	
-gia	
-ID_DM	
-loaisanpham
-img1
-img2
-img3
-img4
+-- Tạo cơ sở dữ liệu "project"
+CREATE DATABASE project9;
 
-bgwk bnqx civw tyrh
+-- Sử dụng cơ sở dữ liệu "project"
+USE project9;
+
+-- Tạo bảng "product_id"
+CREATE TABLE product_id (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_product CHAR(20) UNIQUE
+);
+
+-- Tạo bảng "categories"
+CREATE TABLE categories (
+    id_dm INT AUTO_INCREMENT PRIMARY KEY,
+    TenDanhMuc NVARCHAR(255)
+);
+
+-- Tạo bảng "color"
+CREATE TABLE color (
+    id_color INT AUTO_INCREMENT PRIMARY KEY,
+    tenmau NVARCHAR(255),
+    hex_color VARCHAR(7) -- Ví dụ: Mã màu HEX (#RRGGBB)
+);
+
+-- Tạo bảng "products"
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_product INT,
+    id_dm INT,
+    id_color INT,
+    ten_san_pham NVARCHAR(255),
+    link_hinh_anh TEXT,
+    loaisanpham nchar(20),
+    gia nvarchar(25),
+    img1 TEXT,
+    img2 TEXT,
+    img3 TEXT,
+    img4 TEXT,
+    rating DECIMAL(3, 2),
+    so_danh_gia INT,
+    FOREIGN KEY (id_color) REFERENCES color(id_color),
+    FOREIGN KEY (id_product) REFERENCES product_id(id),
+    FOREIGN KEY (id_dm) REFERENCES categories(id_dm)
+);
+
+-- Tạo bảng "product_color"
+CREATE TABLE product_color (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_product INT,
+    id_color INT,
+    FOREIGN KEY (id_product) REFERENCES product_id(id),
+    FOREIGN KEY (id_color) REFERENCES color(id_color)
+);
+
+-- Tạo bảng "login"
+CREATE TABLE login (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fullname NVARCHAR(255),
+    phone_number VARCHAR(20),
+    email VARCHAR(255),
+    password VARCHAR(255)
+);
+
+bgwkbnqxcivwtyrh
 
 https://getcomposer.org/download/
 

@@ -1,21 +1,20 @@
 .container {
     display: flex;
-    flex:1;
     flex-direction: column;
-
-    height: 100vh; 
-    background-color: #ffffff; 
+    height: 100vh;
+    background-color: #ffffff;
 }
-ul{
+
+ul {
     text-align: right;
-
 }
+
 li {
-    position:relative;
+    position: relative;
     display: inline-block;
     cursor: pointer;
     overflow: hidden;
-    margin-right: 30px; 
+    margin-right: 30px;
 }
 
 header {
@@ -43,8 +42,6 @@ li:hover {
     color: #dd4747;
 }
 
-
-
 body {
     display: flex;
     flex-direction: column;
@@ -65,13 +62,13 @@ body {
     padding: 8px;
     width: 150px;
     text-align: center;
-    color:black;
+    color: black;
     cursor: pointer;
     transition: background-color 0.2s;
     display: inline-block;
     margin: 0 10px;
     border: 0px;
-    position: relative; 
+    position: relative;
 }
 
 .category-button::before {
@@ -83,13 +80,13 @@ body {
     width: 100%;
     height: 2px;
     background-color: transparent;
-    transform: scaleX(0); /* Khởi đầu ẩn đi */
+    transform: scaleX(0);
     transform-origin: right;
     transition: transform 0.2s, background-color 0.2s;
 }
 
 .category-button:hover::before {
-    transform: scaleX(1); /* Khi hover, hiển thị dòng chạy */
+    transform: scaleX(1);
     background-color: #dd4747;
 }
 
@@ -98,73 +95,20 @@ link[rel="icon"] {
     height: 32px;
 }
 
-
-.menu {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #e7e7e7;
-    padding: 10px 0;
-    margin: 0;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-}
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-}
-
-.dropdown-menu a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-.dropdown a {
-    text-decoration: none;
-}
-
-.dropdown:hover .dropdown-menu,
-.dropdown:focus-within .dropdown-menu,
-.dropdown.active .dropdown-menu {
-    display: block;
-}
-
-
-
 .product {
     text-align: center;
     overflow: hidden;
     white-space: normal;
-    width: 288px; 
-    margin: 0 auto; 
-    padding: 10px; 
-    /* background-color :#dd4747; */
+    width: 94%;
+    margin: 0 auto;
+    padding: 10px;
 }
 
 .product img {
-    width: 288px;
     height: 384px;
+    width: 100%;
     display: block;
     margin: 0 auto;
-    /* max-width: 100%; 
-    height: auto;  */
-}
-
-.product:hover {
-    background-color: #ffffff;
-    transform: scale(0.95);
 }
 
 .product p {
@@ -186,24 +130,30 @@ link[rel="icon"] {
 
 .product a {
     text-decoration: none;
-    font-size:16px;
+    font-size: 16px;
     font-family: 'Times New Roman', Times, serif;
     color: rgb(74, 74, 74);
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: normal; 
+    white-space: normal;
 }
 
-/* .product-detail-container {
-    text-align: center;
-    margin-top: 20px;
+.color-options {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
 }
 
-.product-detail-image {
-    max-width: 300px;
-    margin: 0 auto;
+.color-option {
+    width: 21px;
+    height: 21px;
+    margin-right: 10px;
+    cursor: pointer;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    transition: transform 0.2s;
 }
 
-.product-detail-price {
-    font-weight: bold;
-} */
+.color-option:hover {
+    transform: scale(1.2);
+}

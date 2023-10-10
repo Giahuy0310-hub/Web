@@ -5,7 +5,7 @@ body{
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 10px;
 }
 
 header h1 {
@@ -21,15 +21,21 @@ ul {
     list-style-type: none;
     display: flex;
     justify-content: flex-end; /* Đưa danh sách menu về phía bên phải */
-    background-color: #333;
+    /* background-color: #ecd4d4; */
     padding: 10px;
+    align-items: center;
 }
 
 ul li {
     margin: 0 10px;
-    color: white;
+    color: rgb(0, 0, 0);
     cursor: pointer;
+    text-align: center;
+    font-size: 26px; /* Đặt kích thước văn bản tại đây */
+    flex: 1; /* Đặt flex: 1 để các mục trong danh sách menu chia đều không gian và chữ nằm giữa */
 }
+
+
 
 .product-detail-container {
     text-align: center;
@@ -67,7 +73,9 @@ ul li {
     margin-top: 20px; /* Thêm margin-top để dịch ảnh xuống */
     transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
 }
-
+.left-align {
+    text-align: left;
+}
 
 
 /* CSS cho ảnh lớn */
@@ -191,3 +199,54 @@ ul li {
     border: none;
     cursor: pointer;
 }
+
+
+
+.category-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.category-button {
+    justify-content: center;
+    gap: 10px;
+    background-color: transparent;
+    padding: 8px;
+    width: 150px;
+    text-align: center;
+    color:black;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: inline-block;
+    margin: 0 10px;
+    border: 0px;
+    position: relative; 
+}
+
+.category-button::before {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: transparent;
+    transform: scaleX(0); /* Khởi đầu ẩn đi */
+    transform-origin: right;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.category-button:hover::before {
+    transform: scaleX(1); /* Khi hover, hiển thị dòng chạy */
+    background-color: #dd4747;
+}
+
+link[rel="icon"] {
+    width: 32px;
+    height: 32px;
+}
+
+
