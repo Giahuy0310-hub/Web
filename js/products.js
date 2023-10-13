@@ -46,6 +46,7 @@ function changeProductColor(colorId) {
     }
 }
 
+
 // // Sử dụng JavaScript để lấy thông tin màu sắc từ các thẻ <a> và hiển thị chúng
 
 // productContainer.addEventListener("mouseenter", function (event) {

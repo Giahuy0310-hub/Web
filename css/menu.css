@@ -49,3 +49,42 @@
     text-transform: uppercase;
     font-family: "Montserrat", Tahoma, Geneva, sans-serif;
 }
+
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* Tùy chỉnh để điều chỉnh khoảng cách từ phân trang đến nội dung trang web */
+}
+
+.pagination-list {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+
+.pagination-item {
+    margin: 0 5px; /* Tùy chỉnh để điều chỉnh khoảng cách giữa các phần tử trang */
+}
+
+.pagination-item a {
+    text-decoration: none;
+    padding: 5px 10px; /* Tùy chỉnh để điều chỉnh kích thước của các nút trang */
+    border: 1px solid #ccc; /* Tùy chỉnh để hiển thị đường viền cho nút trang */
+    border-radius: 5px; /* Tùy chỉnh để làm tròn các góc của nút trang */
+}
+
+.pagination-item.active a {
+    background-color: #007BFF; /* Tùy chỉnh màu nền cho trang hiện tại */
+    color: #fff; /* Tùy chỉnh màu chữ cho trang hiện tại */
+    border: 1px solid #007BFF; /* Tùy chỉnh đường viền cho trang hiện tại */
+}
+
+.pagination-item.disabled a {
+    pointer-events: none; /* Vô hiệu hóa nút trang khi nó bị vô hiệu hóa */
+    color: #ccc; /* Tùy chỉnh màu chữ cho nút trang bị vô hiệu hóa */
+}
+

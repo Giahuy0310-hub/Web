@@ -7,13 +7,14 @@ $id_product = isset($_GET['id_product']) ? $_GET['id_product'] : null;
 $color_id = isset($_GET['color_id']) ? $_GET['color_id'] : null;
 
 // Số sản phẩm trên mỗi trang
-$productsPerPage = 8;
+$productsPerPage = 100;
 
 // Lấy trang hiện tại từ tham số truy vấn
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1;
 
 // Tính chỉ số bắt đầu và kết thúc cho sản phẩm trên trang hiện tại
 $startIndex = ($page - 1) * $productsPerPage;
+$endIndex = $startIndex + $productsPerPage;
 
 // Truy vấn cơ sở dữ liệu để lấy danh sách các danh mục sản phẩm từ bảng "categories"
 $sqlCategories = "SELECT ID_DM, TenDanhMuc FROM categories";
@@ -50,8 +51,6 @@ if ($resultCategories->num_rows > 0) {
     }
 }
 
-$startIndex = ($page - 1) * $productsPerPage;
-
 // Truy vấn cơ sở dữ liệu để lấy sản phẩm cho trang hiện tại
 $sqlProducts = "SELECT p.id_product, p.id_dm, p.ten_san_pham, p.link_hinh_anh, p.gia, c.tenmau, c.hex_color
                 FROM products p
@@ -66,22 +65,24 @@ if (!empty($selectedSubcategory)) {
     $sqlProducts .= " AND p.loaisanpham = ?";
 }
 
-$sqlCountProducts = $sqlProducts; // Sao chép truy vấn để đếm tổng số sản phẩm
-
+// Thêm LIMIT vào truy vấn SQL để giới hạn kết quả trả về
 $sqlProducts .= " LIMIT ?, ?";
+
 $stmt = $conn->prepare($sqlProducts);
 
 if (!empty($selectedCategory) && !empty($selectedSubcategory)) {
     $stmt->bind_param('iiii', $selectedCategory, $selectedSubcategory, $startIndex, $productsPerPage);
 } elseif (!empty($selectedCategory)) {
-    $stmt->bind_param('iii', $selectedCategory, $startIndex, $productsPerPage);
+    $stmt->bind_param('iii', $selectedCategory, $startIndex, $startIndex);
 } elseif (!empty($selectedSubcategory)) {
-    $stmt->bind_param('iii', $selectedSubcategory, $startIndex, $productsPerPage);
+    $stmt->bind_param('iii', $selectedSubcategory, $startIndex, $startIndex);
 } else {
+    // Nếu không có điều kiện, bạn cần chỉ bind số trang (vị trí bắt đầu) và số lượng sản phẩm trên mỗi trang
     $stmt->bind_param('ii', $startIndex, $productsPerPage);
 }
 
 $stmt->execute();
+
 $resultProducts = $stmt->get_result();
 
 $productList = [];
@@ -100,22 +101,6 @@ if ($resultProducts->num_rows > 0) {
     }
 }
 
-// Đếm tổng số sản phẩm
-$stmtCount = $conn->prepare($sqlCountProducts);
-if (!empty($selectedCategory) && !empty($selectedSubcategory)) {
-    $stmtCount->bind_param('ii', $selectedCategory, $selectedSubcategory);
-} elseif (!empty($selectedCategory)) {
-    $stmtCount->bind_param('i', $selectedCategory);
-} elseif (!empty($selectedSubcategory)) {
-    $stmtCount->bind_param('i', $selectedSubcategory);
-}
-$stmtCount->execute();
-$resultCount = $stmtCount->get_result();
-$totalProducts = $resultCount->num_rows;
-$stmtCount->close();
-
-// Tính tổng số trang dựa trên tổng số sản phẩm và số sản phẩm trên mỗi trang
-$totalPages = ceil($totalProducts / $productsPerPage);
 $colorsForProducts = [];
 
 foreach ($productList as $product) {
@@ -199,10 +184,7 @@ foreach ($productList as $product) {
             ?>
         </div>
 
-        <?php
-// Bổ sung khởi tạo biến $totalPages
-$totalPages = ceil($totalProducts / $productsPerPage);
-?>
+        
         <div id="product-info">
             <div class="product-container">
                 <?php
@@ -232,38 +214,19 @@ $totalPages = ceil($totalProducts / $productsPerPage);
         </div>
 
         <div class="pagination">
-            <ul class="pagination-list">
-                <!-- Nút "Trang đầu" -->
-                <?php if ($page > 1) : ?>
-                    <li class="pagination-item prev-page">
-                        <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=1">&laquo; Trang đầu</a>
-                    </li>
-                <?php else : ?>
-                    <li class="pagination-item prev-page disabled">
-                        <a href="#">&laquo; Trang đầu</a>
-                    </li>
-                <?php endif; ?>
+            <?php
+            // Tính tổng số trang dựa trên số sản phẩm và số sản phẩm trên mỗi trang
+            $totalProducts = count($uniqueProducts);
+            $totalPages = ceil($totalProducts / $productsPerPage);
 
-                <!-- Các trang số -->
-                <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
-                    <li class="pagination-item <?= $i == $page ? 'active' : '' ?>">
-                        <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=<?= $i ?>"><?= $i ?></a>
-                    </li>
-                <?php endfor; ?>
-
-                <!-- Nút "Trang cuối" -->
-                <?php if ($page < $totalPages) : ?>
-                    <li class="pagination-item next-page">
-                        <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=<?= $totalPages ?>">Trang cuối &raquo;</a>
-                    </li>
-                <?php else : ?>
-                    <li class="pagination-item next-page disabled">
-                        <a href="#">Trang cuối &raquo;</a>
-                    </li>
-                <?php endif; ?>
-            </ul>
+            // Hiển thị các liên kết phân trang
+            for ($i = 1; $i <= $totalPages; $i++) {
+                $pageLink = "products.php?ID_DM=$selectedCategory&loaisanpham=$selectedSubcategory&page=$i";
+                $isActivePage = $i == $page ? 'active-page' : '';
+                echo "<a class='page-link $isActivePage' href='$pageLink'>$i</a>";
+            }
+            ?>
         </div>
     </div>
 </body>
 </html>
-
