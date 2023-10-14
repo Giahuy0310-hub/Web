@@ -47,26 +47,24 @@ function changeProductColor(colorId) {
 }
 
 
-// Đoạn mã trong js/products.js
-$(document).ready(function() {
-    var displayedProducts = <?= count($productList) ?>;
-    var productsPerPage = 6;
-    var selectedCategory = <?= json_encode($selectedCategory) ?>;
-    var selectedSubcategory = <?= json_encode($selectedSubcategory) ?>;
+if (window.location.search) {
+    const params = new URLSearchParams(window.location.search);
+    if (!params.get('id_product')) {
+        params.delete('id_product');
+    }
+    if (!params.get('color_id')) {
+        params.delete('color_id');
+    }
+    if (!params.get('ID_DM')) {
+        params.delete('ID_DM');
+    }
+    if (!params.get('loaisanpham')) {
+        params.delete('loaisanpham');
+    }
     
-    $('#load-more').click(function() {
-        $.ajax({
-            type: 'GET',
-            url: 'load_more.php',
-            data: {
-                displayed: displayedProducts,
-                category: selectedCategory,
-                subcategory: selectedSubcategory
-            },
-            success: function(data) {
-                $('#product-info .product-container').append(data); // Thêm sản phẩm tải thêm vào danh sách hiện có
-                displayedProducts += productsPerPage;
-            }
-        });
-    });
-});
+
+    // Replace the current URL without refreshing the page
+    const newUrl = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ''}`;
+    window.history.replaceState({}, '', newUrl);
+}
+

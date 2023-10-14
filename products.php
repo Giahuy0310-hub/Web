@@ -6,7 +6,7 @@ $selectedSubcategory = isset($_GET['loaisanpham']) ? $_GET['loaisanpham'] : null
 $id_product = isset($_GET['id_product']) ? $_GET['id_product'] : null;
 $color_id = isset($_GET['color_id']) ? $_GET['color_id'] : null;
 
-$productsPerPage = 12; // Số sản phẩm trên mỗi trang
+$productsPerPage = 8; // Số sản phẩm trên mỗi trang
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1;
 
 // Tính chỉ số bắt đầu cho sản phẩm trên trang hiện tại
@@ -163,6 +163,8 @@ $stmt->close();
     <link rel="stylesheet" href="css/products.css">
     <link rel="stylesheet" href="css/menu.css">
     <link rel="icon" href="3.jpg" type="image/x-icon">
+    <script src="js/products.js"></script>
+
 </head>
 
 <body>
