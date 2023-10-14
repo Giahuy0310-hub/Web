@@ -6,16 +6,12 @@ $selectedSubcategory = isset($_GET['loaisanpham']) ? $_GET['loaisanpham'] : null
 $id_product = isset($_GET['id_product']) ? $_GET['id_product'] : null;
 $color_id = isset($_GET['color_id']) ? $_GET['color_id'] : null;
 
-// Số sản phẩm trên mỗi trang
-$productsPerPage = 8;
-
-// Lấy trang hiện tại từ tham số truy vấn
+$productsPerPage = 12; // Số sản phẩm trên mỗi trang
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1;
 
-// Tính chỉ số bắt đầu và kết thúc cho sản phẩm trên trang hiện tại
+// Tính chỉ số bắt đầu cho sản phẩm trên trang hiện tại
 $startIndex = ($page - 1) * $productsPerPage;
 
-// Truy vấn cơ sở dữ liệu để lấy danh sách các danh mục sản phẩm từ bảng "categories"
 $sqlCategories = "SELECT ID_DM, TenDanhMuc FROM categories";
 $stmt = $conn->prepare($sqlCategories);
 $stmt->execute();
@@ -28,7 +24,6 @@ if ($resultCategories->num_rows > 0) {
         $categoryName = $row['TenDanhMuc'];
         $isActive = $categoryID == $selectedCategory ? 'active' : '';
 
-        // Truy vấn cơ sở dữ liệu để lấy danh sách "loaisanpham" cho danh mục hiện tại
         $sqlSubcategories = "SELECT DISTINCT loaisanpham FROM products WHERE id_dm = ?";
         $stmtSubcategories = $conn->prepare($sqlSubcategories);
         $stmtSubcategories->bind_param('i', $categoryID);
@@ -50,25 +45,58 @@ if ($resultCategories->num_rows > 0) {
     }
 }
 
-$startIndex = ($page - 1) * $productsPerPage;
-
-// Truy vấn cơ sở dữ liệu để lấy sản phẩm cho trang hiện tại
+// Tính tổng số trang và câu lệnh SQL để lấy dữ liệu sản phẩm
+$sqlCountProducts = "SELECT COUNT(DISTINCT p.id_product) AS total_products FROM products p WHERE 1=1";
 $sqlProducts = "SELECT p.id_product, p.id_dm, p.ten_san_pham, p.link_hinh_anh, p.gia, c.tenmau, c.hex_color
                 FROM products p
                 LEFT JOIN color c ON p.id_color = c.id_color
                 WHERE 1=1";
 
 if (!empty($selectedCategory)) {
+    $sqlCountProducts .= " AND p.id_dm = ?";
     $sqlProducts .= " AND p.id_dm = ?";
 }
 
 if (!empty($selectedSubcategory)) {
+    $sqlCountProducts .= " AND p.loaisanpham = ?";
     $sqlProducts .= " AND p.loaisanpham = ?";
 }
 
-$sqlCountProducts = $sqlProducts; // Sao chép truy vấn để đếm tổng số sản phẩm
+// Kiểm tra và thêm color_id vào câu truy vấn SQL nếu có giá trị
+if (!empty($color_id)) {
+    $sqlCountProducts .= " AND p.id_color = ?";
+    $sqlProducts .= " AND p.id_color = ?";
+}
 
-$sqlProducts .= " LIMIT ?, ?";
+// Kiểm tra và thêm id_product vào URL nếu có giá trị
+if (!empty($id_product)) {
+    $url .= '&id_product=' . $id_product;
+}
+
+
+$stmtCount = $conn->prepare($sqlCountProducts);
+
+if (!empty($selectedCategory) && !empty($selectedSubcategory)) {
+    $stmtCount->bind_param('ii', $selectedCategory, $selectedSubcategory);
+} elseif (!empty($selectedCategory)) {
+    $stmtCount->bind_param('i', $selectedCategory);
+} elseif (!empty($selectedSubcategory)) {
+    $stmtCount->bind_param('i', $selectedSubcategory);
+}
+
+$stmtCount->execute();
+$resultCount = $stmtCount->get_result();
+$totalProducts = 0;
+
+if ($resultCount->num_rows > 0) {
+    $row = $resultCount->fetch_assoc();
+    $totalProducts = $row['total_products'];
+}
+
+$totalPages = ceil($totalProducts / $productsPerPage);
+
+// Lấy dữ liệu sản phẩm cho trang hiện tại
+$sqlProducts .= " GROUP BY p.id_product LIMIT ?, ?";
 $stmt = $conn->prepare($sqlProducts);
 
 if (!empty($selectedCategory) && !empty($selectedSubcategory)) {
@@ -85,37 +113,21 @@ $stmt->execute();
 $resultProducts = $stmt->get_result();
 
 $productList = [];
-if ($resultProducts->num_rows > 0) {
-    while ($row = $resultProducts->fetch_assoc()) {
-        $product = [
-            'id_product' => $row['id_product'],
-            'id_dm' => $row['id_dm'],
-            'ten_san_pham' => $row['ten_san_pham'],
-            'link_hinh_anh' => $row['link_hinh_anh'],
-            'gia' => $row['gia'],
-            'tenmau' => $row['tenmau'],
-            'hex_color' => $row['hex_color'],
-        ];
-        $productList[] = $product;
-    }
+
+while ($row = $resultProducts->fetch_assoc()) {
+    $product = [
+        'id_product' => $row['id_product'],
+        'id_dm' => $row['id_dm'],
+        'ten_san_pham' => $row['ten_san_pham'],
+        'link_hinh_anh' => $row['link_hinh_anh'],
+        'gia' => $row['gia'],
+        'tenmau' => $row['tenmau'],
+        'hex_color' => $row['hex_color'],
+    ];
+
+    $productList[] = $product;
 }
 
-// Đếm tổng số sản phẩm
-$stmtCount = $conn->prepare($sqlCountProducts);
-if (!empty($selectedCategory) && !empty($selectedSubcategory)) {
-    $stmtCount->bind_param('ii', $selectedCategory, $selectedSubcategory);
-} elseif (!empty($selectedCategory)) {
-    $stmtCount->bind_param('i', $selectedCategory);
-} elseif (!empty($selectedSubcategory)) {
-    $stmtCount->bind_param('i', $selectedSubcategory);
-}
-$stmtCount->execute();
-$resultCount = $stmtCount->get_result();
-$totalProducts = $resultCount->num_rows;
-$stmtCount->close();
-
-// Tính tổng số trang dựa trên tổng số sản phẩm và số sản phẩm trên mỗi trang
-$totalPages = ceil($totalProducts / $productsPerPage);
 $colorsForProducts = [];
 
 foreach ($productList as $product) {
@@ -127,6 +139,7 @@ foreach ($productList as $product) {
     $resultColorsForProduct = $stmt->get_result();
 
     $colorsForProduct = [];
+
     while ($row = $resultColorsForProduct->fetch_assoc()) {
         $colorsForProduct[] = [
             'id_color' => $row['id_color'],
@@ -134,21 +147,12 @@ foreach ($productList as $product) {
             'hex_color' => $row['hex_color'],
         ];
     }
+
     $colorsForProducts[$productId] = $colorsForProduct;
-    $stmt->close();
 }
 
-$uniqueProducts = [];
-
-foreach ($productList as $product) {
-    $productId = $product['id_product'];
-    if (!isset($uniqueProducts[$productId])) {
-        $uniqueProducts[$productId] = [
-            'product' => $product,
-            'colors' => $colorsForProducts[$productId],
-        ];
-    }
-}
+$stmtCount->close();
+$stmt->close();
 ?>
 
 <!DOCTYPE html>
@@ -164,21 +168,18 @@ foreach ($productList as $product) {
 <body>
     <div class="container">
         <header>
-            <!-- <h1>Four men</h1> -->
         </header>
 
         <div class="menu">
             <div class="dropdown">
             </div>
             <?php
-            // Tạo menu danh mục sản phẩm động
             foreach ($categoryList as $category) {
                 $categoryID = $category['ID_DM'];
                 $categoryName = $category['TenDanhMuc'];
                 $isActive = $categoryID == $selectedCategory ? 'active' : '';
                 $subcategoryList = $category['LoaiSanPham'];
 
-                // Tạo danh sách loaisanpham dưới đây
                 $subcategoryLinks = [];
                 foreach ($subcategoryList as $subcategory) {
                     $subcategoryLink = "products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id&loaisanpham=" . urlencode($subcategory);
@@ -186,7 +187,6 @@ foreach ($productList as $product) {
                     $subcategoryLinks[] = "<a class='subcategory-button $isActiveSubcategory' href='$subcategoryLink'>$subcategory</a>";
                 }
 
-                // Tạo nút danh mục chính và hiển thị danh sách loaisanpham
                 echo "<div class='dropdown'>";
                 echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id'>$categoryName</a>";
                 if (!empty($subcategoryLinks)) {
@@ -199,23 +199,18 @@ foreach ($productList as $product) {
             ?>
         </div>
 
-        <?php
-// Bổ sung khởi tạo biến $totalPages
-$totalPages = ceil($totalProducts / $productsPerPage);
-?>
         <div id="product-info">
             <div class="product-container">
                 <?php
-                foreach ($uniqueProducts as $uniqueProduct) {
-                    $product = $uniqueProduct['product'];
-                    $colors = $uniqueProduct['colors'];
+                foreach ($productList as $product) {
+                    $productId = $product['id_product'];
+                    $colors = $colorsForProducts[$productId];
                     echo "<div class='product'>";
                     echo "<a href='product_detail.php?id_product=" . $product['id_product'] . "&color_id=" . $colors[0]['id_color'] . "'>";
                     echo "<img src='" . $product['link_hinh_anh'] . "' alt='" . $product['ten_san_pham'] . "'>";
                     echo "<p>" . $product['ten_san_pham'] . "</p>";
                     echo "<p class='product-price'>Giá: " . $product['gia'] . "</p>";
 
-                    // Hiển thị ô màu cho sản phẩm
                     echo "<div class='color-options'>";
                     foreach ($colors as $color) {
                         $colorHex = $color['hex_color'];
@@ -232,38 +227,41 @@ $totalPages = ceil($totalProducts / $productsPerPage);
         </div>
 
         <div class="pagination">
-            <ul class="pagination-list">
-                <!-- Nút "Trang đầu" -->
-                <?php if ($page > 1) : ?>
-                    <li class="pagination-item prev-page">
-                        <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=1">&laquo; Trang đầu</a>
-                    </li>
-                <?php else : ?>
-                    <li class="pagination-item prev-page disabled">
-                        <a href="#">&laquo; Trang đầu</a>
-                    </li>
-                <?php endif; ?>
+        <ul class="pagination-list">
+            <?php
+            $startPage = max(1, $page - 2);
+            $endPage = min($totalPages, $page + 2);
 
-                <!-- Các trang số -->
-                <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
-                    <li class="pagination-item <?= $i == $page ? 'active' : '' ?>">
-                        <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=<?= $i ?>"><?= $i ?></a>
-                    </li>
-                <?php endfor; ?>
+            if ($page > 1) {
+            ?>
+                <li class="pagination-item prev-page">
+                    <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=1">&laquo; Trang đầu</a>
+                </li>
+            <?php } else { ?>
+                <li class="pagination-item prev-page disabled">
+                    <a href="#">&laquo; Trang đầu</a>
+                </li>
+            <?php }
 
-                <!-- Nút "Trang cuối" -->
-                <?php if ($page < $totalPages) : ?>
-                    <li class="pagination-item next-page">
-                        <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=<?= $totalPages ?>">Trang cuối &raquo;</a>
-                    </li>
-                <?php else : ?>
-                    <li class="pagination-item next-page disabled">
-                        <a href="#">Trang cuối &raquo;</a>
-                    </li>
-                <?php endif; ?>
-            </ul>
-        </div>
+            for ($i = $startPage; $i <= $endPage; $i++) {
+            ?>
+                <li class="pagination-item <?= $i == $page ? 'active' : '' ?>">
+                    <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=<?= $i ?>"><?= $i ?></a>
+                </li>
+            <?php }
+
+            if ($page < $totalPages) {
+            ?>
+                <li class="pagination-item next-page">
+                    <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=<?= $totalPages ?>">Trang cuối &raquo;</a>
+                </li>
+            <?php } else { ?>
+                <li class="pagination-item next-page disabled">
+                    <a href="#">Trang cuối &raquo;</a>
+                </li>
+            <?php } ?>
+        </ul>
     </div>
+</div>
 </body>
 </html>
-
