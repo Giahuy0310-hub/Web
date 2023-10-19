@@ -162,8 +162,12 @@ $stmt->close();
     <title>Website Bán Hàng</title>
     <link rel="stylesheet" href="css/products.css">
     <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/top.css">
+
     <link rel="icon" href="3.jpg" type="image/x-icon">
     <script src="js/products.js"></script>
+    <script src="js/top.js"></script>
+
 
 </head>
 
@@ -264,6 +268,9 @@ $stmt->close();
             <?php } ?>
         </ul>
     </div>
+    
 </div>
+
+
 </body>
 </html>

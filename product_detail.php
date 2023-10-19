@@ -168,6 +168,23 @@ if (empty($loaisanphamList)) {
         ?>
     </div>
 </div>
+<form action="cart.html" method="post">
+    <!-- Thông tin sản phẩm -->
+    <input type="hidden" name="product_name" value="Product Name">
+    <input type="hidden" name="product_price" value="19.99">
+    
+    <!-- Thông tin khách hàng -->
+    <input type="text" name="customer_name" placeholder="Họ và tên">
+    <input type="text" name="customer_address" placeholder="Địa chỉ giao hàng">
+    <input type="text" name="customer_phone" placeholder="Số điện thoại">
+    
+    <!-- Nút xác nhận đơn hàng -->
+    <input type="submit" value="Xác nhận đơn hàng" onclick="redirectToCart()">
+</form>
+
+
+
+
 <footer>
     <!-- <p>&copy; 2023 Website Bán Hàng</p> -->
 </footer>
@@ -175,5 +192,7 @@ if (empty($loaisanphamList)) {
     <span class="closeModal" onclick="closeModal()">&times;</span>
     <img id="modalImage" src="" alt="Ảnh lớn" class="modal-content">
 </div>
+
+</script>
 </body>
 </html>

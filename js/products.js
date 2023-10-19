@@ -1,50 +1,50 @@
 // JavaScript để hiển thị menu dropdown khi kéo xuống
-var dropdowns = document.querySelectorAll('.dropdown');
+// var dropdowns = document.querySelectorAll('.dropdown');
 
-dropdowns.forEach(function (dropdown) {
-    dropdown.addEventListener('mouseenter', function () {
-        this.classList.add('active');
-    });
+// dropdowns.forEach(function (dropdown) {
+//     dropdown.addEventListener('mouseenter', function () {
+//         this.classList.add('active');
+//     });
 
-    dropdown.addEventListener('mouseleave', function () {
-        this.classList.remove('active');
-    });
-});
+//     dropdown.addEventListener('mouseleave', function () {
+//         this.classList.remove('active');
+//     });
+// });
 
 
-function addColorIdToUrl(colorId) {
-    // Lấy URL hiện tại
-    var currentUrl = window.location.href;
+// function addColorIdToUrl(colorId) {
+//     // Lấy URL hiện tại
+//     var currentUrl = window.location.href;
 
-    // Kiểm tra nếu đã có tham số "color_id" trong URL
-    if (currentUrl.includes('color_id')) {
-        // Thay thế giá trị hiện tại bằng giá trị mới
-        var newUrl = currentUrl.replace(/color_id=\d+/, 'color_id=' + colorId);
-        window.location.href = newUrl;
-    } else {
-        // Nếu chưa có tham số "color_id", thêm nó vào URL
-        var separator = currentUrl.includes('?') ? '&' : '?';
-        var newUrl = currentUrl + separator + 'color_id=' + colorId;
-        window.location.href = newUrl;
-    }
-}
+//     // Kiểm tra nếu đã có tham số "color_id" trong URL
+//     if (currentUrl.includes('color_id')) {
+//         // Thay thế giá trị hiện tại bằng giá trị mới
+//         var newUrl = currentUrl.replace(/color_id=\d+/, 'color_id=' + colorId);
+//         window.location.href = newUrl;
+//     } else {
+//         // Nếu chưa có tham số "color_id", thêm nó vào URL
+//         var separator = currentUrl.includes('?') ? '&' : '?';
+//         var newUrl = currentUrl + separator + 'color_id=' + colorId;
+//         window.location.href = newUrl;
+//     }
+// }
 
-function changeProductColor(colorId) {
-    // Lấy URL hiện tại
-    var currentUrl = window.location.href;
+// function changeProductColor(colorId) {
+//     // Lấy URL hiện tại
+//     var currentUrl = window.location.href;
     
-    // Kiểm tra nếu đã có tham số "color_id" trong URL
-    if (currentUrl.includes('color_id')) {
-        // Thay thế giá trị hiện tại bằng giá trị mới
-        var newUrl = currentUrl.replace(/color_id=\d+/, 'color_id=' + colorId);
-        window.location.href = newUrl;
-    } else {
-        // Nếu chưa có tham số "color_id", thêm nó vào URL
-        var separator = currentUrl.includes('?') ? '&' : '?';
-        var newUrl = currentUrl + separator + 'color_id=' + colorId;
-        window.location.href = newUrl;
-    }
-}
+//     // Kiểm tra nếu đã có tham số "color_id" trong URL
+//     if (currentUrl.includes('color_id')) {
+//         // Thay thế giá trị hiện tại bằng giá trị mới
+//         var newUrl = currentUrl.replace(/color_id=\d+/, 'color_id=' + colorId);
+//         window.location.href = newUrl;
+//     } else {
+//         // Nếu chưa có tham số "color_id", thêm nó vào URL
+//         var separator = currentUrl.includes('?') ? '&' : '?';
+//         var newUrl = currentUrl + separator + 'color_id=' + colorId;
+//         window.location.href = newUrl;
+//     }
+// }
 
 
 if (window.location.search) {
@@ -61,9 +61,6 @@ if (window.location.search) {
     if (!params.get('loaisanpham')) {
         params.delete('loaisanpham');
     }
-    
-
-    // Replace the current URL without refreshing the page
     const newUrl = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ''}`;
     window.history.replaceState({}, '', newUrl);
 }

@@ -1,0 +1,132 @@
+
+.footer{
+    height: auto;
+    width: 100%;
+}
+
+.footer_banner img{
+    width: 100%;
+    vertical-align: middle;
+}
+
+.footer_main{
+    height: 200px;
+
+}
+
+.footer_main--link{
+    height: 200px;
+    padding-top: 55px;
+    padding-right: 50px;
+    background-color: #1e1e1e;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.footer_main--link h4{
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #eee;
+    margin: 0 0 15px;
+}
+
+.footer_main--link span,.footer_main--link a{
+    font-size: 13px;
+    color: #888;
+    padding: 10px 0 0 0;
+}
+
+.footer_main--link a{
+    font-size: 13px;
+    color: #888;
+    text-decoration: none;
+    transition: ease 0.4s;
+}
+
+.footer_main--link a:hover{
+    color: white;
+}
+
+.link_connect ,.link_contact ,.link_helped 
+,.link_policy ,.link_brand{
+    display: flex;
+    flex-direction: column;
+}
+
+.link_connect a{
+    padding: 2px;
+}
+
+.link_connect input{
+    height: 36px;
+    background: #343434;
+    border: none;
+    color: #ccc;
+    padding: 0 20px;
+    padding-right: 90px;
+    outline: 0;
+    margin-top: 10px;
+}
+
+.link_connect button{
+    background: #666;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 10px;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,.12);
+    border: none;
+    font-size: 14px;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.footer_main-contact{
+    padding: 30px;
+    height: 200px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #131313;
+    color: #888;
+}
+
+.footer_main-contact a{
+    font-size: 13px;
+    color: #888;
+    padding: 10px 0 0 0;
+}
+
+.contact_link{
+    height: 40px;
+    border: 0;
+    border-bottom: 1px solid white;
+}
+
+.contact_link a{
+    font-size: 14px;
+    margin: 0 3px;
+    text-decoration: none;
+    transition: ease 0.4s;
+}
+
+.contact_link a:hover{
+    color: white;
+}
+
+.contact_content h4{
+    text-transform: uppercase;
+}
+
+.contact_content span{
+    font-size: 13px;
+}
+
+.footer_main-contact img{
+    height: auto;
+    width: auto;
+    margin-top: 10px;
+    float: right;
+}
