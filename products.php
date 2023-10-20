@@ -67,7 +67,6 @@ if (!empty($color_id)) {
     $sqlCountProducts .= " AND p.id_color = ?";
     $sqlProducts .= " AND p.id_color = ?";
 }
-
 // Kiểm tra và thêm id_product vào URL nếu có giá trị
 if (!empty($id_product)) {
     $url .= '&id_product=' . $id_product;
@@ -184,7 +183,7 @@ $stmt->close();
 
                 $subcategoryLinks = [];
                 foreach ($subcategoryList as $subcategory) {
-                    $subcategoryLink = "products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id&loaisanpham=" . urlencode($subcategory);
+                    $subcategoryLink = "products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id&cate=" . urlencode($subcategory);
                     $isActiveSubcategory = $subcategory == $selectedSubcategory ? 'active' : '';
                     $subcategoryLinks[] = "<a class='subcategory-button $isActiveSubcategory' href='$subcategoryLink'>$subcategory</a>";
                 }

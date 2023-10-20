@@ -121,7 +121,7 @@ if (empty($loaisanphamList)) {
 
                 $subcategoryLinks = [];
                 foreach ($subcategoryList as $subcategory) {
-                    $subcategoryLink = "products.php?ID_DM=$categoryID" . urlencode($subcategory);
+                    $subcategoryLink = "products.php?ID_DM=" . urlencode($categoryID) . "&cate=" . urlencode($subcategory);
                     $isActiveSubcategory = $subcategory == $selectedSubcategory ? 'active' : '';
                     $subcategoryLinks[] = "<a class='subcategory-button $isActiveSubcategory' href='$subcategoryLink'>$subcategory</a>";
                 }
