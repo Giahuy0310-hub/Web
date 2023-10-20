@@ -100,7 +100,7 @@ if (empty($loaisanphamList)) {
     <link rel="stylesheet" href="css/menu.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="js/product_detail.js"></script>
-    <script src="js/product.js"></script>
+    <script src="js/products.js"></script>
 
 </head>
 <body>
@@ -121,13 +121,13 @@ if (empty($loaisanphamList)) {
 
                 $subcategoryLinks = [];
                 foreach ($subcategoryList as $subcategory) {
-                    $subcategoryLink = "products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id&loaisanpham=" . urlencode($subcategory);
+                    $subcategoryLink = "products.php?ID_DM=$categoryID" . urlencode($subcategory);
                     $isActiveSubcategory = $subcategory == $selectedSubcategory ? 'active' : '';
                     $subcategoryLinks[] = "<a class='subcategory-button $isActiveSubcategory' href='$subcategoryLink'>$subcategory</a>";
                 }
 
                 echo "<div class='dropdown'>";
-                echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id'>$categoryName</a>";
+                echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID'>$categoryName</a>";
                 if (!empty($subcategoryLinks)) {
                     echo "<div class='dropdown-menu'>";
                     echo implode($subcategoryLinks);
