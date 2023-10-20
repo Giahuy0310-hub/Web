@@ -18,6 +18,7 @@ GROUP BY p.id_product";
 
 $stmt = $conn->prepare($sqlProductDetail);
 $stmt->bind_param('ii', $id_product, $color_id);
+
 $stmt->execute();
 $resultProductDetail = $stmt->get_result();
 
@@ -97,39 +98,50 @@ if (empty($loaisanphamList)) {
 <head>
     <link rel="stylesheet" href="css/products_detail.css">
     <link rel="stylesheet" href="css/menu.css">
-    <link rel="icon" href="3.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="js/product_detail.js"></script>
+    <script src="js/product.js"></script>
+
 </head>
 <body>
 <div class="container">
     <header>
     </header>
-    <div class="menu">
-        <div class="dropdown"></div>
-        <?php
-        foreach ($categoryList as $category) {
-            $categoryID = $category['ID_DM'];
-            $categoryName = $category['TenDanhMuc'];
-            $isActive = $categoryID == $selectedCategory ? 'active' : '';
-            $subcategoryList = $category['LoaiSanPham'];
+    <div class="navbar">
+    <a href="home.php"><img src="images/logo.png" alt=""></a>
+    <div class="navbar_list">
+        <a href="products.php">ALL</a>
+    </div>
+            <?php
+            foreach ($categoryList as $category) {
+                $categoryID = $category['ID_DM'];
+                $categoryName = $category['TenDanhMuc'];
+                $isActive = $categoryID == $selectedCategory ? 'active' : '';
+                $subcategoryList = $category['LoaiSanPham'];
 
-            echo "<div class='dropdown'>";
-            echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id'>$categoryName</a>";
-
-            if (!empty($subcategoryList)) {
-                echo "<div class='dropdown-menu'>";
+                $subcategoryLinks = [];
                 foreach ($subcategoryList as $subcategory) {
                     $subcategoryLink = "products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id&loaisanpham=" . urlencode($subcategory);
                     $isActiveSubcategory = $subcategory == $selectedSubcategory ? 'active' : '';
-                    echo "<a class='subcategory-button $isActiveSubcategory' href='$subcategoryLink'>$subcategory</a>";
+                    $subcategoryLinks[] = "<a class='subcategory-button $isActiveSubcategory' href='$subcategoryLink'>$subcategory</a>";
+                }
+
+                echo "<div class='dropdown'>";
+                echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id'>$categoryName</a>";
+                if (!empty($subcategoryLinks)) {
+                    echo "<div class='dropdown-menu'>";
+                    echo implode($subcategoryLinks);
+                    echo "</div>";
                 }
                 echo "</div>";
             }
-
-            echo "</div>";
-        }
-        ?>
-    </div>
+            ?>
+                    <div class="navbar_logo">
+            <a href=""><i class="fa-solid fa-magnifying-glass"></i></a>
+            <a href=""><i class="fa-regular fa-user"></i></a>
+            <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+        </div>
+        </div>
     <ul>
         <?php
         // Hiển thị danh mục sản phẩm (loaisanpham hoặc tendanhmuc)
@@ -168,23 +180,6 @@ if (empty($loaisanphamList)) {
         ?>
     </div>
 </div>
-<form action="cart.html" method="post">
-    <!-- Thông tin sản phẩm -->
-    <input type="hidden" name="product_name" value="Product Name">
-    <input type="hidden" name="product_price" value="19.99">
-    
-    <!-- Thông tin khách hàng -->
-    <input type="text" name="customer_name" placeholder="Họ và tên">
-    <input type="text" name="customer_address" placeholder="Địa chỉ giao hàng">
-    <input type="text" name="customer_phone" placeholder="Số điện thoại">
-    
-    <!-- Nút xác nhận đơn hàng -->
-    <input type="submit" value="Xác nhận đơn hàng" onclick="redirectToCart()">
-</form>
-
-
-
-
 <footer>
     <!-- <p>&copy; 2023 Website Bán Hàng</p> -->
 </footer>
@@ -192,7 +187,5 @@ if (empty($loaisanphamList)) {
     <span class="closeModal" onclick="closeModal()">&times;</span>
     <img id="modalImage" src="" alt="Ảnh lớn" class="modal-content">
 </div>
-
-</script>
 </body>
 </html>

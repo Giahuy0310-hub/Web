@@ -13,7 +13,7 @@ $page = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']
 $startIndex = ($page - 1) * $productsPerPage;
 
 $sqlCategories = "SELECT ID_DM, TenDanhMuc FROM categories";
-$stmt = $conn->prepare($sqlCategories);
+$stmt = $conn->prepare($sqlCategories); 
 $stmt->execute();
 $resultCategories = $stmt->get_result();
 
@@ -72,8 +72,6 @@ if (!empty($color_id)) {
 if (!empty($id_product)) {
     $url .= '&id_product=' . $id_product;
 }
-
-
 $stmtCount = $conn->prepare($sqlCountProducts);
 
 if (!empty($selectedCategory) && !empty($selectedSubcategory)) {
@@ -83,6 +81,7 @@ if (!empty($selectedCategory) && !empty($selectedSubcategory)) {
 } elseif (!empty($selectedSubcategory)) {
     $stmtCount->bind_param('i', $selectedSubcategory);
 }
+
 
 $stmtCount->execute();
 $resultCount = $stmtCount->get_result();
@@ -162,9 +161,8 @@ $stmt->close();
     <title>Website Bán Hàng</title>
     <link rel="stylesheet" href="css/products.css">
     <link rel="stylesheet" href="css/menu.css">
-    <link rel="stylesheet" href="css/top.css">
-
-    <link rel="icon" href="3.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="js/products.js"></script>
     <script src="js/top.js"></script>
 
@@ -172,13 +170,11 @@ $stmt->close();
 </head>
 
 <body>
-    <div class="container">
-        <header>
-        </header>
-
-        <div class="menu">
-            <div class="dropdown">
-            </div>
+<div class="navbar">
+    <a href="home.php"><img src="images/logo.png" alt=""></a>
+    <div class="navbar_list">
+        <a href="products.php">ALL</a>
+    </div>
             <?php
             foreach ($categoryList as $category) {
                 $categoryID = $category['ID_DM'];
@@ -203,8 +199,12 @@ $stmt->close();
                 echo "</div>";
             }
             ?>
+                    <div class="navbar_logo">
+            <a href=""><i class="fa-solid fa-magnifying-glass"></i></a>
+            <a href=""><i class="fa-regular fa-user"></i></a>
+            <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
         </div>
-
+        </div>
         <div id="product-info">
             <div class="product-container">
                 <?php
@@ -270,7 +270,5 @@ $stmt->close();
     </div>
     
 </div>
-
-
 </body>
 </html>
