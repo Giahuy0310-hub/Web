@@ -266,29 +266,35 @@ echo "<a href='products.php' class='category-button'>Tất cả</a>";
                 <h2 id="product_title--sold">SẢN PHẨM BÁN CHẠY NHẤT</h2>
                 <div class="list_product--sold">
                 <?php
-        foreach ($productList as $product) {
-            $productId = $product['id_product'];
-            $colors = $colorsForProducts[$productId];
-            echo "<div class='pro--sold'>";
-            echo "<a href='product_detail.php?id_product=" . $product['id_product'] . "&color_id=" . $colors[0]['id_color'] . "'>";
-            echo "<img src='" . $product['link_hinh_anh'] . "' alt='" . $product['ten_san_pham'] . "'>";
-            echo "<p>" . $product['ten_san_pham'] . "</p>";
-            echo "<p class='product-price'>Giá: " . $product['gia'] . "</p>";
+foreach ($expensiveProductList as $product) {
+    $productId = $product['id_product'];
+    if (isset($colorsForProducts[$productId]) && !empty($colorsForProducts[$productId])) {
+        $colors = $colorsForProducts[$productId];
+        echo "<div class='pro--sold'>";
+        echo "<a href='product_detail.php?id_product=" . $product['id_product'] . "&color_id=" . $colors[0]['id_color'] . "'>";
+        echo "<img src='" . $product['link_hinh_anh'] . "' alt='" . $product['ten_san_pham'] . "'>";
+        echo "<p>" . $product['ten_san_pham'] . "</p>";
+        echo "<p class='product-price'>Giá: " . $product['gia'] . "</p>";
 
-            echo "<div class='color-options'>";
-            foreach ($colors as $color) {
-                $colorHex = $color['hex_color'];
-                echo "<a href='product_detail.php?id_product=" . $product['id_product'] . "&color_id=" . $color['id_color'] . "'>";
-                echo "<div class='color-option' style='background-color: $colorHex;'></div>";
-                echo "</a>";
-            }
-            echo "</div>";
+        echo "<div class='color-options'>";
+        foreach ($colors as $color) {
+            $colorHex = $color['hex_color'];
+            echo "<a href='product_detail.php?id_product=" . $product['id_product'] . "&color_id=" . $color['id_color'] . "'>";
+            echo "<div class='color-option' style='background-color: $colorHex;'></div>";
             echo "</a>";
-            echo "</div>";
         }
+        echo "</div>";
+        echo "</a>";
+        echo "</div>";
+    } else {
+        // Xử lý trường hợp không có màu sắc cho sản phẩm này
+        // Hoặc thực hiện xử lý khác tùy theo trường hợp của bạn
+    }
+}
+
         ?>
     </div>
-</div>       
+</div>    
                 <div class="product_button--sold">
                     <button id="pro_prev--sold"><i class="fa-solid fa-chevron-left"></i></button>
                     <button id="pro_next--sold"><i class="fa-solid fa-chevron-right"></i></button>
@@ -298,25 +304,30 @@ echo "<a href='products.php' class='category-button'>Tất cả</a>";
                 <h2 id="product_title--hot">SẢN PHẨM HOT</h2>
                 <div class="list_product--hot">                  
                     <?php
-        foreach ($productList as $product) {
+        foreach ($expensiveProductList as $product) {
             $productId = $product['id_product'];
-            $colors = $colorsForProducts[$productId];
-            echo "<div class='pro--hot'>";
-            echo "<a href='product_detail.php?id_product=" . $product['id_product'] . "&color_id=" . $colors[0]['id_color'] . "'>";
-            echo "<img src='" . $product['link_hinh_anh'] . "' alt='" . $product['ten_san_pham'] . "'>";
-            echo "<p>" . $product['ten_san_pham'] . "</p>";
-            echo "<p class='product-price'>Giá: " . $product['gia'] . "</p>";
-
-            echo "<div class='color-options'>";
-            foreach ($colors as $color) {
-                $colorHex = $color['hex_color'];
-                echo "<a href='product_detail.php?id_product=" . $product['id_product'] . "&color_id=" . $color['id_color'] . "'>";
-                echo "<div class='color-option' style='background-color: $colorHex;'></div>";
+            if (isset($colorsForProducts[$productId]) && !empty($colorsForProducts[$productId])) {
+                $colors = $colorsForProducts[$productId];
+                echo "<div class='pro--hot'>";
+                echo "<a href='product_detail.php?id_product=" . $product['id_product'] . "&color_id=" . $colors[0]['id_color'] . "'>";
+                echo "<img src='" . $product['link_hinh_anh'] . "' alt='" . $product['ten_san_pham'] . "'>";
+                echo "<p>" . $product['ten_san_pham'] . "</p>";
+                echo "<p class='product-price'>Giá: " . $product['gia'] . "</p>";
+        
+                echo "<div class='color-options'>";
+                foreach ($colors as $color) {
+                    $colorHex = $color['hex_color'];
+                    echo "<a href='product_detail.php?id_product=" . $product['id_product'] . "&color_id=" . $color['id_color'] . "'>";
+                    echo "<div class='color-option' style='background-color: $colorHex;'></div>";
+                    echo "</a>";
+                }
+                echo "</div>";
                 echo "</a>";
+                echo "</div>";
+            } else {
+                // Xử lý trường hợp không có màu sắc cho sản phẩm này
+                // Hoặc thực hiện xử lý khác tùy theo trường hợp của bạn
             }
-            echo "</div>";
-            echo "</a>";
-            echo "</div>";
         }
         ?>
                 </div>
