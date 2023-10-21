@@ -104,15 +104,14 @@ if (empty($loaisanphamList)) {
 
 </head>
 <body>
-<div class="container">
-    <header>
-    </header>
-    <div class="navbar">
+<div class="navbar">
     <a href="home.php"><img src="images/logo.png" alt=""></a>
     <div class="navbar_list">
-        <a href="products.php">ALL</a>
+        
     </div>
             <?php
+echo "<a href='products.php' class='category-button'>Tất cả</a>";
+
             foreach ($categoryList as $category) {
                 $categoryID = $category['ID_DM'];
                 $categoryName = $category['TenDanhMuc'];
@@ -121,13 +120,13 @@ if (empty($loaisanphamList)) {
 
                 $subcategoryLinks = [];
                 foreach ($subcategoryList as $subcategory) {
-                    $subcategoryLink = "products.php?ID_DM=" . urlencode($categoryID) . "&cate=" . urlencode($subcategory);
+                    $subcategoryLink = "products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id&loaisanpham=" . urlencode($subcategory);
                     $isActiveSubcategory = $subcategory == $selectedSubcategory ? 'active' : '';
                     $subcategoryLinks[] = "<a class='subcategory-button $isActiveSubcategory' href='$subcategoryLink'>$subcategory</a>";
                 }
 
                 echo "<div class='dropdown'>";
-                echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID'>$categoryName</a>";
+                echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id'>$categoryName</a>";
                 if (!empty($subcategoryLinks)) {
                     echo "<div class='dropdown-menu'>";
                     echo implode($subcategoryLinks);

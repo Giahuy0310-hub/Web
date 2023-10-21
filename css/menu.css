@@ -1,4 +1,8 @@
 
+a.category-button {
+    text-decoration: none;
+}
+
 
 .navbar{
     height: 80px;
@@ -25,11 +29,11 @@
 .navbar_list a{
     font-size: 17px;
     font-weight: 100;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Times New Roman', Times, serif;
     color: black;
     font-weight: 400;
     margin: 10px 20px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     list-style: none;
     text-decoration: none;
     transition: ease 0.3s;

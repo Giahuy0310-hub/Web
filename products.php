@@ -172,9 +172,11 @@ $stmt->close();
 <div class="navbar">
     <a href="home.php"><img src="images/logo.png" alt=""></a>
     <div class="navbar_list">
-        <a href="products.php">ALL</a>
+        
     </div>
             <?php
+echo "<a href='products.php' class='category-button'>Tất cả</a>";
+
             foreach ($categoryList as $category) {
                 $categoryID = $category['ID_DM'];
                 $categoryName = $category['TenDanhMuc'];
@@ -183,7 +185,7 @@ $stmt->close();
 
                 $subcategoryLinks = [];
                 foreach ($subcategoryList as $subcategory) {
-                    $subcategoryLink = "products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id&cate=" . urlencode($subcategory);
+                    $subcategoryLink = "products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id&loaisanpham=" . urlencode($subcategory);
                     $isActiveSubcategory = $subcategory == $selectedSubcategory ? 'active' : '';
                     $subcategoryLinks[] = "<a class='subcategory-button $isActiveSubcategory' href='$subcategoryLink'>$subcategory</a>";
                 }

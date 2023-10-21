@@ -397,7 +397,7 @@
 
     .pro--new img,
     .pro--sold img,
-    .pro--hot {
+    .pro--hot img {
         height: 400px;
         width: auto;
     }

@@ -86,6 +86,30 @@ while ($row = $result->fetch_assoc()) {
     ];
 }
 
+// // Truy vấn để lấy top 8 mới nhất  ( ngày nhập) -- chưa làm
+// $sql = "SELECT p.id_product, p.ten_san_pham, p.link_hinh_anh, p.gia, c.tenmau, c.hex_color
+//         FROM products p
+//         LEFT JOIN color c ON p.id_color = c.id_color
+//         ORDER BY p.gia DESC
+//         LIMIT 8";
+
+// $stmt = $conn->prepare($sql);
+// $stmt->execute();
+// $result = $stmt->get_result();
+
+// $expensiveProductList = [];
+
+// while ($row = $result->fetch_assoc()) {
+//     $expensiveProductList[] = [
+//         'id_product' => $row['id_product'],
+//         'ten_san_pham' => $row['ten_san_pham'],
+//         'link_hinh_anh' => $row['link_hinh_anh'],
+//         'gia' => $row['gia'],
+//         'tenmau' => $row['tenmau'],
+//         'hex_color' => $row['hex_color'],
+//     ];
+// }
+
 $colorsForProducts = [];
 
 foreach ($productList as $product) {
@@ -140,9 +164,11 @@ $stmt->close();
 <div class="navbar">
     <a href="home.php"><img src="images/logo.png" alt=""></a>
     <div class="navbar_list">
-        <a href="products.php">ALL</a>
+        
     </div>
             <?php
+echo "<a href='products.php' class='category-button'>Tất cả</a>";
+
             foreach ($categoryList as $category) {
                 $categoryID = $category['ID_DM'];
                 $categoryName = $category['TenDanhMuc'];
@@ -239,21 +265,30 @@ $stmt->close();
             <div class="product_sold">
                 <h2 id="product_title--sold">SẢN PHẨM BÁN CHẠY NHẤT</h2>
                 <div class="list_product--sold">
-                    <?php foreach ($expensiveProductList as $product) { ?>
-                        <div class="product_box--sold">
-                            <div class="pro--sold">
-                                <a class="item" href="">
-                                    <img src="<?php echo $product['link_hinh_anh']; ?>" alt="<?php echo $product['ten_san_pham']; ?>">
-                                </a>
-                                <a class="item" href="">
-                                    <h4><?php echo $product['ten_san_pham']; ?></h4>
-                                </a>
-                                <span><?php echo number_format($product['gia']); ?>₫</span>
-                            </div>
-                        </div>
-                    <?php } ?>
-                </div>
-            </div>        
+                <?php
+        foreach ($productList as $product) {
+            $productId = $product['id_product'];
+            $colors = $colorsForProducts[$productId];
+            echo "<div class='pro--sold'>";
+            echo "<a href='product_detail.php?id_product=" . $product['id_product'] . "&color_id=" . $colors[0]['id_color'] . "'>";
+            echo "<img src='" . $product['link_hinh_anh'] . "' alt='" . $product['ten_san_pham'] . "'>";
+            echo "<p>" . $product['ten_san_pham'] . "</p>";
+            echo "<p class='product-price'>Giá: " . $product['gia'] . "</p>";
+
+            echo "<div class='color-options'>";
+            foreach ($colors as $color) {
+                $colorHex = $color['hex_color'];
+                echo "<a href='product_detail.php?id_product=" . $product['id_product'] . "&color_id=" . $color['id_color'] . "'>";
+                echo "<div class='color-option' style='background-color: $colorHex;'></div>";
+                echo "</a>";
+            }
+            echo "</div>";
+            echo "</a>";
+            echo "</div>";
+        }
+        ?>
+    </div>
+</div>       
                 <div class="product_button--sold">
                     <button id="pro_prev--sold"><i class="fa-solid fa-chevron-left"></i></button>
                     <button id="pro_next--sold"><i class="fa-solid fa-chevron-right"></i></button>
@@ -261,19 +296,29 @@ $stmt->close();
             </div>
             <div class="product_hot">
                 <h2 id="product_title--hot">SẢN PHẨM HOT</h2>
-                <div class="list_product--hot">                    <?php foreach ($productList as $product) { ?>
-                        <div class="product_box--hot">
-                            <div class="pro--hot">
-                                <a class="item" href="">
-                                    <img src="<?php echo $product['link_hinh_anh']; ?>" alt="<?php echo $product['ten_san_pham']; ?>">
-                                </a>
-                                <a class="item" href="">
-                                    <h4><?php echo $product['ten_san_pham']; ?></h4>
-                                </a>
-                                <span><?php echo number_format($product['gia']); ?>₫</span>
-                            </div>
-                        </div>
-                    <?php } ?>
+                <div class="list_product--hot">                  
+                    <?php
+        foreach ($productList as $product) {
+            $productId = $product['id_product'];
+            $colors = $colorsForProducts[$productId];
+            echo "<div class='pro--hot'>";
+            echo "<a href='product_detail.php?id_product=" . $product['id_product'] . "&color_id=" . $colors[0]['id_color'] . "'>";
+            echo "<img src='" . $product['link_hinh_anh'] . "' alt='" . $product['ten_san_pham'] . "'>";
+            echo "<p>" . $product['ten_san_pham'] . "</p>";
+            echo "<p class='product-price'>Giá: " . $product['gia'] . "</p>";
+
+            echo "<div class='color-options'>";
+            foreach ($colors as $color) {
+                $colorHex = $color['hex_color'];
+                echo "<a href='product_detail.php?id_product=" . $product['id_product'] . "&color_id=" . $color['id_color'] . "'>";
+                echo "<div class='color-option' style='background-color: $colorHex;'></div>";
+                echo "</a>";
+            }
+            echo "</div>";
+            echo "</a>";
+            echo "</div>";
+        }
+        ?>
                 </div>
             </div>    
                 <div class="product_button--hot">
