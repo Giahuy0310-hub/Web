@@ -65,3 +65,14 @@ if (window.location.search) {
     window.history.replaceState({}, '', newUrl);
 }
 
+
+function changeProductImage(productId, imageUrl) {
+    const productImage = document.getElementById('product-image-' + productId);
+    productImage.src = imageUrl;
+}
+
+
+function resetProductImage(productId, imageUrl) {
+    const productImage = document.getElementById('product-image-' + productId);
+    productImage.src = imageUrl;
+}
