@@ -3,7 +3,6 @@
 require_once('db_connection.php');
 
 $selectedCategory = isset($_GET['ID_DM']) ? $_GET['ID_DM'] : null;
-$selectedCategoryy = isset($_GET['TenDanhMuc']) ? $_GET['TenDanhMuc'] : null;
 
 $selectedSubcategory = isset($_GET['loaisanpham']) ? $_GET['loaisanpham'] : null;
 $id_product = isset($_GET['id_product']) ? $_GET['id_product'] : null;
@@ -200,7 +199,6 @@ function getColorsForProduct($conn, $productId) {
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="js/products.js"></script>
-    <script src="js/top.js"></script>
 
 
 </head>
@@ -212,7 +210,7 @@ function getColorsForProduct($conn, $productId) {
         
     </div>
             <?php
-echo "<a href='products.php' class='category-button'>Tất cả</a>";
+            echo "<a href='products.php' class='category-button'>Tất cả</a>";
 
             foreach ($categoryList as $category) {
                 $categoryID = $category['ID_DM'];
@@ -242,21 +240,21 @@ echo "<a href='products.php' class='category-button'>Tất cả</a>";
             <a href=""><i class="fa-regular fa-user"></i></a>
             <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
         </div>
-        </div>
-        <?php
-if ($selectedCategory) {
-    echo "<h2 class='centered'>$selectedCategory</h2>";
-}
+    </div>
+            <?php
+            if ($selectedCategory) {
+                echo "<h2 class='centered'>$selectedCategory</h2>";
+            }
 
-if (!empty($selectedSubcategory)) {
-    echo "<h2 class='centered'>$selectedSubcategory</h2>";
-}
-?>
+            if (!empty($selectedSubcategory)) {
+                echo "<h2 class='centered'>$selectedSubcategory</h2>";
+            }
+            ?>
 
         <div id="product-info">
             <div class="product-container">
             <?php
-        foreach ($productList as $product) {
+            foreach ($productList as $product) {
             $productId = $product['id_product'];
             $colors = $product['colors'];
             echo '<div class="product">';
@@ -278,11 +276,9 @@ if (!empty($selectedSubcategory)) {
             echo '</div>';
         }
         ?>
-            </div>
         </div>
-
-
-        <div class="pagination">
+    </div>
+    <div class="pagination">
         <ul class="pagination-list">
             <?php
             $startPage = max(1, $page - 2);

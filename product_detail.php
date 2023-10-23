@@ -1,7 +1,6 @@
 <?php
 require_once('db_connection.php');
 
-
 $id_product = isset($_GET['id_product']) ? $_GET['id_product'] : null;
 $color_id = isset($_GET['color_id']) ? $_GET['color_id'] : null;
 
@@ -105,13 +104,12 @@ if (empty($loaisanphamList)) {
 
 </head>
 <body>
-<div class="navbar">
-    <a href="home.php"><img src="images/logo.png" alt=""></a>
+    <div class="navbar">
+        <a href="home.php"><img src="images/logo.png" alt=""></a>
     <div class="navbar_list">
-        
-    </div>
+        </div>
             <?php
-echo "<a href='products.php' class='category-button'>Tất cả</a>";
+            echo "<a href='products.php' class='category-button'>Tất cả</a>";
 
             foreach ($categoryList as $category) {
                 $categoryID = $category['ID_DM'];
@@ -121,13 +119,13 @@ echo "<a href='products.php' class='category-button'>Tất cả</a>";
 
                 $subcategoryLinks = [];
                 foreach ($subcategoryList as $subcategory) {
-                    $subcategoryLink = "products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id&loaisanpham=" . urlencode($subcategory);
+                    $subcategoryLink = "products.php?ID_DM=$categoryID" . urlencode($subcategory);
                     $isActiveSubcategory = $subcategory == $selectedSubcategory ? 'active' : '';
                     $subcategoryLinks[] = "<a class='subcategory-button $isActiveSubcategory' href='$subcategoryLink'>$subcategory</a>";
                 }
 
                 echo "<div class='dropdown'>";
-                echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id'>$categoryName</a>";
+                echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID'>$categoryName</a>";
                 if (!empty($subcategoryLinks)) {
                     echo "<div class='dropdown-menu'>";
                     echo implode($subcategoryLinks);
@@ -136,48 +134,49 @@ echo "<a href='products.php' class='category-button'>Tất cả</a>";
                 echo "</div>";
             }
             ?>
-                    <div class="navbar_logo">
-            <a href=""><i class="fa-solid fa-magnifying-glass"></i></a>
-            <a href=""><i class="fa-regular fa-user"></i></a>
-            <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+            <div class="navbar_logo">
+                <a href=""><i class="fa-solid fa-magnifying-glass"></i></a>
+                <a href=""><i class="fa-regular fa-user"></i></a>
+                <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+            </div>
         </div>
-        </div>
-    <ul>
-        <?php
-        if ($selectedCategory) {
-            echo "<h2 class='centered'>Bạn đang ở danh mục: $selectedCategory</h2>";
-        }
-        
-        if (!empty($selectedSubcategory)) {
-            echo "<h2 class='centered'>Bạn đang ở danh mục con: $selectedSubcategory</h2>";
-        }
-        ?>
-    </ul>
-    <div class="product-detail-container">
-        <?php
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reload'])) {
-            echo '<script>modalVisible = false;</script>';
-        }
-        if (isset($productDetail)) {
-            echo "<div class='additional-data'>";
-            $imgFields = ['img1', 'img2', 'img3', 'img4'];
+                <ul>
+                    <?php
+                    // Hiển thị danh mục sản phẩm (loaisanpham hoặc tendanhmuc)
+                    if (!empty($loaisanphamList)) {
+                        foreach ($loaisanphamList as $loaisanpham) {
+                            echo "<li>" . htmlspecialchars($loaisanpham) . "</li>";
+                        }
+                    } else {
+                        echo "<li>" . htmlspecialchars($tendanhmuc) . "</li>";
+                    }
+                    ?>
+                </ul>
+            <div class="product-detail-container">
+                <?php
+                if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reload'])) {
+                    echo '<script>modalVisible = false;</script>';
+                }
+                if (isset($productDetail)) {
+                    echo "<div class='additional-data'>";
+                    $imgFields = ['img1', 'img2', 'img3', 'img4'];
 
-            foreach ($imgFields as $index => $imgField) {
-                $imageURL = $productDetail[$imgField];
-                $altText = "Hình ảnh " . ($index + 1);
-                echo "<img class='small-image' src='$imageURL' alt='$altText' onclick='showLargeImage(\"$imageURL\")'>";
-            }
+                    foreach ($imgFields as $index => $imgField) {
+                        $imageURL = $productDetail[$imgField];
+                        $altText = "Hình ảnh " . ($index + 1);
+                        echo "<img class='small-image' src='$imageURL' alt='$altText' onclick='showLargeImage(\"$imageURL\")'>";
+                    }
 
-            echo "</div>";
-            echo "<div class='product-detail-image'>";
-            echo "<img id='largeImage' src='" . $productDetail['link_hinh_anh'] . "' alt='" . $productDetail['ten_san_pham'] . "' onclick='openModal()'>";
-            echo "</div>";
-            echo "<div class='product-detail-info'>";
-            echo "<h2>" . $productDetail['ten_san_pham'] . "</h2>";
-            echo "<div class='product-detail-price'>Giá: " . $productDetail['gia'] . "</div>";
-        }
-        ?>
-    </div>
+                    echo "</div>";
+                    echo "<div class='product-detail-image'>";
+                    echo "<img id='largeImage' src='" . $productDetail['link_hinh_anh'] . "' alt='" . $productDetail['ten_san_pham'] . "' onclick='openModal()'>";
+                    echo "</div>";
+                    echo "<div class='product-detail-info'>";
+                    echo "<h2>" . $productDetail['ten_san_pham'] . "</h2>";
+                    echo "<div class='product-detail-price'>Giá: " . $productDetail['gia'] . "</div>";
+                }
+                ?>
+            </div>
 </div>
 <footer>
     <!-- <p>&copy; 2023 Website Bán Hàng</p> -->
