@@ -1,6 +1,7 @@
 <?php
 require_once('db_connection.php');
 
+
 $id_product = isset($_GET['id_product']) ? $_GET['id_product'] : null;
 $color_id = isset($_GET['color_id']) ? $_GET['color_id'] : null;
 
@@ -143,13 +144,12 @@ echo "<a href='products.php' class='category-button'>Tất cả</a>";
         </div>
     <ul>
         <?php
-        // Hiển thị danh mục sản phẩm (loaisanpham hoặc tendanhmuc)
-        if (!empty($loaisanphamList)) {
-            foreach ($loaisanphamList as $loaisanpham) {
-                echo "<li>" . htmlspecialchars($loaisanpham) . "</li>";
-            }
-        } else {
-            echo "<li>" . htmlspecialchars($tendanhmuc) . "</li>";
+        if ($selectedCategory) {
+            echo "<h2 class='centered'>Bạn đang ở danh mục: $selectedCategory</h2>";
+        }
+        
+        if (!empty($selectedSubcategory)) {
+            echo "<h2 class='centered'>Bạn đang ở danh mục con: $selectedSubcategory</h2>";
         }
         ?>
     </ul>

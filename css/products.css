@@ -115,3 +115,9 @@ link[rel="icon"] {
 .color-option:hover {
     transform: scale(1.2);
 }
+
+
+.centered
+{
+    text-align: center;
+}

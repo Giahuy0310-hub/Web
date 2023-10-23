@@ -64,3 +64,49 @@ btnprev_hot.addEventListener("click", () =>{
     scrollPro_hot.scrollLeft -= 320;
 });
 
+function changeProductImage(productId, imageUrl, type) {
+    const productImage = document.getElementById('product-image-' + productId + '-' + type);
+    productImage.src = imageUrl;
+}
+
+function resetProductImage(productId, imageUrl, type) {
+    const productImage = document.getElementById('product-image-' + productId + '-' + type);
+    productImage.src = imageUrl;
+}
+
+// Gắn sự kiện cho cả ba danh sách sản phẩm
+const productItemsNew = document.querySelectorAll('.product_new .pro--new img');
+productItemsNew.forEach(image => {
+    const productId = image.id.split('-')[2];
+    image.addEventListener('mouseover', function () {
+        changeProductImage(productId, this.src, 'new');
+    });
+
+    image.addEventListener('mouseout', function () {
+        resetProductImage(productId, this.src, 'new');
+    });
+});
+
+const productItemsSold = document.querySelectorAll('.product_sold .pro--sold img');
+productItemsSold.forEach(image => {
+    const productId = image.id.split('-')[2];
+    image.addEventListener('mouseover', function () {
+        changeProductImage(productId, this.src, 'sold');
+    });
+
+    image.addEventListener('mouseout', function () {
+        resetProductImage(productId, this.src, 'sold');
+    });
+});
+
+const productItemsHot = document.querySelectorAll('.product_hot .pro--hot img');
+productItemsHot.forEach(image => {
+    const productId = image.id.split('-')[2];
+    image.addEventListener('mouseover', function () {
+        changeProductImage(productId, this.src, 'hot');
+    });
+
+    image.addEventListener('mouseout', function () {
+        resetProductImage(productId, this.src, 'hot');
+    });
+});
