@@ -158,6 +158,7 @@ function getColorsForProduct($conn, $productId) {
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Website Bán Hàng</title>
     <link rel="stylesheet" href="css/products.css">
@@ -165,11 +166,15 @@ function getColorsForProduct($conn, $productId) {
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="js/products.js"></script>
+
+
 </head>
+
 <body>
 <div class="navbar">
     <a href="home.php"><img src="images/logo.png" alt=""></a>
-    <div class="navbar_list">     
+    <div class="navbar_list">
+        
     </div>
             <?php
             echo "<a href='products.php' class='category-button'>Tất cả</a>";
@@ -188,7 +193,7 @@ function getColorsForProduct($conn, $productId) {
                 }
 
                 echo "<div class='dropdown'>";
-                echo "<a class 'category-button $isActive' href='products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id'>$categoryName</a>";
+                echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id'>$categoryName</a>";
                 if (!empty($subcategoryLinks)) {
                     echo "<div class='dropdown-menu'>";
                     echo implode($subcategoryLinks);
