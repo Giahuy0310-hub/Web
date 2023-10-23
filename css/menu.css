@@ -61,7 +61,10 @@ a.category-button {
     color: black;
 }
 
-
+.sorting {
+    position: relative; /* hoặc position: absolute; tùy theo cần thiết */
+    z-index: 9999; /* Số cao hơn so với lớp navbar_list */
+}
 
 /*  */
 
