@@ -1,0 +1,54 @@
+// abc.js
+// Lắng nghe sự kiện khi lựa chọn tỉnh/thành phố thay đổi
+document.getElementById('province').addEventListener('change', function () {
+    var selectedProvince = this.value;
+    var districtSelect = document.getElementById('district');
+    var wardsSelect = document.getElementById('wards');
+
+    // Gửi một yêu cầu AJAX để lấy danh sách quận/huyện dựa trên tỉnh/thành phố được chọn
+    var xhrDistrict = new XMLHttpRequest();
+    xhrDistrict.open('GET', 'get.php?province=' + selectedProvince, true);
+
+    xhrDistrict.onload = function () {
+        if (xhrDistrict.status === 200) {
+            var districts = JSON.parse(xhrDistrict.responseText);
+            districtSelect.innerHTML = '<option value="">----Chọn quận/huyện----</option>';
+            wardsSelect.innerHTML = '<option value="">----Chọn phường/xã----</option>';
+
+            for (var i = 0; i < districts.length; i++) {
+                var option = document.createElement('option');
+                option.value = districts[i].district_id;
+                option.text = districts[i].name;
+                districtSelect.appendChild(option);
+            }
+        }
+    };
+
+    xhrDistrict.send();
+});
+
+// Lắng nghe sự kiện khi lựa chọn quận/huyện thay đổi
+document.getElementById('district').addEventListener('change', function () {
+    var selectedDistrict = this.value;
+    var wardsSelect = document.getElementById('wards');
+
+    // Gửi một yêu cầu AJAX để lấy danh sách phường/xã dựa trên quận/huyện được chọn
+    var xhrWards = new XMLHttpRequest();
+    xhrWards.open('GET', 'get.php?district=' + selectedDistrict, true);
+
+    xhrWards.onload = function () {
+        if (xhrWards.status === 200) {
+            var wards = JSON.parse(xhrWards.responseText);
+            wardsSelect.innerHTML = '<option value="">----Chọn phường/xã----</option>';
+
+            for (var i = 0; i < wards.length; i++) {
+                var option = document.createElement('option');
+                option.value = wards[i].wards_id;
+                option.text = wards[i].name;
+                wardsSelect.appendChild(option);
+            }
+        }
+    };
+
+    xhrWards.send();
+});
