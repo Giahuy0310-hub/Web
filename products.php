@@ -205,7 +205,7 @@ function getColorsForProduct($conn, $productId) {
                     <div class="navbar_logo">
             <a href=""><i class="fa-solid fa-magnifying-glass"></i></a>
             <a href=""><i class="fa-regular fa-user"></i></a>
-            <a href=""><i class="fa-solid fa-cart-shopping"></i></a>
+            <a href="cart.php"><i class="fa-solid fa-cart-shopping"></i></a>
         </div>
     </div>
             <?php
