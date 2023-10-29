@@ -1,69 +1,48 @@
 <?php
-require_once('db_connection.php');
+require_once('php/db_connection.php');
 
 $selectedCategory = isset($_GET['ID_DM']) ? $_GET['ID_DM'] : null;
-$selectedSubcategory = isset($_GET['loaisanpham']) ? $_GET['loaisanpham'] : null;
+$selectedSubcategory = isset($_GET['loaisanpham']) ? urldecode($_GET['loaisanpham']) : null;
 $id_product = isset($_GET['id_product']) ? $_GET['id_product'] : null;
 $color_id = isset($_GET['color_id']) ? $_GET['color_id'] : null;
 $sortOrder = isset($_GET['sort']) ? $_GET['sort'] : 'asc';
 
-$productsPerPage = 8; // Số sản phẩm trên mỗi trang
+$productsPerPage = 8;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1;
 
-$sortParam = '&sort=' . $sortOrder; // Thêm tham số sắp xếp vào URL
+$sortParam = '&sort=' . $sortOrder;
 
-// Lấy danh sách các danh mục
-$sqlCategories = "SELECT ID_DM, TenDanhMuc FROM categories";
-$stmt = $conn->prepare($sqlCategories);
-$stmt->execute();
-$resultCategories = $stmt->get_result();
-$categoryList = [];
 
-while ($row = $resultCategories->fetch_assoc()) {
-    $categoryID = $row['ID_DM'];
-    $categoryName = $row['TenDanhMuc'];
-    $isActive = $categoryID == $selectedCategory ? 'active' : '';
 
-    // Lấy danh sách các loại sản phẩm trong danh mục
-    $sqlSubcategories = "SELECT DISTINCT loaisanpham FROM products WHERE id_dm = ?";
-    $stmtSubcategories = $conn->prepare($sqlSubcategories);
-    $stmtSubcategories->bind_param('i', $categoryID);
-    $stmtSubcategories->execute();
-    $resultSubcategories = $stmtSubcategories->get_result();
-
-    $subcategories = [];
-
-    while ($rowSubcategory = $resultSubcategories->fetch_assoc()) {
-        $subcategories[] = $rowSubcategory['loaisanpham'];
-    }
-
-    $categoryList[] = [
-        'ID_DM' => $categoryID,
-        'TenDanhMuc' => $categoryName,
-        'LoaiSanPham' => $subcategories,
-    ];
-}
-
-// Bắt đầu xây dựng câu truy vấn lấy sản phẩm
+// Xây dựng câu truy vấn và bind tham số
 $sqlCountProducts = "SELECT COUNT(DISTINCT p.id_product) AS total_products FROM products p WHERE 1=1";
 $sqlProducts = "SELECT p.id_product, p.id_dm, p.ten_san_pham, p.link_hinh_anh, p.gia, c.tenmau, c.hex_color
               FROM products p
-              JOIN color c ON p.id_color = c.id_color
+              LEFT JOIN color c ON p.id_color = c.id_color
               WHERE 1=1";
+
+$bindTypes = ''; // Chuỗi chứa kiểu dữ liệu của các tham số
+$bindParams = [];
 
 if (!empty($selectedCategory)) {
     $sqlCountProducts .= " AND p.id_dm = ?";
     $sqlProducts .= " AND p.id_dm = ?";
+    $bindTypes .= 'i';
+    $bindParams[] = $selectedCategory;
 }
 
 if (!empty($selectedSubcategory)) {
     $sqlCountProducts .= " AND p.loaisanpham = ?";
     $sqlProducts .= " AND p.loaisanpham = ?";
+    $bindTypes .= 's';
+    $bindParams[] = $selectedSubcategory;
 }
 
 if (!empty($color_id)) {
     $sqlCountProducts .= " AND p.id_color = ?";
     $sqlProducts .= " AND p.id_color = ?";
+    $bindTypes .= 'i';
+    $bindParams[] = $color_id;
 }
 
 // Sắp xếp
@@ -71,15 +50,7 @@ $sqlProductsSorting = " ORDER BY p.gia " . ($sortOrder === 'desc' ? 'DESC' : 'AS
 
 // Lấy số lượng sản phẩm
 $stmtCount = $conn->prepare($sqlCountProducts);
-
-if (!empty($selectedCategory) && !empty($selectedSubcategory)) {
-    $stmtCount->bind_param('ii', $selectedCategory, $selectedSubcategory);
-} elseif (!empty($selectedCategory)) {
-    $stmtCount->bind_param('i', $selectedCategory);
-} elseif (!empty($selectedSubcategory)) {
-    $stmtCount->bind_param('i', $selectedSubcategory);
-}
-
+$stmtCount->bind_param($bindTypes, ...$bindParams);
 $stmtCount->execute();
 $resultCount = $stmtCount->get_result();
 $totalProducts = 0;
@@ -96,16 +67,13 @@ $startIndex = ($page - 1) * $productsPerPage;
 $sqlProducts .= " GROUP BY p.id_product" . $sqlProductsSorting . " LIMIT ?, ?";
 $stmt = $conn->prepare($sqlProducts);
 
-if (!empty($selectedCategory) && !empty($selectedSubcategory)) {
-    $stmt->bind_param('iii', $selectedCategory, $selectedSubcategory, $startIndex, $productsPerPage);
-} elseif (!empty($selectedCategory)) {
-    $stmt->bind_param('iii', $selectedCategory, $startIndex, $productsPerPage);
-} elseif (!empty($selectedSubcategory)) {
-    $stmt->bind_param('iii', $selectedSubcategory, $startIndex, $productsPerPage);
-} else {
-    $stmt->bind_param('ii', $startIndex, $productsPerPage);
-}
+// Thêm kiểu dữ liệu 'i' cho integer và bind tham số startIndex và productsPerPage
+$bindTypes .= 'ii';
+$bindParams[] = $startIndex;
+$bindParams[] = $productsPerPage;
 
+// Bây giờ bạn có thể bind tất cả các tham số cần thiết
+$stmt->bind_param($bindTypes, ...$bindParams);
 $stmt->execute();
 $resultProducts = $stmt->get_result();
 
@@ -128,7 +96,6 @@ while ($row = $resultProducts->fetch_assoc()) {
     $productList[] = $product;
 }
 
-// Tính số trang
 $totalPages = ceil($totalProducts / $productsPerPage);
 
 function getColorsForProduct($conn, $productId) {
@@ -166,62 +133,19 @@ function getColorsForProduct($conn, $productId) {
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="js/products.js"></script>
-
-
 </head>
 
 <body>
 <div class="navbar">
     <a href="home.php"><img src="images/logo.png" alt=""></a>
-    <div class="navbar_list">
-        
-    </div>
-            <?php
-            echo "<a href='products.php' class='category-button'>Tất cả</a>";
+    <div class="navbar_list"></div>
+    <?php include('php/dropdown.php'); ?>
 
-            foreach ($categoryList as $category) {
-                $categoryID = $category['ID_DM'];
-                $categoryName = $category['TenDanhMuc'];
-                $isActive = $categoryID == $selectedCategory ? 'active' : '';
-                $subcategoryList = $category['LoaiSanPham'];
 
-                $subcategoryLinks = [];
-                foreach ($subcategoryList as $subcategory) {
-                    $subcategoryLink = "products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id&loaisanpham=" . urlencode($subcategory);
-                    $isActiveSubcategory = $subcategory == $selectedSubcategory ? 'active' : '';
-                    $subcategoryLinks[] = "<a class='subcategory-button $isActiveSubcategory' href='$subcategoryLink'>$subcategory</a>";
-                }
-
-                echo "<div class='dropdown'>";
-                echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id'>$categoryName</a>";
-                if (!empty($subcategoryLinks)) {
-                    echo "<div class='dropdown-menu'>";
-                    echo implode($subcategoryLinks);
-                    echo "</div>";
-                }
-                echo "</div>";
-            }
-            ?>
-                    <div class="navbar_logo">
-            <a href=""><i class="fa-solid fa-magnifying-glass"></i></a>
-            <a href=""><i class="fa-regular fa-user"></i></a>
-            <a href="cart.php"><i class="fa-solid fa-cart-shopping"></i></a>
-        </div>
-    </div>
-            <?php
-            if ($selectedCategory) {
-                echo "<h2 class='centered'>$selectedCategory</h2>";
-            }
-
-            if (!empty($selectedSubcategory)) {
-                echo "<h2 class='centered'>$selectedSubcategory</h2>";
-            }
-            ?>
-
-        <div id="product-info">
-            <div class="product-container">
-            <?php
-            foreach ($productList as $product) {
+<div id="product-info">
+    <div class="product-container">
+        <?php
+        foreach ($productList as $product) {
             $productId = $product['id_product'];
             $colors = $product['colors'];
             echo '<div class="product">';
@@ -243,30 +167,30 @@ function getColorsForProduct($conn, $productId) {
             echo '</div>';
         }
         ?>
-        </div>
     </div>
-    <div class="pagination">
+</div>
+<div class="pagination">
     <ul class="pagination-list">
-    <?php
-    $startPage = max(1, $page - 2);
-    $endPage = min($totalPages, $page + 2);
+        <?php
+        $startPage = max(1, $page - 2);
+        $endPage = min($totalPages, $page + 2);
 
-    if ($page > 1) {
-    ?>
-        <li class="pagination-item prev-page">
-            <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=1<?= $sortParam ?>">&laquo; Trang đầu</a>
-        </li>
-    <?php } else { ?>
-        <li class="pagination-item prev-page disabled">
-            <a href="#">&laquo; Trang đầu</a>
-        </li>
-    <?php }
+        if ($page > 1) {
+            ?>
+            <li class="pagination-item prev-page">
+                <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=1<?= $sortParam ?>">&laquo; Trang đầu</a>
+            </li>
+        <?php } else { ?>
+            <li class="pagination-item prev-page disabled">
+                <a href="#">&laquo; Trang đầu</a>
+            </li>
+        <?php }
 
-    for ($i = $startPage; $i <= $endPage; $i++) {
-    ?>
-        <li class="pagination-item <?= $i == $page ? 'active' : '' ?>">
-            <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=<?= $i . $sortParam ?>"><?= $i ?></a>
-        </li>
+        for ($i = $startPage; $i <= $endPage; $i++) {
+            ?>
+            <li class="pagination-item <?= $i == $page ? 'active' : '' ?>">
+                <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=<?= $i . $sortParam ?>"><?= $i ?></a>
+            </li>
     <?php }
 
     if ($page < $totalPages) {

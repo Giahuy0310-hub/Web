@@ -1,5 +1,5 @@
 <?php
-require_once('db_connection.php');
+require_once('php/db_connection.php');
 
 $id_product = isset($_GET['id_product']) ? $_GET['id_product'] : null;
 $color_id = isset($_GET['color_id']) ? $_GET['color_id'] : null;
@@ -32,38 +32,7 @@ if ($resultProductDetail->num_rows > 0) {
 $selectedCategory = isset($_GET['ID_DM']) ? $_GET['ID_DM'] : null;
 $selectedSubcategory = isset($_GET['loaisanpham']) ? $_GET['loaisanpham'] : null;
 
-$sqlCategories = "SELECT ID_DM, TenDanhMuc FROM categories";
-$stmt = $conn->prepare($sqlCategories);
-$stmt->execute();
-$resultCategories = $stmt->get_result();
 
-$categoryList = [];
-if ($resultCategories->num_rows > 0) {
-    while ($row = $resultCategories->fetch_assoc()) {
-        $categoryID = $row['ID_DM'];
-        $categoryName = $row['TenDanhMuc'];
-        $isActive = $categoryID == $selectedCategory ? 'active' : '';
-
-        $sqlSubcategories = "SELECT DISTINCT loaisanpham FROM products WHERE id_dm = ?";
-        $stmtSubcategories = $conn->prepare($sqlSubcategories);
-        $stmtSubcategories->bind_param('i', $categoryID);
-        $stmtSubcategories->execute();
-        $resultSubcategories = $stmtSubcategories->get_result();
-
-        $subcategories = [];
-        if ($resultSubcategories->num_rows > 0) {
-            while ($rowSubcategory = $resultSubcategories->fetch_assoc()) {
-                $subcategories[] = $rowSubcategory['loaisanpham'];
-            }
-        }
-
-        $categoryList[] = [
-            'ID_DM' => $categoryID,
-            'TenDanhMuc' => $categoryName,
-            'LoaiSanPham' => $subcategories,
-        ];
-    }
-}
 
 $sqlLoaisanpham = "SELECT DISTINCT loaisanpham FROM products WHERE id_product = ?";
 $stmtLoaisanpham = $conn->prepare($sqlLoaisanpham);
@@ -108,32 +77,8 @@ if (empty($loaisanphamList)) {
         <a href="home.php"><img src="images/logo.png" alt=""></a>
     <div class="navbar_list">
         </div>
-            <?php
-            echo "<a href='products.php' class='category-button'>Tất cả</a>";
+        <?php include('php/dropdown.php'); ?>
 
-            foreach ($categoryList as $category) {
-                $categoryID = $category['ID_DM'];
-                $categoryName = $category['TenDanhMuc'];
-                $isActive = $categoryID == $selectedCategory ? 'active' : '';
-                $subcategoryList = $category['LoaiSanPham'];
-
-                $subcategoryLinks = [];
-                foreach ($subcategoryList as $subcategory) {
-                    $subcategoryLink = "products.php?ID_DM=$categoryID" . urlencode($subcategory);
-                    $isActiveSubcategory = $subcategory == $selectedSubcategory ? 'active' : '';
-                    $subcategoryLinks[] = "<a class='subcategory-button $isActiveSubcategory' href='$subcategoryLink'>$subcategory</a>";
-                }
-
-                echo "<div class='dropdown'>";
-                echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID'>$categoryName</a>";
-                if (!empty($subcategoryLinks)) {
-                    echo "<div class='dropdown-menu'>";
-                    echo implode($subcategoryLinks);
-                    echo "</div>";
-                }
-                echo "</div>";
-            }
-            ?>
             <div class="navbar_logo">
                 <a href=""><i class="fa-solid fa-magnifying-glass"></i></a>
                 <a href=""><i class="fa-regular fa-user"></i></a>

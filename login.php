@@ -1,5 +1,5 @@
 <?php
-require_once('db_connection.php'); // Đảm bảo đường dẫn tới tệp là chính xác
+require_once('php/db_connection.php');
 
 if ($conn->connect_error) {
     die("Kết nối không thành công: " . $conn->connect_error);

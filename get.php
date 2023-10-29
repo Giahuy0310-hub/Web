@@ -1,5 +1,5 @@
 <?php
-require_once('db_connection.php');
+require_once('php/db_connection.php');
 
 if (isset($_GET['province'])) {
     $selectedProvince = $_GET['province'];
