@@ -138,8 +138,6 @@ function getColorsForProduct($conn, $productId) {
     <a href="home.php"><img src="images/logo.png" alt=""></a>
     <div class="navbar_list"></div>
     <?php include('php/dropdown.php'); ?>
-
-
 <div id="product-info">
     <div class="product-container">
         <?php
