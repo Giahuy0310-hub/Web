@@ -1,3 +1,10 @@
+// Đoạn mã JavaScript trong tệp products.js hoặc product_detail.js
+
+
+
+
+
+
 var originalLargeImageSrc = ""; 
 var modalImageSrc = ""; 
 var ratingValue = 0.0; 

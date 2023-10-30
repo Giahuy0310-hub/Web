@@ -32,6 +32,17 @@ if (isset($_POST['submit'])) {
         echo "Lỗi: " . $stmt->error;
     }
 }
+
+$sql = "SELECT * FROM giohang1";
+$result = $conn->query($sql);
+
+$cartItems = array();
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $cartItems[] = $row;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -169,79 +180,72 @@ if (isset($_POST['submit'])) {
                             <p>Phương thức thanh toán Online</p>
                         </div>
                     </label>
-
                     
                 </div>
-                
+
             </div>
         </div>
         <div class="body_products">
-            <legend>Giỏ hàng của bạn</legend>
-            <div class="body_products product">
-    <img src="images/-34586-p.jpg" alt="">
-    <div class="product_group">
-        <div class="product_content">
-            <h4>Áo thun Raglan in basic form Regular AT134 màu kem</h4>
-            <span>295.000</span>
-            <strong> x </strong>
-            <span>1</span>
-            =
-            <span style="color: brown;">295.000</span>
-        </div>
-        <div class="product_selection">
-            <select>
-                <option value="1">S</option>
-                <option value="2">M</option>
-                <option value="3">L</option>
-                <option value="4">XL</option>
-            </select>
-            x
-            <input type="number" value="1" min="1" max="10">
-            <button>Xóa</button>
-        </div>
-    </div>
-</div>
+    <legend>Giỏ hàng của bạn</legend>
 
-<div class="body_products product">
-    <img src="images/-34586-p.jpg" alt="">
-    <div class="product_group">
-        <div class="product_content">
-            <h4>Áo thun Raglan in basic form Regular AT134 màu kem</h4>
-            <span>295.000</span>
-            <strong> x </strong>
-            <span>1</span>
-            =
-            <span style="color: brown;">295.000</span>
-        </div>
-        <div class="product_selection">
-            <select>
-                <option value="1">S</option>
-                <option value="2">M</option>
-                <option value="3">L</option>
-                <option value="4">XL</option>
-            </select>
-            x
-            <input type="number" value="1" min="1" max="10">
-            <button>Xóa</button>
-        </div>
-    </div>
-</div>
+    <?php
+$totalPrice = 0;
 
-            <div class="product_total">
-                <legend>Tổng:</legend>
-                <div>
-                    <span>Số tiền mua sản phẩm</span>
-                    <h4>295,000</h4>
+if (isset($cartItems) && is_array($cartItems)) :
+    foreach ($cartItems as $item) :
+        // Calculate the subtotal for each item
+        $subtotal = isset($item['quantity']) ? $item['gia'] * $item['quantity'] : 0;
+
+        // Add the subtotal to the total price
+        $totalPrice += $subtotal;
+?>
+        <div class="body_products product">
+            <img src="<?= $item['link_hinh_anh'] ?>" alt="<?= $item['ten_san_pham'] ?>">
+            <div class="product_group">
+                <div class="product_content">
+                    <h4><?= $item['ten_san_pham'] ?></h4>
+                    <span><?= number_format($item['gia'], 0, ',', '.') ?> VNĐ</span>
+                    <strong> x </strong>
+                    <span><?= isset($item['quantity']) ? $item['quantity'] : '0' ?></span>
+                    =
+                    <span style="color: brown;">
+                        <?= number_format($subtotal, 0, ',', '.') ?> VNĐ
+                    </span>
                 </div>
-                <legend>Vận chuyển</legend>
-                <div>
-                    <legend id="end">Tổng tiền thanh toán</legend>
-                    <h4>295,000</h4>
+                <div class="product_selection">
+                    <select>
+                        <?php if (isset($item['color_name'])) : ?>
+                            <option value="<?= $item['id_color'] ?>"><?= $item['color_name'] ?></option>
+                        <?php else : ?>
+                            <option>Color Not Available</option>
+                        <?php endif; ?>
+                    </select>
+                    x
+                    <input type="number" value="<?= isset($item['quantity']) ? $item['quantity'] : '0' ?>" min="1" max="10">
+                    <button>Xóa</button>
                 </div>
             </div>
         </div>
+<?php
+    endforeach;
+endif;
+?>
+
+<div class="product_total">
+    <legend>Tổng:</legend>
+    <div>
+        <span>Số tiền mua sản phẩm</span>
+        <h4><?= number_format($totalPrice, 0, ',', '.') ?> VNĐ</h4>
     </div>
-        </div>
+    <legend>Vận chuyển</legend>
+    <div>
+        <legend id="end">Tổng tiền thanh toán</legend>
+        <h4><?= number_format($totalPrice, 0, ',', '.') ?> VNĐ</h4>
+    </div>
+</div>
+
+</div>
+
     </div>
         <script  src="js/cart.js"></script>
 

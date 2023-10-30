@@ -75,7 +75,7 @@ foreach ($categoryList as $category) {
     }
 
     echo "<div class='dropdown'>";
-    echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id'>$categoryName</a>";
+    echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID'>$categoryName</a>";
     if (!empty($subcategoryLinks)) {
         echo "<div class='dropdown-menu'>";
         echo implode($subcategoryLinks);
