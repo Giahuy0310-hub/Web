@@ -4,12 +4,14 @@ require_once('php/db_connection.php');
 $selectedCategory = isset($_GET['ID_DM']) ? $_GET['ID_DM'] : null;
 $selectedSubcategory = isset($_GET['loaisanpham']) ? urldecode($_GET['loaisanpham']) : null;
 $color_id = isset($_GET['color_id']) ? $_GET['color_id'] : null;
-$sortOrder = isset($_GET['sort']) ? $_GET['sort'] : 'asc';
+$sortOrder = isset($_GET['sort']) ? $_GET['sort'] : 'asc'; // sắp xếp
+$sortParam = isset($_GET['sort']) ? '&sort=' . $_GET['sort'] : '';  // phân trang
 
 $productsPerPage = 8;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1;
 
-$sortParam = '&sort=' . $sortOrder;
+$bindParams = [];
+$bindTypes = "";
 
 // Xây dựng câu truy vấn
 $sqlCountProducts = "SELECT COUNT(DISTINCT p.id_product) AS total_products FROM products p WHERE 1=1";
@@ -17,9 +19,6 @@ $sqlProducts = "SELECT p.id_product, p.id_dm, p.ten_san_pham, p.link_hinh_anh, p
               FROM products p
               LEFT JOIN color c ON p.id_color = c.id_color
               WHERE 1=1";
-
-$bindParams = [];
-$bindTypes = "";
 
 if (!empty($selectedCategory)) {
     $sqlCountProducts .= " AND p.id_dm = ?";
@@ -47,7 +46,9 @@ $sqlProductsSorting = " ORDER BY p.gia " . ($sortOrder === 'desc' ? 'DESC' : 'AS
 
 // Lấy số lượng sản phẩm
 $stmtCount = $conn->prepare($sqlCountProducts);
-$stmtCount->bind_param($bindTypes, ...$bindParams);
+if (!empty($bindTypes)) {
+    $stmtCount->bind_param($bindTypes, ...$bindParams);
+}
 $stmtCount->execute();
 $resultCount = $stmtCount->get_result();
 $totalProducts = 0;
@@ -70,7 +71,9 @@ $bindParams[] = $startIndex;
 $bindParams[] = $productsPerPage;
 
 // Bây giờ bạn có thể bind tất cả các tham số cần thiết
-$stmt->bind_param($bindTypes, ...$bindParams);
+if (!empty($bindTypes)) {
+    $stmt->bind_param($bindTypes, ...$bindParams);
+}
 $stmt->execute();
 $resultProducts = $stmt->get_result();
 
@@ -119,7 +122,6 @@ function getColorsForProduct($conn, $productId) {
     return $colors;
 }
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -176,31 +178,59 @@ function getColorsForProduct($conn, $productId) {
             <li class="pagination-item prev-page">
                 <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=1<?= $sortParam ?>">&laquo; Trang đầu</a>
             </li>
-        <?php } else { ?>
+            <?php
+        } else {
+            ?>
             <li class="pagination-item prev-page disabled">
                 <a href="#">&laquo; Trang đầu</a>
             </li>
-        <?php }
+            <?php
+        }
 
         for ($i = $startPage; $i <= $endPage; $i++) {
             ?>
             <li class="pagination-item <?= $i == $page ? 'active' : '' ?>">
-                <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=<?= $i . $sortParam ?>"><?= $i ?></a>
+                <a href="#" onclick="navigateToPage(<?= $i ?>)"><?= $i ?></a>
             </li>
-    <?php }
+            <?php
+        }
 
-    if ($page < $totalPages) {
-    ?>
-        <li class="pagination-item next-page">
-            <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=<?= $totalPages . $sortParam ?>">Trang cuối &raquo;</a>
-        </li>
-    <?php } else { ?>
-        <li class="pagination-item next-page disabled">
-            <a href="#">Trang cuối &raquo;</a>
-        </li>
-    <?php } ?>
-</ul>
-    </div>
+        if ($page < $totalPages) {
+            ?>
+            <li class="pagination-item next-page">
+                <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=<?= $totalPages . $sortParam ?>">Trang cuối &raquo;</a>
+            </li>
+            <?php
+        } else {
+            ?>
+            <li class="pagination-item next-page disabled">
+                <a href="#">Trang cuối &raquo;</a>
+            </li>
+            <?php
+        }
+        ?>
+    </ul>
+</div>
+
+
+<script>
+function navigateToPage(page) {
+    // Tạo URL mới dựa trên trang được chọn
+    var newURL = "products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=" + page + "<?= $sortParam ?>";
+
+    // Thay đổi số trang trong URL
+    newURL = newURL.replace(/page=\d+/, "page=" + page);
+
+    // Chuyển hướng đến URL mới
+    window.location.href = newURL;
+    event.preventDefault(); // Ngăn chặn sự kiện mặc định của thẻ 'a'
+}
+</script>
+
+
+
+
+
 </div>
 </body>
 </html>

@@ -9,7 +9,8 @@ if (!is_numeric($id_product) || !is_numeric($color_id) || $id_product <= 0 || $c
     exit;
 }
 
-$sqlProductDetail = "SELECT p.*, c.tenmau, c.hex_color, AVG(pr.rating) as sao, COUNT(pr.rating) as so_danh_gia
+// Thêm phần truy vấn size và quantity vào mã của bạn
+$sqlProductDetail = "SELECT p.*, c.tenmau, c.hex_color, AVG(pr.rating) as sao, COUNT(pr.rating) as so_danh_gia, p.size_S, p.size_M, p.size_L
 FROM products p
 LEFT JOIN color c ON p.id_color = c.id_color
 LEFT JOIN product_reviews pr ON p.id_product = pr.product_id
@@ -28,6 +29,7 @@ if ($resultProductDetail->num_rows > 0) {
     echo "Sản phẩm không tồn tại hoặc không có sẵn trong màu sắc này.";
     exit;
 }
+
 
 $selectedCategory = isset($_GET['ID_DM']) ? $_GET['ID_DM'] : null;
 $selectedSubcategory = isset($_GET['loaisanpham']) ? $_GET['loaisanpham'] : null;
@@ -58,7 +60,6 @@ if (empty($loaisanphamList)) {
     }
     $stmtTendanhmuc->close();
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -75,25 +76,29 @@ if (empty($loaisanphamList)) {
         <a href="home.php"><img src="images/logo.png" alt=""></a>
         <div class="navbar_list">
         </div>
-        <?php include('php/dropdown.php'); ?>
+
+        <?php include('php/dropdown.php');
+                echo "<div class='dropdown'>";
+                ?>
         <div class="navbar_logo">
             <a href=""><i class="fa-solid fa-magnifying-glass"></i></a>
             <a href=""><i class="fa-regular fa-user"></i></a>
             <a href="cart.php"><i class="fa-solid fa-cart-shopping"></i></a>
         </div>
     </div>
-    <ul>
-        <?php
-        // Hiển thị danh mục sản phẩm (loaisanpham hoặc tendanhmuc)
-        if (!empty($loaisanphamList)) {
-            foreach ($loaisanphamList as $loaisanpham) {
-                echo "<li>" . htmlspecialchars($loaisanpham) . "</li>";
-            }
-        } else {
-            echo "<li>" . htmlspecialchars($tendanhmuc) . "</li>";
+</br>
+<ul class="centered-list">
+    <?php
+    // Hiển thị danh mục sản phẩm (loaisanpham hoặc tendanhmuc)
+    if (!empty($loaisanphamList)) {
+        foreach ($loaisanphamList as $loaisanpham) {
+            echo "<li>" . htmlspecialchars($loaisanpham) . "</li>";
         }
-        ?>
-    </ul>
+    }
+    ?>
+</ul>
+
+
     <div class="product-detail-container">
         <?php
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reload'])) {
@@ -102,13 +107,13 @@ if (empty($loaisanphamList)) {
         if (isset($productDetail)) {
             echo "<div class='additional-data'>";
             $imgFields = ['img1', 'img2', 'img3', 'img4'];
-
+        
             foreach ($imgFields as $index => $imgField) {
                 $imageURL = $productDetail[$imgField];
                 $altText = "Hình ảnh " . ($index + 1);
                 echo "<img class='small-image' src='$imageURL' alt='$altText' onclick='showLargeImage(\"$imageURL\")'>";
             }
-
+        
             echo "</div>";
             echo "<div class='product-detail-image'>";
             echo "<img id='largeImage' src='" . $productDetail['link_hinh_anh'] . "' alt='" . $productDetail['ten_san_pham'] . "' onclick='openModal()'>";
@@ -116,14 +121,50 @@ if (empty($loaisanphamList)) {
             echo "<div class='product-detail-info'>";
             echo "<h2>" . $productDetail['ten_san_pham'] . "</h2>";
             echo "<div class='product-detail-price'>Giá: " . $productDetail['gia'] . "</div>";
+        
+            // Combobox cho Size
+            echo '<label for="size">Size:</label>';
+            echo '<select id="size" name="size">';
+            if (!empty($productDetail['size_S'])) {
+                echo '<option value="S">S</option>';
+            }
+            if (!empty($productDetail['size_M'])) {
+                echo '<option value="M">M</option>';
+            }
+            if (!empty($productDetail['size_L'])) {
+                echo '<option value="L">L</option>';
+            }
+            if (!empty($productDetail['size_XL'])) {
+                echo '<option value="XL">XL</option>';
+            }
+            // Thêm các tùy chọn size khác tại đây
+            echo '</select>';
+        
+            // Combobox cho Số lượng
+            echo '<label for="quantity">Số lượng:</label>';
+echo '<select id="quantity" name="quantity">';
+for ($i = 1; $i <= 5; $i++) {  // Thay đổi số lượng tùy theo nhu cầu
+    if (!empty($productDetail['size_S']) && $i <= $productDetail['size_S']) {
+        echo '<option value="' . $i . '">' . $i . '</option>';
+    } elseif (!empty($productDetail['size_M']) && $i <= $productDetail['size_M']) {
+        echo '<option value="' . $i . '">' . $i . '</option>';
+    } elseif (!empty($productDetail['size_L']) && $i <= $productDetail['size_L']) {
+        echo '<option value="' . $i . 
+        '">' . $i . '</option>';
+} elseif (!empty($productDetail['size_XL']) && $i <= $productDetail['size_XL']) {
+    echo '<option value="' . $i . '">' . $i . '</option>';
+}
+}
+// Thêm các tùy chọn số lượng khác tại đây
+echo '</select>';
 
+        
             // Thêm nút "Thêm vào giỏ hàng"
-            echo '<button id="addToCartButton" onclick="addToCart(\'' . $productDetail['ten_san_pham'] . '\', ' . $productDetail['gia'] . ', ' . $productDetail['id_color'] . ', \'' . $productDetail['link_hinh_anh'] . '\')">Thêm vào giỏ hàng</button>';
+            echo '<button id="addToCartButton" onclick="addToCart(\'' . $productDetail['ten_san_pham'] . '\', ' . $productDetail['gia'] . ', ' . $productDetail['id_color'] . ', \'' . $productDetail['link_hinh_anh'] . '\', \'' . $id_product . '\')">Thêm vào giỏ hàng</button>';
         }
         ?>
     </div>
     <footer>
-        <!-- <p>&copy; 2023 Website Bán Hàng</p> -->
     </footer>
     <div id="imageModal" class="modal">
         <span class="closeModal" onclick="closeModal()">&times;</span>
@@ -131,33 +172,34 @@ if (empty($loaisanphamList)) {
     </div>
 
     <script>
-function addToCart(ten_san_pham, gia, id_color, link_hinh_anh) {
-    var message = "Đã thêm sản phẩm vào giỏ hàng.";
-    alert(message);
+    function addToCart(ten_san_pham, gia, id_color, link_hinh_anh, id_product) {
+        var size = document.getElementById('size').value; // Lấy giá trị size đã chọn
+        var quantity = document.getElementById('quantity').value; // Lấy giá trị số lượng đã chọn
 
-    // Tạo một đối tượng XMLHttpRequest
-    var xhttp = new XMLHttpRequest();
+        var message = "Đã thêm sản phẩm vào giỏ hàng. Size: " + size + ", Số lượng: " + quantity;
+        alert(message);
 
-    // Xác định phương thức POST và đường dẫn đến trang 'add.php'
-    xhttp.open("POST", "add.php", true);
+        // Tạo một đối tượng XMLHttpRequest
+        var xhttp = new XMLHttpRequest();
 
-    // Thiết lập tiêu đề yêu cầu
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        // Xác định phương thức POST và đường dẫn đến trang 'add.php'
+        xhttp.open("POST", "add.php", true);
 
-    // Định dạng dữ liệu sản phẩm
-    var data = "ten_san_pham=" + ten_san_pham + "&gia=" + gia + "&id_color=" + id_color + "&link_hinh_anh=" + link_hinh_anh;
+        // Thiết lập tiêu đề yêu cầu
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-    // Định nghĩa hàm xử lý kết quả từ trang 'add.php'
-    xhttp.onreadystatechange = function() {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            // Xử lý phản hồi từ trang 'add.php' ở đây (nếu cần)
-        }
-    };
+        // Định dạng dữ liệu sản phẩm
+        var data = "ten_san_pham=" + encodeURIComponent(ten_san_pham) + "&gia=" + gia + "&id_color=" + id_color + "&link_hinh_anh=" + encodeURIComponent(link_hinh_anh) + "&id_product=" + id_product + "&size=" + size + "&quantity=" + quantity;
 
-    // Gửi dữ liệu sản phẩm đến trang 'add.php'
-    xhttp.send(data);
-}
+        xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                // Xử lý phản hồi từ trang 'add.php' ở đây (nếu cần)
+            }
+        };
 
-    </script>
+        // Gửi dữ liệu sản phẩm đến trang 'add.php'
+        xhttp.send(data);
+    }
+</script>
 </body>
 </html>
