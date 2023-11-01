@@ -104,29 +104,4 @@ $(document).ready(function () {
 
 
 
-function updateQuantityDropdown() {
-    var sizeDropdown = document.getElementById('sizeDropdown');
-    var quantityDropdown = document.getElementById('quantityDropdown');
-    
-    // Lấy kích thước được chọn
-    var selectedSize = sizeDropdown.value;
-    
-    // Đảm bảo bạn có dữ liệu số lượng tối đa cho các kích thước ở đây (hoặc có thể lưu chúng trong một mảng JavaScript)
-    var maxQuantities = {
-        'Size S': 5,  // Thay đổi số lượng tùy theo nhu cầu
-        'Size M': 5,
-        'Size L': 5,
-        'Size XL': 5
-    };
-    
-    // Xóa tất cả tùy chọn hiện có trong dropdown "quantity"
-    quantityDropdown.options.length = 0;
 
-    // Tạo các tùy chọn cho dropdown "quantity" dựa trên số lượng tối đa
-    for (var i = 1; i <= maxQuantities[selectedSize]; i++) {
-        var option = document.createElement('option');
-        option.value = i;
-        option.text = i;
-        quantityDropdown.appendChild(option);
-    }
-}

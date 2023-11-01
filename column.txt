@@ -71,32 +71,38 @@ CREATE TABLE DonHang (
     phuong_xa VARCHAR(100),
     quan_huyen VARCHAR(100),
     tinh_thanh VARCHAR(100),
-    ghichu TEXT
+    ghichu TEXT,
+    totalPrice float
+    date 
 );
 
 
-CREATE TABLE ChiTietDonHang (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    donhang_id INT,
-    sanpham_id INT,
-    so_luong INT,
-    FOREIGN KEY (donhang_id) REFERENCES DonHang(id),
-    FOREIGN KEY (sanpham_id) REFERENCES Products(id_product)
-);
-
-
-
+create table chitietdonhang
+(
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        id_donhang INT,
+    	ten_san_pham text,
+    	id_product char(20),
+    	id_color int,
+    	gia int,
+    	size char(10),
+    	quantity int,
+        link_hinh_anh text,
+		FOREIGN KEY (id_color) REFERENCES color(id_color),
+        FOREIGN KEY (id_product) REFERENCES product_id(id_product),
+    	FOREIGN KEY (id_donhang) REFERENCES DonHang(id)
+)
 
 CREATE TABLE giohang (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    nguoidung_id INT,
     id_product int ,
     ten_san_pham text,
     id_color int,
-    nguoidung_id INT,
-    gia DECIMAL(10, 2), 
-    link_hinh_anh TEXT,
-    quantity INT,
     size char(10),
+    gia DECIMAL(10, 2), 
+    quantity INT,
+    link_hinh_anh TEXT,
     FOREIGN KEY (id_product) REFERENCES product_id(id_product),
     FOREIGN KEY (nguoidung_id) REFERENCES login(id),
     FOREIGN KEY (id_color) REFERENCES color(id_color)

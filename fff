@@ -316,3 +316,28 @@ $conn->close();
     <script  src="js/donhang.js"></script>
 </body>
 </html>
+
+
+<div class="body_pay">
+                <legend>Hình thức thanh toán</legend>
+                <div class="body_pay option">
+                    <label class="option_cod" for="payment_cod">
+                        <input type="radio" name="payment" id="payment_cod" value="cod">
+                        <i class="fa-solid fa-house"></i>
+                        <div>
+                            <span>COD</span>
+                            <p>Thanh Toán khi nhận hàng.</p>
+                        </div>
+                    </label>
+                    <label class="option_banking" for="payment_banking">
+                        <input type="radio" name="payment" id="payment_banking" value="banking">
+                        <i class="fa-solid fa-money-check-dollar"></i>
+                        <div>
+                            <span>Banking</span>
+                            <p>Phương thức thanh toán Online</p>
+                        </div>
+                    </label>
+                </div>
+
+            </div>
+        </div>

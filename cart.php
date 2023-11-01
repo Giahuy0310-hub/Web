@@ -1,15 +1,7 @@
 <?php
 require_once('php/db_connection.php');
 
-// Lấy danh sách tỉnh/thành phố
-$sqlProvince = "SELECT * FROM province";
-$resultProvince = $conn->query($sqlProvince);
-$id_product = isset($_POST['id_product']) ? $_POST['id_product'] : null;
-
-$successMessage = '';
-
 if (isset($_POST['submit'])) {
-    // Xử lý lưu dữ liệu đơn hàng
     $fullname = isset($_POST['fullname']) ? $_POST['fullname'] : '';
     $phone = isset($_POST['phone']) ? $_POST['phone'] : '';
     $email = isset($_POST['email']) ? $_POST['email'] : '';
@@ -18,22 +10,47 @@ if (isset($_POST['submit'])) {
     $district = isset($_POST['district']) ? $_POST['district'] : '';
     $wards = isset($_POST['wards']) ? $_POST['wards'] : '';
     $note = isset($_POST['note']) ? $_POST['note'] : '';
+    $totalPrice = isset($_POST['totalPrice']) ? $_POST['totalPrice'] : 0;
 
-    // Sử dụng prepared statement để thêm dữ liệu vào bảng DonHang
-    $sql = "INSERT INTO DonHang (hoten, sodienthoai, email, sonha_duong, tinh_thanh, quan_huyen, phuong_xa, ghichu)
-    VALUES (?, ?, ?, ?, (SELECT name FROM province WHERE province_id = ?), (SELECT name FROM district WHERE district_id = ?), ?, ?)";
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssisss", $fullname, $phone, $email, $address, $province, $district, $wards, $note);
+    $conn->begin_transaction();
 
-    if ($stmt->execute()) {
-        $successMessage = "Thêm vào bảng DonHang thành công!";
+    $sqlInsertIntoDonHang = "INSERT INTO DonHang (hoten, sodienthoai, email, sonha_duong, tinh_thanh, quan_huyen, phuong_xa, ghichu, totalPrice, date)
+    VALUES (?, ?, ?, ?, (SELECT name FROM province WHERE province_id = ? LIMIT 1), (SELECT name FROM district WHERE district_id = ? LIMIT 1), (SELECT name FROM wards WHERE wards_id = ? LIMIT 1), ?, ?, ?)";
+
+$stmtInsertIntoDonHang = $conn->prepare($sqlInsertIntoDonHang);
+$stmtInsertIntoDonHang->bind_param("ssssssssds", $fullname, $phone, $email, $address, $province, $district, $wards, $note, $totalPrice, $date);
+
+
+
+    if ($stmtInsertIntoDonHang->execute()) {
+        $donHangId = $stmtInsertIntoDonHang->insert_id;
+
+        $sqlCopyToDonHang = "INSERT INTO chitietdonhang (id_donhang, id_product, id_color, size, quantity, gia, link_hinh_anh, ten_san_pham)
+            SELECT ?, id_product, id_color, size, quantity, gia, link_hinh_anh, ten_san_pham FROM giohang5";
+        $stmtCopyToDonHang = $conn->prepare($sqlCopyToDonHang);
+        $stmtCopyToDonHang->bind_param("i", $donHangId);
+        $stmtCopyToDonHang->execute();
+
+        $sqlDeleteFromCart = "DELETE FROM giohang5";
+        $conn->query($sqlDeleteFromCart);
+
+        $conn->commit();
+
+        $successMessage = "Đơn hàng đã được đặt thành công!";
     } else {
-        // Xử lý lỗi nếu có lỗi xảy ra
-        echo "Lỗi: " . $stmt->error;
+        // Handle errors
+        echo "Lỗi: " . $stmtInsertIntoDonHang->error;
+
     }
 }
 
+
+// Fetch provinces for dropdown
+$sqlProvince = "SELECT * FROM province";
+$resultProvince = $conn->query($sqlProvince);
+
+// Fetch cart items
 $sql = "SELECT * FROM giohang5";
 $result = $conn->query($sql);
 
@@ -44,9 +61,6 @@ if ($result->num_rows > 0) {
         $cartItems[] = $row;
     }
 }
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -78,7 +92,7 @@ if ($result->num_rows > 0) {
 
     <div class="body">
         <div class="body_information">
-            <form action="" method="post">
+        <form action="" method="post">
                 <legend>Thông tin vận chuyển</legend>
                 <?php if (!empty($successMessage)) : ?>
                     <p id="successMessage" style="color: green;"><?php echo $successMessage; ?></p>
@@ -160,11 +174,12 @@ if ($result->num_rows > 0) {
                             <textarea style="border-color: rgba(128, 128, 128,0.2);" name="note" id="note"></textarea>
                         </th>
                     </tr>
+                    <!-- Hidden input for totalPrice -->
+                    <input type="hidden" name="totalPrice" value="<?= $totalPrice ?>">
                 </table>
                 <input class="body_pay pay" type="submit" name="submit" value="Thanh Toán" >
-
             </form>
-
+            
             <div class="body_pay">
                 <legend>Hình thức thanh toán</legend>
                 <div class="body_pay option">
@@ -184,116 +199,125 @@ if ($result->num_rows > 0) {
                             <p>Phương thức thanh toán Online</p>
                         </div>
                     </label>
-                    
                 </div>
-
             </div>
         </div>
         <div class="body_products">
-    <legend>Giỏ hàng của bạn</legend>
+            <legend>Giỏ hàng của bạn</legend>
+            <?php
+            $totalPrice = 0;
 
-    <?php
-    $totalPrice = 0;
+            if (isset($cartItems) && is_array($cartItems)) :
+                foreach ($cartItems as $item) :
+                    // Calculate the subtotal for each item
+                    $subtotal = isset($item['quantity']) ? $item['gia'] * $item['quantity'] : 0;
 
-    if (isset($cartItems) && is_array($cartItems)) :
-        foreach ($cartItems as $item) :
-            // Calculate the subtotal for each item
-            $subtotal = isset($item['quantity']) ? $item['gia'] * $item['quantity'] : 0;
+                    // Add the subtotal to the total price
+                    $totalPrice += $subtotal;
+            ?>
+                <div class="body_products product" data-id_product="<?= $item['id_product'] ?>">
+                    <img src="<?= $item['link_hinh_anh'] ?>" alt="<?= $item['ten_san_pham'] ?>">
+                    <div class="product_group">
+                        <div class="product_content">
+                            <h4><?= $item['ten_san_pham'] ?></h4>
+                            <span><?= number_format($item['gia'], 0, ',', '.') ?> VNĐ</span>
+                            <strong> x </strong>
+                            <span><?= isset($item['quantity']) ? $item['quantity'] : '0' ?></span>
+                            =
+                            <span style="color: brown;">
+                                <?= number_format($subtotal, 0, ',', '.') ?> VNĐ
+                            </span>
+                        </div>
+                        <div class="product_selection">
+                            <select name="size">
+                                <?php
+                                // Thực hiện truy vấn SQL để lấy danh sách kích thước từ bảng 'products'
+                                $sql = "SELECT DISTINCT p.size_s, p.size_M, p.size_L, p.size_XL
+                                FROM products p, giohang5 g
+                                WHERE p.id_product = g.id_product
+                                AND p.id_product = ?
+                                AND p.id_color = ?";
 
-            // Add the subtotal to the total price
-            $totalPrice += $subtotal;
-    ?>
-            <div class="body_products product" data-id_product="<?= $item['id_product'] ?>">
-                <img src="<?= $item['link_hinh_anh'] ?>" alt="<?= $item['ten_san_pham'] ?>">
-                <div class="product_group">
-                    <div class="product_content">
-                        <h4><?= $item['ten_san_pham'] ?></h4>
-                        <span><?= number_format($item['gia'], 0, ',', '.') ?> VNĐ</span>
-                        <strong> x </strong>
-                        <span><?= isset($item['quantity']) ? $item['quantity'] : '0' ?></span>
-                        =
-                        <span style="color: brown;">
-                            <?= number_format($subtotal, 0, ',', '.') ?> VNĐ
-                        </span>
+                                $stmt = $conn->prepare($sql);
+                                $stmt->bind_param('ii', $idProduct, $idColor);
+
+                                $idProduct = $item['id_product'];
+                                $idColor = $item['id_color'];
+
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo '<option value="' . $row['size_s'] . '">Size S</option>';
+                                        echo '<option value="' . $row['size_M'] . '">Size M</option>';
+                                        echo '<option value="' . $row['size_L'] . '">Size L</option>';
+                                        echo '<option value="' . $row['size_XL'] . '">Size XL</option>';
+                                    }
+                                } else {
+                                    echo '<option>Size Not Available</option>';
+                                }
+                                ?>
+                            </select>
+                            x
+                            <select name="quantity" id="quantityDropdown">
+                                <?php
+                                // Số lượng tối đa
+                                $maxQuantity = 10;
+
+                                // Số lượng đã chọn (mặc định là 1 nếu không có giá trị)
+                                $selectedQuantity = isset($item['quantity']) ? $item['quantity'] : 1;
+
+                                // Tạo các tùy chọn cho dropdown từ 1 đến số lượng tối đa
+                                for ($i = 1; $i <= $maxQuantity; $i++) {
+                                    $selected = ($i == $selectedQuantity) ? 'selected' : '';
+                                    echo '<option value="' . $i . '" ' . $selected . '>' . $i . '</option>';
+                                }
+                                ?>
+                            </select>
+                            <button class="delete-button" data-id_product="<?= $item['id_product'] ?>" data-id_color="<?= $item['id_color'] ?>">Xóa</button>
+                        </div>
                     </div>
-                    <div class="product_selection">
-    <select name="size">
-        <?php
-        // Thực hiện truy vấn SQL để lấy danh sách kích thước từ bảng 'products'
-        $sql = "SELECT DISTINCT p.size_s, p.size_M, p.size_L, p.size_XL
-        FROM products p, giohang5 g
-        WHERE p.id_product = g.id_product
-        AND p.id_product = ?
-        AND p.id_color = ?";
-
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('ii', $idProduct, $idColor);
-
-        $idProduct = $item['id_product'];
-        $idColor = $item['id_color'];
-
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo '<option value="' . $row['size_s'] . '">Size S</option>';
-                echo '<option value="' . $row['size_M'] . '">Size M</option>';
-                echo '<option value="' . $row['size_L'] . '">Size L</option>';
-                echo '<option value="' . $row['size_XL'] . '">Size XL</option>';
-            }
-        } else {
-            echo '<option>Size Not Available</option>';
-        }
-        ?>
-    </select>
-    x
-    <select name="quantity" id="quantityDropdown">
-        <?php
-        // Số lượng tối đa
-        $maxQuantity = 10;
-
-        // Số lượng đã chọn (mặc định là 1 nếu không có giá trị)
-        $selectedQuantity = isset($item['quantity']) ? $item['quantity'] : 1;
-
-        // Tạo các tùy chọn cho dropdown từ 1 đến số lượng tối đa
-        for ($i = 1; $i <= $maxQuantity; $i++) {
-            $selected = ($i == $selectedQuantity) ? 'selected' : '';
-            echo '<option value="' . $i . '" ' . $selected . '>' . $i . '</option>';
-        }
-        ?>
-    </select>
-        <button class="delete-button" data-id_product="<?= $item['id_product'] ?>" data-id_color="<?= $item['id_color'] ?>">Xóa</button>
-</div>
-
-
+                </div>
+            <?php
+                endforeach;
+            endif;
+            ?>
+            <div class="product_total">
+                <legend>Tổng:</legend>
+                <div>
+                    <span>Số tiền mua sản phẩm</span>
+                    <h4><?= number_format($totalPrice, 0, ',', '.') ?> VNĐ</h4>
+                </div>
+                <legend>Vận chuyển</legend>
+                <div>
+                    <legend id="end">Tổng tiền thanh toán</legend>
+                    <h4 id="totalPrice" data-value="<?= $totalPrice ?>" name="totalPrice"><?= number_format($totalPrice, 0, ',', '.') ?> VNĐ</h4>
                 </div>
             </div>
-    <?php
-        endforeach;
-    endif;
-    ?>
-
-    <div class="product_total">
-        <legend>Tổng:</legend>
-        <div>
-            <span>Số tiền mua sản phẩm</span>
-            <h4><?= number_format($totalPrice, 0, ',', '.') ?> VNĐ</h4>
-        </div>
-        <legend>Vận chuyển</legend>
-        <div>
-            <legend id="end">Tổng tiền thanh toán</legend>
-            <h4><?= number_format($totalPrice, 0, ',', '.') ?> VNĐ</h4>
         </div>
     </div>
-</div>
-
-</div>
-
-</body>
-</html>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="js/cart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the form element
+        const form = document.querySelector("form");
+
+        // Get the total price element
+        const totalPriceElement = document.getElementById("totalPrice");
+
+        // Add a submit event listener to the form
+        form.addEventListener("submit", function(event) {
+            // Get the current total price from the displayed element
+            const currentTotalPrice = parseFloat(totalPriceElement.getAttribute("data-value"));
+
+            // Update the hidden input field with the current total price
+            const hiddenTotalPriceInput = form.querySelector("input[name='totalPrice']");
+            hiddenTotalPriceInput.value = currentTotalPrice;
+        });
+    });
+</script>
 
 </body>
 </html>
