@@ -45,18 +45,16 @@ $sort1 = isset($_GET['sort1']) ? $_GET['sort1'] : 'asc';
 $sort2 = isset($_GET['sort2']) ? $_GET['sort2'] : '';
 // Sắp xếp
 $sqlProductsSorting = " ORDER BY p.gia " . ($sort1 === 'desc' ? 'DESC' : 'ASC');
-
-if ($sort2 !== '') {
-    if (is_numeric($sort2)) {
-        $minPrice = max(0, $sort2 - 15); // Tính giá tối thiểu
-        $sqlProducts .= " AND p.gia >= $minPrice";
-    } elseif (preg_match('/(\d+)\s*\+\s*(\d+)\s*-\s*max/', $sort2, $matches)) {
-        $minPrice = $matches[1];
-        $diff = $matches[2];
-        $maxPrice = $minPrice + $diff;
-        $sqlProducts .= " AND p.gia >= $minPrice AND p.gia <= $maxPrice";
-    }
+if (is_numeric($sort2)) {
+    $minPrice = max(0, $sort2 - 15); // Tính giá tối thiểu
+    $sqlProducts .= " AND p.gia >= $minPrice";
+} elseif (preg_match('/(\d+)\s*\+\s*(\d+)\s*-\s*max/', $sort2, $matches)) {
+    $minPrice = $matches[1];
+    $diff = $matches[2];
+    $maxPrice = $minPrice + $diff;
+    $sqlProducts .= " AND p.gia >= $minPrice AND p.gia <= $maxPrice";
 }
+
 
 // Lấy số lượng sản phẩm
 $stmtCount = $conn->prepare($sqlCountProducts);
@@ -163,7 +161,8 @@ function getColorsForProduct($conn, $productId) {
 </form>
 <form method="get" id="sort-form">
     <label for="sort2">Sắp xếp theo giá:</label>
-    <input type="range" name="sort2" id="sort2" min="0" max="1000" value="<?php echo $sort2; ?>">
+    <input type="text" name="sort2" id="sort2" value="<?php echo $sort2; ?>" placeholder="Nhập giá và khoảng chênh lệch (nếu cần)">
+    <input type="submit" value="Sắp xếp">
 </form>
 
 
@@ -203,7 +202,7 @@ function getColorsForProduct($conn, $productId) {
             if ($page > 1) {
                 ?>
                 <li class="pagination-item prev-page">
-                <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=1<?= $sortParam ?>&sort1=<?= $sort1 ?>&sort2=<?= $sort2 ?>">&laquo; Trang đầu</a>
+                    <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=1<?= $sortParam ?>">&laquo; Trang đầu</a>
                 </li>
                 <?php
             } else {
@@ -217,7 +216,7 @@ function getColorsForProduct($conn, $productId) {
             for ($i = $startPage; $i <= $endPage; $i++) {
                 ?>
                 <li class="pagination-item <?= $i == $page ? 'active' : '' ?>">
-                <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=<?= $i . $sortParam ?>&sort1=<?= $sort1 ?>&sort2=<?= $sort2 ?>"><?= $i ?></a>
+                    <a href="#" onclick="navigateToPage(<?= $i ?>)"><?= $i ?></a>
                 </li>
                 <?php
             }
@@ -225,7 +224,7 @@ function getColorsForProduct($conn, $productId) {
             if ($page < $totalPages) {
                 ?>
                 <li class="pagination-item next-page">
-                <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=<?= $totalPages . $sortParam ?>&sort1=<?= $sort1 ?>&sort2=<?= $sort2 ?>">Trang cuối &raquo;</a>
+                    <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=<?= $totalPages . $sortParam ?>">Trang cuối &raquo;</a>
                 </li>
                 <?php
             } else {
@@ -240,89 +239,58 @@ function getColorsForProduct($conn, $productId) {
     </div>
 </div>
 <script>
-var sortDropdown1 = document.getElementById('sort1');
-var sortInput = document.getElementById('sort2');
-var sortForm = document.getElementById('sort-form');
+    // Lấy tham số "sort1" và "sort2" từ URL nếu có
+    var url = new URL(window.location.href);
+    var initialSort1 = url.searchParams.get('sort1');
+    var initialSort2 = url.searchParams.get('sort2');
 
-// Lắng nghe sự kiện submit của form
-sortForm.addEventListener('submit', function(event) {
-    // Ngăn chặn sự kiện mặc định của việc gửi biểu mẫu
-    event.preventDefault();
+    // Lấy select elements
+    var sortDropdown1 = document.getElementById('sort1');
+    var priceFilterDropdown = document.getElementById('sort2');
 
-    // Lấy giá trị sort1 và sort2
-    var selectedSort1 = sortDropdown1.value;
-    var selectedSort2 = sortInput.value;
+    // Đặt giá trị ban đầu cho select elements
+    sortDropdown1.value = initialSort1;
+    priceFilterDropdown.value = initialSort2;
 
-    // Lấy URL hiện tại
-    var currentURL = window.location.href;
-    var newURL = currentURL;
+    // Sử dụng sự kiện change để lắng nghe sự thay đổi của cả hai select elements
+    sortDropdown1.addEventListener('change', function() {
+        updateURL();
+    });
+    priceFilterDropdown.addEventListener('change', function() {
+        updateURL();
+    });
 
-    // Tạo một đối tượng URLSearchParams để quản lý tham số URL
-    var urlParams = new URLSearchParams(window.location.search);
+    function updateURL() {
+        // Lấy giá trị hiện tại của cả hai select elements
+        var selectedSort1 = sortDropdown1.value;
+        var selectedSort2 = priceFilterDropdown.value;
 
-    // Đặt giá trị tham số sort1 và sort2
-    urlParams.set('sort1', selectedSort1);
-    urlParams.set('sort2', selectedSort2);
+        // Lấy URL hiện tại
+        var currentURL = window.location.href;
 
-    // Cập nhật URL mới dựa trên URLSearchParams
-    newURL = newURL.split('?')[0] + '?' + urlParams.toString();
+        // Tạo một URL mới dựa trên URL hiện tại và thay đổi tham số "sort1" và "sort2"
+        var url = new URL(currentURL);
+        url.searchParams.set('sort1', selectedSort1);
+        url.searchParams.set('sort2', selectedSort2);
 
-    // Thay đổi URL của trình duyệt để cập nhật tham số "sort1" và "sort2"
-    window.history.pushState({ path: newURL }, '', newURL);
-});
+        // Thay đổi URL của trình duyệt để cập nhật tham số "sort1" và "sort2"
+        window.history.pushState({ path: url.toString() }, '', url.toString());
+    }
 
-// Lắng nghe sự kiện change của dropdown sort1
-sortDropdown1.addEventListener('change', function() {
-    var selectedSort1 = sortDropdown1.value; // Lấy giá trị mới
-    var currentURL = window.location.href; // Lấy URL hiện tại
+    // Một lần đầu, bạn cần gọi hàm updateURL để đảm bảo rằng URL được cập nhật dựa trên giá trị mặc định của select elements.
+    updateURL();
 
-    // Lấy URLSearchParams hiện tại
-    var urlParams = new URLSearchParams(window.location.search);
+    function navigateToPage(page) {
+        // Tạo URL mới dựa trên trang được chọn
+        var newURL = "products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=" + page + "<?= $sortParam ?>";
 
-    // Đặt giá trị tham số sort1
-    urlParams.set('sort1', selectedSort1);
+        // Thay đổi số trang trong URL
+        newURL = newURL.replace(/page=\d+/, "page=" + page);
 
-    // Tạo URL mới dựa trên URLSearchParams
-    var newURL = currentURL.split('?')[0] + '?' + urlParams.toString();
-
-    // Cập nhật URL của trình duyệt
-    window.location.href = newURL;
-});
-
-// Lắng nghe sự kiện khi buông chuột sau khi kéo thanh trượt sort2
-sortInput.addEventListener('mouseup', function() {
-    var selectedSort1 = sortDropdown1.value; // Lấy giá trị sort1
-    var selectedSort2 = sortInput.value; // Lấy giá trị sort2
-
-    // Lấy URL hiện tại
-    var currentURL = window.location.href;
-    var newURL = currentURL;
-
-    // Tạo một đối tượng URLSearchParams để quản lý tham số URL
-    var urlParams = new URLSearchParams(window.location.search);
-
-    // Đặt giá trị tham số sort1 và sort2
-    urlParams.set('sort1', selectedSort1);
-    urlParams.set('sort2', selectedSort2);
-
-    // Cập nhật URL mới dựa trên URLSearchParams
-    newURL = newURL.split('?')[0] + '?' + urlParams.toString();
-
-    // Thay đổi URL của trình duyệt để cập nhật tham số "sort1" và "sort2"
-    window.location.href = newURL;
-});
-
-
-function navigateToPage(page) {
-    // Tạo URL mới dựa trên trang được chọn
-    var newURL = "products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=" + page + "<?= $sortParam ?>";
-
-    // Thay đổi số trang trong URL
-    newURL = newURL.replace(/page=\d+/, "page=" + page);
-
-    // Chuyển hướng đến URL mới
-    window.location.href = newURL;
-}
+        // Chuyển hướng đến URL mới
+        window.location.href = newURL;
+    }
 </script>
 </body>
 </html>
+

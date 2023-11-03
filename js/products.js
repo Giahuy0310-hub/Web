@@ -47,6 +47,8 @@
 // }
 
 
+
+
 if (window.location.search) {
     const params = new URLSearchParams(window.location.search);
     if (!params.get('id_product')) {
@@ -75,4 +77,15 @@ function changeProductImage(productId, imageUrl) {
 function resetProductImage(productId, imageUrl) {
     const productImage = document.getElementById('product-image-' + productId);
     productImage.src = imageUrl;
+}
+
+function navigateToPage(page) {
+    // Tạo URL mới dựa trên trang được chọn
+    var newURL = "products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=" + page + "<?= $sortParam ?>";
+
+    // Thay đổi số trang trong URL
+    newURL = newURL.replace(/page=\d+/, "page=" + page);
+
+    // Chuyển hướng đến URL mới
+    window.location.href = newURL;
 }

@@ -69,19 +69,20 @@ foreach ($categoryList as $category) {
 
     $subcategoryLinks = [];
     foreach ($subcategoryList as $subcategory) {
-        $subcategoryLink = "products.php?ID_DM=$categoryID&loaisanpham=" . urlencode($subcategory);
+        $subcategoryLink = "products.php?ID_DM=$categoryID&loaisanpham=" . urlencode($subcategory) . "&sort1=$sort1&sort2=$sort2"; 
         $isActiveSubcategory = $subcategory == $selectedSubcategory ? 'active' : '';
         $subcategoryLinks[] = "<a class='subcategory-button $isActiveSubcategory' href='$subcategoryLink'>$subcategory</a>";
     }
-
+    
     echo "<div class='dropdown'>";
-    echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID'>$categoryName</a>";
+    echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID&sort1=$sort1&sort2=$sort2'>$categoryName</a>"; 
     if (!empty($subcategoryLinks)) {
         echo "<div class='dropdown-menu'>";
-        echo implode($subcategoryLinks);
+        echo implode('', $subcategoryLinks);
         echo "</div>";
     }
-    echo "</div>";
+    echo "</div>";    
+
 }
 ?>
 <div class="navbar_logo">
@@ -90,6 +91,7 @@ foreach ($categoryList as $category) {
     <a href="cart.php"><i class="fa-solid fa-cart-shopping"></i></a>
 </div>
 </div>
+</br>
 <?php
 if ($selectedCategory) {
     echo "<h2 class='centered'>$selectedCategory</h2>";
@@ -99,3 +101,6 @@ if (!empty($selectedSubcategory)) {
     echo "<h2 class='centered'>$selectedSubcategory</h2>";
 }
 ?>
+
+
+
