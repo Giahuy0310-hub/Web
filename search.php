@@ -135,8 +135,61 @@ function getColorsForProduct($conn, $productId) {
 
     return $colors;
 }
-?>
 
+if (isset($_GET['searchTerm'])) {
+    $searchTerm = $_GET['searchTerm'];
+    // Thực hiện tìm kiếm và xử lý kết quả ở đây
+} else {
+    echo "Vui lòng nhập từ khóa tìm kiếm.";
+}
+
+$sql = "SELECT * FROM products WHERE ten_san_pham LIKE '%" . $searchTerm . "%'";
+
+$result = $conn->query($sql);
+
+if (isset($_GET['searchTerm'])) {
+    $searchTerm = '%' . $_GET['searchTerm'] . '%';  // Thêm dấu % để thực hiện tìm kiếm mẫu
+
+    $sql = "SELECT * FROM products WHERE ten_san_pham LIKE ?";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('s', $searchTerm);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        echo '<h2>Kết quả tìm kiếm cho: ' . $_GET['searchTerm'] . '</h2>';
+        echo '<div class="product-container">';
+        while ($row = $result->fetch_assoc()) {
+            echo '<div class="product">';
+            $productId = $row['id_product'];
+            $colors = getColorsForProduct($conn, $productId);
+    
+            echo '<a href="product_detail.php?id_product=' . $productId . '&color_id=' . $colors[0]['id_color'] . '">';
+            echo '<img id="product-image-' . $productId . '" src="' . $colors[0]['link_hinh_anh'] . '" alt="' . $row['ten_san_pham'] . '">';
+            echo '<p>' . $row['ten_san_pham'] . '</p>';
+            echo '<p class="product-price">Giá: ' . $row['gia'] . '</p>';
+            echo '<div class="color-options">';
+    
+            foreach ($colors as $color) {
+                $colorHex = $color['hex_color'];
+                $colorId = $color['id_color'];
+                echo '<a href="product_detail.php?id_product=' . $productId . '&color_id=' . $colorId . '">';
+                echo '<div class="color-option" style="background-color: ' . $colorHex . ';" onmouseover="changeProductImage(' . $productId . ', \'' . $color['link_hinh_anh'] . '\')" onmouseout="resetProductImage(' . $productId . ', \'' . $colors[0]['link_hinh_anh'] . '\')"></div>';
+                echo '</a>';
+            }
+    
+            echo '</div>';
+            echo '</a>';
+            echo '</div>';
+        }
+        echo '</div>';
+    } else {
+        echo 'Không tìm thấy kết quả phù hợp.';
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -153,94 +206,11 @@ function getColorsForProduct($conn, $productId) {
 <div class="navbar">
     <a href="home.php"><img src="images/logo.png" alt=""></a>
     <div class="navbar_list"></div>
-    <?php include('php/dropdown.php'); ?>
-    <form method="get" id="sort-form">
-    <label for="sort1">Sắp xếp:</label>
-    <select name="sort1" id="sort1">
-        <option value="asc" <?php echo ($sort1 === 'asc') ? 'selected' : ''; ?>>Tăng dần (ASC)</option>
-        <option value="desc" <?php echo ($sort1 === 'desc') ? 'selected' : ''; ?>>Giảm dần (DESC)</option>
-    </select>
-</form>
-<form method="get" id="sort-form">
-    <label for="sort2">Sắp xếp theo giá:</label>
-    <input type="range" name="sort2" id="sort2" min="0" max="1000" value="<?php echo $sort2; ?>">
-</form>
-<script src="js/products.js"></script>
 
+<?php include('php/dropdown.php'); ?>
+<div id="product-info">
 
-    <div id="product-info">
-        <div class="product-container">
-            <?php
-            foreach ($productList as $product) {
-                $productId = $product['id_product'];
-                $colors = $product['colors'];
-                echo '<div class="product">';
-                echo '<a href="product_detail.php?id_product=' . $productId . '&color_id=' . $colors[0]['id_color'] . '">';
-                echo '<img id="product-image-' . $productId . '" src="' . $colors[0]['link_hinh_anh'] . '" alt="' . $product['ten_san_pham'] . '">';
-                echo '<p>' . $product['ten_san_pham'] . '</p>';
-                echo '<p class="product-price">Giá: ' . $product['gia'] . '</p>';
+        
 
-                echo '<div class="color-options">';
-                foreach ($colors as $color) {
-                    $colorHex = $color['hex_color'];
-                    $colorId = $color['id_color'];
-                    echo '<a href="product_detail.php?id_product=' . $productId . '&color_id=' . $colorId . '">';
-                    echo '<div class="color-option" style="background-color: ' . $colorHex . ';" onmouseover="changeProductImage(' . $productId . ', \'' . $color['link_hinh_anh'] . '\')" onmouseout="resetProductImage(' . $productId . ', \'' . $colors[0]['link_hinh_anh'] . '\')"></div>';
-                    echo '</a>';
-                }
-                echo '</div>';
-                echo '</a>';
-                echo '</div>';
-            }
-            ?>
-        </div>
-    </div>
-    <div class="pagination">
-        <ul class="pagination-list">
-            <?php
-            $startPage = max(1, $page - 2);
-            $endPage = min($totalPages, $page + 2);
-
-            if ($page > 1) {
-                ?>
-                <li class="pagination-item prev-page">
-                <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=1<?= $sortParam ?>&sort1=<?= $sort1 ?>&sort2=<?= $sort2 ?>">&laquo; Trang đầu</a>
-                </li>
-                <?php
-            } else {
-                ?>
-                <li class="pagination-item prev-page disabled">
-                    <a href="#">&laquo; Trang đầu</a>
-                </li>
-                <?php
-            }
-
-            for ($i = $startPage; $i <= $endPage; $i++) {
-                ?>
-                <li class="pagination-item <?= $i == $page ? 'active' : '' ?>">
-                <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=<?= $i . $sortParam ?>&sort1=<?= $sort1 ?>&sort2=<?= $sort2 ?>"><?= $i ?></a>
-                </li>
-                <?php
-            }
-
-            if ($page < $totalPages) {
-                ?>
-                <li class="pagination-item next-page">
-                <a href="products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=<?= $totalPages . $sortParam ?>&sort1=<?= $sort1 ?>&sort2=<?= $sort2 ?>">Trang cuối &raquo;</a>
-                </li>
-                <?php
-            } else {
-                ?>
-                <li class="pagination-item next-page disabled">
-                    <a href="#">Trang cuối &raquo;</a>
-                </li>
-                <?php
-            }
-            ?>
-        </ul>
-    </div>
-    <script src="js/products.js"></script>
-
-</div>
 </body>
-</html>
+</html> 

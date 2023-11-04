@@ -171,6 +171,29 @@ a.category-button {
     
     .category-button:hover::before {
         transform: scaleX(1);
-        background-color: #dd4747;
+        background-color: #534040;
     }
     
+/* Existing styles */
+
+.search-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.search-input {
+    width: 150px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    /* margin-top: 10px;  */
+    z-index: 2000;
+}
+
+#search-icon {
+    cursor: pointer;
+}
+
+#search-icon i {
+    position: relative;
+}

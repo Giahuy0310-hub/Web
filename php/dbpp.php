@@ -69,61 +69,29 @@ foreach ($categoryList as $category) {
 
     $subcategoryLinks = [];
     foreach ($subcategoryList as $subcategory) {
-        $subcategoryLink = "products.php?ID_DM=$categoryID&loaisanpham=" . urlencode($subcategory);
+        $subcategoryLink = "products.php?ID_DM=$categoryID&loaisanpham=" . urlencode($subcategory) . "&sort1=$sort1&sort2=$sort2"; 
         $isActiveSubcategory = $subcategory == $selectedSubcategory ? 'active' : '';
         $subcategoryLinks[] = "<a class='subcategory-button $isActiveSubcategory' href='$subcategoryLink'>$subcategory</a>";
     }
-
+    
     echo "<div class='dropdown'>";
-    echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID'>$categoryName</a>";
+    echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID&sort1=$sort1&sort2=$sort2'>$categoryName</a>"; 
     if (!empty($subcategoryLinks)) {
         echo "<div class='dropdown-menu'>";
-        echo implode($subcategoryLinks);
+        echo implode('', $subcategoryLinks);
         echo "</div>";
     }
-    echo "</div>";
+    echo "</div>";    
+
 }
 ?>
 <div class="navbar_logo">
-    <div class="search-container">
-        <div class="search-input-container">
-            <input type="text" id="search-input" class="search-input" placeholder="Enter your search...">
-        </div>
-        <a href="#"><i class="fa-solid fa-magnifying-glass" id="search-icon"></i></a>
-    </div>
-    <a href="#"><i class="fa-regular fa-user"></i></a>
+    <a href=""><i class="fa-solid fa-magnifying-glass"></i></a>
+    <a href=""><i class="fa-regular fa-user"></i></a>
     <a href="cart.php"><i class="fa-solid fa-cart-shopping"></i></a>
 </div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const searchIcon = document.getElementById('search-icon');
-        const searchInput = document.getElementById('search-input');
-
-        searchIcon.addEventListener('click', function (event) {
-            event.preventDefault();
-            performSearch(searchInput.value);
-        });
-
-        searchInput.addEventListener('keyup', function (event) {
-            if (event.key === 'Enter') {
-                performSearch(searchInput.value);
-            }
-        });
-    });
-
-    function performSearch(searchTerm) {
-        // Chuyển hướng đến tệp search.php với tham số searchTerm
-        window.location.href = 'search.php?searchTerm=' + encodeURIComponent(searchTerm);
-    }
-
-
-function displaySearchResult(result) {
-    document.getElementById('search-result').innerHTML = result;
-}
-
-</script>
 </div>
+</br>
 <?php
 if ($selectedCategory) {
     echo "<h2 class='centered'>$selectedCategory</h2>";
@@ -133,3 +101,6 @@ if (!empty($selectedSubcategory)) {
     echo "<h2 class='centered'>$selectedSubcategory</h2>";
 }
 ?>
+
+
+
