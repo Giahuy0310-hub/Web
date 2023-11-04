@@ -242,5 +242,17 @@ function getColorsForProduct($conn, $productId) {
     <script src="js/products.js"></script>
 
 </div>
+<script>
+function navigateToPage(page) {
+    // Tạo URL mới dựa trên trang được chọn
+    var newURL = "products.php?ID_DM=<?= $selectedCategory ?>&loaisanpham=<?= $selectedSubcategory ?>&page=" + page + "<?= $sortParam ?>";
+
+    // Thay đổi số trang trong URL
+    newURL = newURL.replace(/page=\d+/, "page=" + page);
+
+    // Chuyển hướng đến URL mới
+    window.location.href = newURL;
+}
+</script>
 </body>
 </html>

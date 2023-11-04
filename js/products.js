@@ -68,16 +68,22 @@ if (window.location.search) {
 }
 
 
+
 function changeProductImage(productId, imageUrl) {
     const productImage = document.getElementById('product-image-' + productId);
-    productImage.src = imageUrl;
+    if (imageUrl) {
+        productImage.src = imageUrl;
+    }
 }
-
 
 function resetProductImage(productId, imageUrl) {
     const productImage = document.getElementById('product-image-' + productId);
-    productImage.src = imageUrl;
+    if (imageUrl) {
+        productImage.src = imageUrl;
+    }
 }
+
+
 
 
 
