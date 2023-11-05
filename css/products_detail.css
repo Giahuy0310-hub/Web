@@ -250,3 +250,59 @@ link[rel="icon"] {
 }
 
 
+
+
+.add-to-cart-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.add-to-cart-button .cart-icon {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    transition: left 2s, top 2s;
+}
+
+.add-to-cart-button .text {
+    display: block;
+    transition: opacity 0.5s;
+}
+
+/* Đảm bảo rằng chiếc áo ẩn ban đầu */
+.shirt-icon {
+    position: absolute;
+    left: 50%;
+    top: -40px;
+    transform: translateX(-50%); /* To center horizontally */
+    height: 40px; /* Set an appropriate height */
+    width: 40px; /* Set an appropriate width */
+    /* background-image: url('images/icons8-clothes-50.png'); */
+    background-size: cover;
+    opacity: 1; /* Ensure it's fully visible */
+    animation: carAnimation 2s ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+  
+  @keyframes fallFromTop {
+    0% {
+      top: -40px;
+    }
+    100% {
+      top: 10px;
+    }
+  }
+  
+  /* Đảm bảo rằng văn bản không bị thu nhỏ */
+  .add-to-cart-button .text {
+    display: block;
+    transition: opacity 0.5s;
+  }
+  

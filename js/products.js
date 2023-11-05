@@ -69,11 +69,15 @@ if (window.location.search) {
 
 
 
-function changeProductImage(productId, imageUrl) {
+function changeProductImage(productId, imageUrl, productName, productPrice) {
     const productImage = document.getElementById('product-image-' + productId);
     if (imageUrl) {
         productImage.src = imageUrl;
     }
+
+    // Hiển thị tên sản phẩm và giá
+    const productInfoElement = document.getElementById('product-info');
+    productInfoElement.innerHTML = `Tên sản phẩm: ${productName}<br>Gía: ${productPrice}`;
 }
 
 function resetProductImage(productId, imageUrl) {
@@ -81,6 +85,10 @@ function resetProductImage(productId, imageUrl) {
     if (imageUrl) {
         productImage.src = imageUrl;
     }
+
+    // Đặt lại thông tin sản phẩm
+    const productInfoElement = document.getElementById('product-info');
+    productInfoElement.innerHTML = '';
 }
 
 

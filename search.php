@@ -207,7 +207,7 @@ if (isset($_GET['searchTerm'])) {
             echo '</div>';
         }
     }
-}      
+}       
 ?>
 <!DOCTYPE html>
 <html>

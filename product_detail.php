@@ -158,48 +158,83 @@ for ($i = 1; $i <= 5; $i++) {  // Thay đổi số lượng tùy theo nhu cầu
 // Thêm các tùy chọn số lượng khác tại đây
 echo '</select>';
 
-        
-            // Thêm nút "Thêm vào giỏ hàng"
-            echo '<button id="addToCartButton" onclick="addToCart(\'' . $productDetail['ten_san_pham'] . '\', ' . $productDetail['gia'] . ', ' . $productDetail['id_color'] . ', \'' . $productDetail['link_hinh_anh'] . '\', \'' . $id_product . '\')">Thêm vào giỏ hàng</button>';
-        }
+// Echo the "Thêm vào giỏ hàng" button
+echo '<button id="addToCartButton" class="add-to-cart-button" onclick="addToCart(\'' . $productDetail['ten_san_pham'] . '\', ' . $productDetail['gia'] . ', ' . $productDetail['id_color'] . ', \'' . $productDetail['link_hinh_anh'] . '\', \'' . $id_product . '\')">
+<span class="text">Thêm vào giỏ hàng</span>
+<i class="cart-icon fa-solid fa-cart-shopping"></i>
+<div class="shirt-icon">
+  <img src="images/icons8-clothes-50.png" alt="Áo" />
+</div>
+</button>';
+
+      }
         ?>
     </div>
     <footer>
     </footer>
-    <div id="imageModal" class="modal">
+    <!-- <div id="imageModal" class="modal">
         <span class="closeModal" onclick="closeModal()">&times;</span>
         <img id="modalImage" src="" alt="Ảnh lớn" class="modal-content">
-    </div>
+    </div> -->
 
     <script>
-    function addToCart(ten_san_pham, gia, id_color, link_hinh_anh, id_product) {
-        var size = document.getElementById('size').value; // Lấy giá trị size đã chọn
-        var quantity = document.getElementById('quantity').value; // Lấy giá trị số lượng đã chọn
+function addToCart(ten_san_pham, gia, id_color, link_hinh_anh, id_product) {
+  var size = document.getElementById('size').value;
+  var quantity = document.getElementById('quantity').value;
 
-        var message = "Đã thêm sản phẩm vào giỏ hàng. Size: " + size + ", Số lượng: " + quantity;
-        alert(message);
+  var xhttp = new XMLHttpRequest();
 
-        // Tạo một đối tượng XMLHttpRequest
-        var xhttp = new XMLHttpRequest();
+  xhttp.open('POST', 'add.php', true);
 
-        // Xác định phương thức POST và đường dẫn đến trang 'add.php'
-        xhttp.open("POST", "add.php", true);
+  xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-        // Thiết lập tiêu đề yêu cầu
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  var data =
+    'ten_san_pham=' +
+    encodeURIComponent(ten_san_pham) +
+    '&gia=' +
+    gia +
+    '&id_color=' +
+    id_color +
+    '&link_hinh_anh=' +
+    encodeURIComponent(link_hinh_anh) +
+    '&id_product=' +
+    id_product +
+    '&size=' +
+    size +
+    '&quantity=' +
+    quantity;
 
-        // Định dạng dữ liệu sản phẩm
-        var data = "ten_san_pham=" + encodeURIComponent(ten_san_pham) + "&gia=" + gia + "&id_color=" + id_color + "&link_hinh_anh=" + encodeURIComponent(link_hinh_anh) + "&id_product=" + id_product + "&size=" + size + "&quantity=" + quantity;
+  const button = document.getElementById('addToCartButton');
+  const cartIcon = button.querySelector('.cart-icon');
+  const text = button.querySelector('.text');
+  const shirtIcon = button.querySelector('.shirt-icon');
 
-        xhttp.onreadystatechange = function() {
-            if (xhttp.readyState == 4 && xhttp.status == 200) {
-                // Xử lý phản hồi từ trang 'add.php' ở đây (nếu cần)
-            }
-        };
+  // Ẩn văn bản "Thêm vào giỏ hàng" bằng opacity
+  text.style.opacity = 0;
 
-        // Gửi dữ liệu sản phẩm đến trang 'add.php'
-        xhttp.send(data);
+  cartIcon.style.transition = 'left 4s';
+  cartIcon.style.left = '100%';
+
+  // Bắt đầu sự kiện rơi của chiếc áo
+  shirtIcon.style.animation = 'fallFromTop 2s ease-in-out';
+  shirtIcon.style.animationFillMode = 'forwards';
+
+  setTimeout(function () {
+    button.classList.remove('clicked');
+    cartIcon.style.transition = 'left 0s';
+    cartIcon.style.left = '0';
+
+    // Hiển thị văn bản lại bằng opacity
+    text.style.opacity = 1;
+  }, 4000);
+
+  xhttp.onreadystatechange = function () {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
     }
+  };
+
+  xhttp.send(data);
+}
 </script>
 </body>
 </html>

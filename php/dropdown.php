@@ -1,4 +1,6 @@
 <?php
+require_once('php/db_connection.php');
+
 $selectedCategory = isset($_GET['ID_DM']) ? $_GET['ID_DM'] : null;
 $selectedSubcategory = isset($_GET['loaisanpham']) ? $_GET['loaisanpham'] : null;
 $id_product = isset($_GET['id_product']) ? $_GET['id_product'] : null;
