@@ -56,24 +56,33 @@ document.getElementById('district').addEventListener('change', function () {
 $(document).ready(function () {
     $(document).on("click", ".delete-button", function () {
         const productId = $(this).data("id_product");
-        const colorId = $(this).data("id_color"); // Lấy giá trị id_color từ nút
+        const colorId = $(this).data("id_color");
+        const size = $(this).data("size");
 
-        // Gửi yêu cầu AJAX với cả id_product và id_color
+        // Gửi yêu cầu AJAX với cả id_product, id_color, và size
         $.ajax({
             type: "POST",
             url: "xoa.php",
-            data: { delete_product: 1, id_product_to_delete: productId, id_color_to_delete: colorId },
+            data: { 
+                delete_product: 1, 
+                id_product_to_delete: productId, 
+                id_color_to_delete: colorId, 
+                size_to_delete: size 
+            },
             success: function (response) {
-                // Kiểm tra xem phản hồi có cho biết xóa thành công không
-                if (response === "success") {
-                    // Loại bỏ sản phẩm khỏi DOM
-                    $(".product[data-id_product=" + productId + "]").remove();
-                    $(".product[data-id_color=" + colorId + "]").remove();
+                try {
+                    const responseData = JSON.parse(response);
 
-                    // Cập nhật tổng giá
-                    updateTotalPrice();
-                } else {
-                    console.error("Xóa sản phẩm thành công.");
+                    if (responseData.status === "success") {
+                        // Loại bỏ sản phẩm khỏi DOM
+                        $(".product[data-id_product=" + productId + "][data-id_color=" + colorId + "][data-size=" + size + "]").remove();
+                        // Cập nhật tổng giá
+                        updateTotalPrice();
+                    } else {
+                        console.error("Xóa sản phẩm không thành công. Response:", responseData);
+                    }
+                } catch (error) {
+                    console.error("Lỗi trong quá trình xử lý phản hồi JSON:", error);
                 }
             },
             error: function () {
@@ -81,8 +90,6 @@ $(document).ready(function () {
             }
         });
     });
-
-
 
     function updateTotalPrice() {
         // Tính tổng giá dựa trên số sản phẩm còn lại trong giỏ hàng

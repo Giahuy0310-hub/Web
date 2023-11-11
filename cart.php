@@ -1,6 +1,8 @@
 <?php
 require_once('php/db_connection.php');
 
+$selectedQuantity = isset($item['quantity']) ? $item['quantity'] : '';
+
 if (isset($_POST['submit'])) {
     $fullname = isset($_POST['fullname']) ? $_POST['fullname'] : '';
     $phone = isset($_POST['phone']) ? $_POST['phone'] : '';
@@ -62,6 +64,10 @@ if ($result->num_rows > 0) {
     }
 }
 ?>
+
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -206,7 +212,6 @@ if ($result->num_rows > 0) {
             <legend>Giỏ hàng của bạn</legend>
             <?php
             $totalPrice = 0;
-
             if (isset($cartItems) && is_array($cartItems)) :
                 foreach ($cartItems as $item) :
                     // Calculate the subtotal for each item
@@ -215,74 +220,60 @@ if ($result->num_rows > 0) {
                     // Add the subtotal to the total price
                     $totalPrice += $subtotal;
             ?>
-                <div class="body_products product" data-id_product="<?= $item['id_product'] ?>">
-                    <img src="<?= $item['link_hinh_anh'] ?>" alt="<?= $item['ten_san_pham'] ?>">
-                    <div class="product_group">
-                        <div class="product_content">
-                            <h4><?= $item['ten_san_pham'] ?></h4>
-                            <span><?= number_format($item['gia'], 0, ',', '.') ?> VNĐ</span>
-                            <strong> x </strong>
-                            <span><?= isset($item['quantity']) ? $item['quantity'] : '0' ?></span>
-                            =
-                            <span style="color: brown;">
-                                <?= number_format($subtotal, 0, ',', '.') ?> VNĐ
-                            </span>
-                        </div>
-                        <div class="product_selection">
-                            <select name="size">
-                                <?php
-                                // Thực hiện truy vấn SQL để lấy danh sách kích thước từ bảng 'products'
-                                $sql = "SELECT DISTINCT p.size_s, p.size_M, p.size_L, p.size_XL
-                                FROM products p, giohang5 g
-                                WHERE p.id_product = g.id_product
-                                AND p.id_product = ?
-                                AND p.id_color = ?";
-
-                                $stmt = $conn->prepare($sql);
-                                $stmt->bind_param('ii', $idProduct, $idColor);
-
-                                $idProduct = $item['id_product'];
-                                $idColor = $item['id_color'];
-
-                                $stmt->execute();
-                                $result = $stmt->get_result();
-
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo '<option value="' . $row['size_s'] . '">Size S</option>';
-                                        echo '<option value="' . $row['size_M'] . '">Size M</option>';
-                                        echo '<option value="' . $row['size_L'] . '">Size L</option>';
-                                        echo '<option value="' . $row['size_XL'] . '">Size XL</option>';
-                                    }
-                                } else {
-                                    echo '<option>Size Not Available</option>';
-                                }
-                                ?>
-                            </select>
-                            x
-                            <select name="quantity" id="quantityDropdown">
-                                <?php
-                                // Số lượng tối đa
-                                $maxQuantity = 10;
-
-                                // Số lượng đã chọn (mặc định là 1 nếu không có giá trị)
-                                $selectedQuantity = isset($item['quantity']) ? $item['quantity'] : 1;
-
-                                // Tạo các tùy chọn cho dropdown từ 1 đến số lượng tối đa
-                                for ($i = 1; $i <= $maxQuantity; $i++) {
-                                    $selected = ($i == $selectedQuantity) ? 'selected' : '';
-                                    echo '<option value="' . $i . '" ' . $selected . '>' . $i . '</option>';
-                                }
-                                ?>
-                            </select>
-                            <button class="delete-button" data-id_product="<?= $item['id_product'] ?>" data-id_color="<?= $item['id_color'] ?>">Xóa</button>
-                        </div>
+            <div class="body_products product" data-id_product="<?= $item['id_product'] ?>">
+                <img src="<?= $item['link_hinh_anh'] ?>" alt="<?= $item['ten_san_pham'] ?>">
+                <div class="product_group">
+                    <div class="product_content">
+                        <h4><?= $item['ten_san_pham'] ?></h4>
+                        <span><?= number_format($item['gia'], 0, ',', '.') ?> VNĐ</span>
+                        <strong> x </strong>
+                        <span><?= isset($item['quantity']) ? $item['quantity'] : '0' ?></span>
+                        =
+                        <span style="color: brown;">
+                            <?= number_format($subtotal, 0, ',', '.') ?> VNĐ
+                        </span>
                     </div>
+                    <div class="product_selection">
+    <select name="size" class="size-dropdown">
+        <?php
+        $size = $item['size']; 
+        echo '<option value="' . $size . '">Size ' . strtoupper($size) . '</option>';
+        ?>
+    </select>
+
+    x
+
+    <select name="quantity" class="quantity-dropdown" data-id-product="<?= $item['id_product'] ?>" data-id-color="<?= $item['id_color'] ?>" data-size="<?= $item['size'] ?>" data-selected-quantity="<?= $selectedQuantity ?>">
+    <?php
+    $sql = "SELECT quantity FROM giohang5 WHERE id_product = ? AND id_color = ? and size = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('iis', $item['id_product'], $item['id_color'], $item['size']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $quantity = $row['quantity'];
+
+            echo '<option value="' . $quantity . '" ' . ($quantity == $selectedQuantity ? 'selected' : '') . '>';
+            echo  $quantity ;
+            echo '</option>';
+        }
+    } else {
+        echo '<option value="" disabled>No quantities available</option>';
+    }
+    ?>
+</select>
+
+
+                    <button class="delete-button" data-id_product="<?= $item['id_product'] ?>" data-id_color="<?= $item['id_color'] ?>" data-size="<?= $item['size'] ?>">Xóa</button>
                 </div>
-            <?php
-                endforeach;
-            endif;
-            ?>
+            </div>
+        </div>
+    <?php
+        endforeach;
+    endif;
+    ?>
             <div class="product_total">
                 <legend>Tổng:</legend>
                 <div>
