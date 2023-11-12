@@ -86,7 +86,7 @@ function getColorsForProduct($conn, $productId) {
                             WHERE p.id_product = ?";
 
     $stmt = $conn->prepare($sqlColorsForProduct);
-    $stmt->bind_param('i', $productId);
+    $stmt->bind_param('s', $productId);
     $stmt->execute();
     $resultColorsForProduct = $stmt->get_result();
     $colors = [];

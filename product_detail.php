@@ -4,31 +4,35 @@ require_once('php/db_connection.php');
 $id_product = isset($_GET['id_product']) ? $_GET['id_product'] : null;
 $color_id = isset($_GET['color_id']) ? $_GET['color_id'] : null;
 
-if (!is_numeric($id_product) || !is_numeric($color_id) || $id_product <= 0 || $color_id <= 0) {
+// Validate input
+if (empty($id_product) || !is_numeric($color_id) || $color_id <= 0) {
     echo "Không có sản phẩm được chọn hoặc giá trị không hợp lệ.";
     exit;
 }
 
 // Thêm phần truy vấn size và quantity vào mã của bạn
-$sqlProductDetail = "SELECT p.*, c.tenmau, c.hex_color, AVG(pr.rating) as sao, COUNT(pr.rating) as so_danh_gia, p.size_S, p.size_M, p.size_L
+$sqlProductDetail = "SELECT p.*, c.tenmau, c.hex_color,p.size_S, p.size_M, p.size_L
 FROM products p
 LEFT JOIN color c ON p.id_color = c.id_color
-LEFT JOIN product_reviews pr ON p.id_product = pr.product_id
 WHERE p.id_product = ? AND c.id_color = ?
 GROUP BY p.id_product";
 
 $stmt = $conn->prepare($sqlProductDetail);
-$stmt->bind_param('ii', $id_product, $color_id);
+
+// Bind parameters
+$stmt->bind_param('si', $id_product, $color_id);
 
 $stmt->execute();
 $resultProductDetail = $stmt->get_result();
 
 if ($resultProductDetail->num_rows > 0) {
     $productDetail = $resultProductDetail->fetch_assoc();
+    print_r($productDetail);  // Add this line for debugging
 } else {
-    echo "Sản phẩm không tồn tại hoặc không có sẵn trong màu sắc này.";
+    echo "Không tìm thấy thông tin cho sản phẩm hoặc màu sắc đã chọn.";
     exit;
 }
+
 
 
 $selectedCategory = isset($_GET['ID_DM']) ? $_GET['ID_DM'] : null;
@@ -87,16 +91,7 @@ if (empty($loaisanphamList)) {
         </div>
     </div>
 </br>
-<ul class="centered-list">
-    <?php
-    // Hiển thị danh mục sản phẩm (loaisanpham hoặc tendanhmuc)
-    if (!empty($loaisanphamList)) {
-        foreach ($loaisanphamList as $loaisanpham) {
-            echo "<li>" . htmlspecialchars($loaisanpham) . "</li>";
-        }
-    }
-    ?>
-</ul>
+
 
 
     <div class="product-detail-container">

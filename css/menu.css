@@ -143,10 +143,10 @@ a.category-button {
         justify-content: center;
         gap: 10px;
         background-color: transparent;
-        padding: 8px;
-        width: 150px;
+        padding: 0.1px;
+        width: 140px;
         text-align: center;
-        color: black;
+        color: rgb(200, 9, 9);
         cursor: pointer;
         transition: background-color 0.2s;
         display: inline-block;
@@ -171,7 +171,7 @@ a.category-button {
     
     .category-button:hover::before {
         transform: scaleX(1);
-        background-color: #534040;
+        background-color: #afafaf;
     }
     
 /* Existing styles */

@@ -1,37 +1,40 @@
--- Tạo cơ sở dữ liệu "project"
-CREATE DATABASE project9;
-
 -- Sử dụng cơ sở dữ liệu "project"
-USE project9;
+USE project129;
 
--- Tạo bảng "product_id"
+
+CREATE TABLE login (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fullname VARCHAR(255),
+    phone_number VARCHAR(20),
+    email VARCHAR(255),
+    password VARCHAR(255)
+);
+
 CREATE TABLE product_id (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    id_product CHAR(20) UNIQUE
+    id_product CHAR(15) UNIQUE
+
 );
 
--- Tạo bảng "categories"
-CREATE TABLE categories (
-    id_dm INT AUTO_INCREMENT PRIMARY KEY,
-    TenDanhMuc NVARCHAR(255)
-);
-
--- Tạo bảng "color"
 CREATE TABLE color (
     id_color INT AUTO_INCREMENT PRIMARY KEY,
-    tenmau NVARCHAR(255),
-    hex_color VARCHAR(7) -- Ví dụ: Mã màu HEX (#RRGGBB)
+    tenmau VARCHAR(255),
+    hex_color VARCHAR(7)
 );
 
--- Tạo bảng "products"
+CREATE TABLE categories (
+    id_dm INT AUTO_INCREMENT PRIMARY KEY,
+    TenDanhMuc VARCHAR(255) UNIQUE
+);
+
 CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    id_product INT,
-    id_dm INT,
+    id_product CHAR(15),
     id_color INT,
-    ten_san_pham NVARCHAR(255),
+    id_dm INT,
+    ten_san_pham VARCHAR(255),
     link_hinh_anh TEXT,
-    loaisanpham nchar(20),
+    loaisanpham CHAR(20),
     gia INT,
     img1 TEXT,
     img2 TEXT,
@@ -39,27 +42,14 @@ CREATE TABLE products (
     img4 TEXT,
     rating DECIMAL(3, 2),
     so_danh_gia INT,
+    so_luong_da_ban INT,
+    size_S INT,
+    size_M INT,
+    size_L INT,
+    size_XL INT,
     FOREIGN KEY (id_color) REFERENCES color(id_color),
-    FOREIGN KEY (id_product) REFERENCES product_id(id_product),
-    FOREIGN KEY (id_dm) REFERENCES categories(id_dm)
-);
-
--- Tạo bảng "product_color"
-CREATE TABLE product_color (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_product INT,
-    id_color INT,
-    FOREIGN KEY (id_product) REFERENCES product_id(id),
-    FOREIGN KEY (id_color) REFERENCES color(id_color)
-);
-
--- Tạo bảng "login"
-CREATE TABLE login (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    fullname NVARCHAR(255),
-    phone_number VARCHAR(20),
-    email VARCHAR(255),
-    password VARCHAR(255)
+    FOREIGN KEY (id_dm) REFERENCES categories(id_dm),
+    FOREIGN KEY (id_product) REFERENCES product_id(id_product)
 );
 
 CREATE TABLE DonHang (
@@ -72,35 +62,33 @@ CREATE TABLE DonHang (
     quan_huyen VARCHAR(100),
     tinh_thanh VARCHAR(100),
     ghichu TEXT,
-    totalPrice float
-    date 
+    totalPrice FLOAT,
+    date TIMESTAMP
 );
 
-
-create table chitietdonhang
-(
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        id_donhang INT,
-    	ten_san_pham text,
-    	id_product char(20),
-    	id_color int,
-    	gia int,
-    	size char(10),
-    	quantity int,
-        link_hinh_anh text,
-		FOREIGN KEY (id_color) REFERENCES color(id_color),
-        FOREIGN KEY (id_product) REFERENCES product_id(id_product),
-    	FOREIGN KEY (id_donhang) REFERENCES DonHang(id)
-)
+CREATE TABLE chitietdonhang (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_donhang INT,
+    ten_san_pham TEXT,
+    id_product CHAR(15),
+    id_color INT,
+    gia INT,
+    size CHAR(10),
+    quantity INT,
+    link_hinh_anh TEXT,
+    FOREIGN KEY (id_color) REFERENCES color(id_color),
+    FOREIGN KEY (id_product) REFERENCES product_id(id_product),
+    FOREIGN KEY (id_donhang) REFERENCES DonHang(id)
+);
 
 CREATE TABLE giohang (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nguoidung_id INT,
-    id_product int ,
-    ten_san_pham text,
-    id_color int,
-    size char(10),
-    gia DECIMAL(10, 2), 
+    id_product CHAR(15),
+    ten_san_pham TEXT,
+    id_color INT,
+    size CHAR(10),
+    gia DECIMAL(10, 2),
     quantity INT,
     link_hinh_anh TEXT,
     FOREIGN KEY (id_product) REFERENCES product_id(id_product),
@@ -108,6 +96,14 @@ CREATE TABLE giohang (
     FOREIGN KEY (id_color) REFERENCES color(id_color)
 );
 
+
+CREATE TABLE product_color (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_product char(15),
+    id_color INT,
+    FOREIGN KEY (id_product) REFERENCES product_id(id_product),
+    FOREIGN KEY (id_color) REFERENCES color(id_color)
+);
 
 CREATE TABLE `province` (
   `province_id` int NOT NULL,
@@ -133,9 +129,16 @@ ALTER TABLE wards ADD FOREIGN KEY (`district_id`) REFERENCES district(`district_
 
 https://drive.google.com/file/d/1yXm76S6_ofiDpN0sVNSUcWxauSWDX8hE/view
 
+INSERT into categories (TenDanhMuc) VALUES ('Quần');
+INSERT into categories (TenDanhMuc) VALUES ('Áo');
+INSERT into categories (TenDanhMuc) VALUES ('Giày');
+INSERT into categories (TenDanhMuc) VALUES ('Dép');
+INSERT into categories (TenDanhMuc) VALUES ('Thắt lưng');
 
-
-
+insert into color (tenmau,hex_color) VALUES ('xanh dương','#99ccff');
+insert into color (tenmau,hex_color) VALUES ('hồng','#ff99ff');
+insert into color (tenmau,hex_color) VALUES ('cam','#ff9900');
+insert into color (tenmau,hex_color) VALUES ('đỏ','#ff0000');
 
 https://getcomposer.org/download/
 

@@ -1,72 +1,157 @@
 <?php
 require_once('php/db_connection.php');
 
-$selectedQuantity = isset($item['quantity']) ? $item['quantity'] : '';
-
-if (isset($_POST['submit'])) {
-    $fullname = isset($_POST['fullname']) ? $_POST['fullname'] : '';
-    $phone = isset($_POST['phone']) ? $_POST['phone'] : '';
-    $email = isset($_POST['email']) ? $_POST['email'] : '';
-    $address = isset($_POST['address']) ? $_POST['address'] : '';
-    $province = isset($_POST['province']) ? $_POST['province'] : '';
-    $district = isset($_POST['district']) ? $_POST['district'] : '';
-    $wards = isset($_POST['wards']) ? $_POST['wards'] : '';
-    $note = isset($_POST['note']) ? $_POST['note'] : '';
-    $totalPrice = isset($_POST['totalPrice']) ? $_POST['totalPrice'] : 0;
-
-
-    $conn->begin_transaction();
-
-    $sqlInsertIntoDonHang = "INSERT INTO DonHang (hoten, sodienthoai, email, sonha_duong, tinh_thanh, quan_huyen, phuong_xa, ghichu, totalPrice, date)
-    VALUES (?, ?, ?, ?, (SELECT name FROM province WHERE province_id = ? LIMIT 1), (SELECT name FROM district WHERE district_id = ? LIMIT 1), (SELECT name FROM wards WHERE wards_id = ? LIMIT 1), ?, ?, ?)";
-
-$stmtInsertIntoDonHang = $conn->prepare($sqlInsertIntoDonHang);
-$stmtInsertIntoDonHang->bind_param("ssssssssds", $fullname, $phone, $email, $address, $province, $district, $wards, $note, $totalPrice, $date);
-
-
-
-    if ($stmtInsertIntoDonHang->execute()) {
-        $donHangId = $stmtInsertIntoDonHang->insert_id;
-
-        $sqlCopyToDonHang = "INSERT INTO chitietdonhang (id_donhang, id_product, id_color, size, quantity, gia, link_hinh_anh, ten_san_pham)
-            SELECT ?, id_product, id_color, size, quantity, gia, link_hinh_anh, ten_san_pham FROM giohang5";
-        $stmtCopyToDonHang = $conn->prepare($sqlCopyToDonHang);
-        $stmtCopyToDonHang->bind_param("i", $donHangId);
-        $stmtCopyToDonHang->execute();
-
-        $sqlDeleteFromCart = "DELETE FROM giohang5";
-        $conn->query($sqlDeleteFromCart);
-
-        $conn->commit();
-
-        $successMessage = "Đơn hàng đã được đặt thành công!";
-    } else {
-        // Handle errors
-        echo "Lỗi: " . $stmtInsertIntoDonHang->error;
-
-    }
-}
-
-
 // Fetch provinces for dropdown
 $sqlProvince = "SELECT * FROM province";
 $resultProvince = $conn->query($sqlProvince);
 
 // Fetch cart items
-$sql = "SELECT * FROM giohang5";
-$result = $conn->query($sql);
+$sqlCart = "SELECT * FROM giohang";
+$resultCart = $conn->query($sqlCart);
 
 $cartItems = array();
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
+if ($resultCart->num_rows > 0) {
+    while ($row = $resultCart->fetch_assoc()) {
         $cartItems[] = $row;
     }
 }
+
+// Check if the form is submitted
+if (isset($_POST['submit'])) {
+    // Check all required fields in $_POST to ensure they exist and are not empty
+    $requiredFields = ['fullname', 'phone', 'email', 'address', 'province', 'district', 'wards', 'note', 'totalPrice'];
+    $validData = true;
+
+    foreach ($requiredFields as $field) {
+        if (!isset($_POST[$field]) || empty($_POST[$field])) {
+            $validData = false;
+            break;
+        }
+    }
+
+    if ($validData) {
+        $fullname = $_POST['fullname'];
+        $phone = $_POST['phone'];
+        $email = $_POST['email'];
+        $address = $_POST['address'];
+        $province = $_POST['province'];
+        $district = $_POST['district'];
+        $wards = $_POST['wards'];
+        $note = $_POST['note'];
+        $totalPrice = $_POST['totalPrice'];
+
+        $conn->begin_transaction();
+
+        // Assuming $date is declared and assigned somewhere
+        $date = date("Y-m-d H:i:s");
+
+        if (createOrder($conn, $fullname, $phone, $email, $address, $province, $district, $wards, $note, $totalPrice, $date, $cartItems)) {
+            $successMessage = "Đơn hàng đã được đặt thành công! Số đơn hàng của bạn là: " . $donHangId . ". Tổng tiền: " . $totalPrice . ". Thời gian đặt hàng: " . $date;
+        } else {
+            // Handle errors
+            echo "Lỗi: Không thể tạo đơn hàng.";
+        }
+    } else {
+        // Handle errors
+        echo "Lỗi: Dữ liệu không hợp lệ.";
+    }
+}
+
+function createOrder($conn, $fullname, $phone, $email, $address, $province, $district, $wards, $note, $totalPrice, $date, $cartItems) {
+    $sqlInsertIntoDonHang = "INSERT INTO DonHang (hoten, sodienthoai, email, sonha_duong, tinh_thanh, quan_huyen, phuong_xa, ghichu, totalPrice, date)
+        VALUES (?, ?, ?, ?, (SELECT name FROM province WHERE province_id = ? LIMIT 1), (SELECT name FROM district WHERE district_id = ? LIMIT 1), (SELECT name FROM wards WHERE wards_id = ? LIMIT 1), ?, ?, ?)";
+
+    $stmtInsertIntoDonHang = $conn->prepare($sqlInsertIntoDonHang);
+    $stmtInsertIntoDonHang->bind_param("ssssssssds", $fullname, $phone, $email, $address, $province, $district, $wards, $note, $totalPrice, $date);
+
+    if ($stmtInsertIntoDonHang->execute()) {
+        $donHangId = $stmtInsertIntoDonHang->insert_id;
+
+        // Initialize an array to store total quantities for each size
+        $totalQuantities = ['S' => 0, 'M' => 0, 'L' => 0, 'XL' => 0];
+
+        // Calculate total quantities for each size
+        foreach ($cartItems as $item) {
+            $totalQuantities[$item['size']] += (int) $item['quantity'];
+        }
+
+        // Update quantity for each size
+        $sqlUpdateQuantity = "UPDATE products 
+            SET size_S = GREATEST(0, size_S - ?)
+            WHERE id_product = ? AND id_color = ?";
+
+        $stmtUpdateQuantityS = $conn->prepare($sqlUpdateQuantity);
+
+        $sqlUpdateQuantity = "UPDATE products 
+            SET size_M = GREATEST(0, size_M - ?)
+            WHERE id_product = ? AND id_color = ?";
+
+        $stmtUpdateQuantityM = $conn->prepare($sqlUpdateQuantity);
+
+        $sqlUpdateQuantity = "UPDATE products 
+            SET size_L = GREATEST(0, size_L - ?)
+            WHERE id_product = ? AND id_color = ?";
+
+        $stmtUpdateQuantityL = $conn->prepare($sqlUpdateQuantity);
+
+        $sqlUpdateQuantity = "UPDATE products 
+            SET size_XL = GREATEST(0, size_XL - ?)
+            WHERE id_product = ? AND id_color = ?";
+
+        $stmtUpdateQuantityXL = $conn->prepare($sqlUpdateQuantity);
+
+        // Loop through cart items and execute the corresponding update statement for each size
+        foreach ($cartItems as $item) {
+            switch ($item['size']) {
+                case 'S':
+                    $stmtUpdateQuantityS->bind_param("iii", $item['quantity'], $item['id_product'], $item['id_color']);
+                    $stmtUpdateQuantityS->execute();
+                    break;
+                case 'M':
+                    $stmtUpdateQuantityM->bind_param("iii", $item['quantity'], $item['id_product'], $item['id_color']);
+                    $stmtUpdateQuantityM->execute();
+                    break;
+                case 'L':
+                    $stmtUpdateQuantityL->bind_param("iii", $item['quantity'], $item['id_product'], $item['id_color']);
+                    $stmtUpdateQuantityL->execute();
+                    break;
+                case 'XL':
+                    $stmtUpdateQuantityXL->bind_param("iii", $item['quantity'], $item['id_product'], $item['id_color']);
+                    $stmtUpdateQuantityXL->execute();
+                    break;
+            }
+            $sqlIncrementSoldQuantity = "UPDATE products 
+        SET so_luong_da_ban = so_luong_da_ban + ? 
+        WHERE id_product = ? AND id_color = ?";
+    
+    $stmtIncrementSoldQuantity = $conn->prepare($sqlIncrementSoldQuantity);
+    $stmtIncrementSoldQuantity->bind_param("iii", $item['quantity'], $item['id_product'], $item['id_color']);
+    $stmtIncrementSoldQuantity->execute();
+        }
+
+        // Insert order details
+        $sqlCopyToDonHang = "INSERT INTO chitietdonhang (id_donhang, id_product, id_color, size, quantity, gia, link_hinh_anh, ten_san_pham)
+            SELECT ?, id_product, id_color, size, quantity, gia, link_hinh_anh, ten_san_pham FROM giohang";
+        $stmtCopyToDonHang = $conn->prepare($sqlCopyToDonHang);
+        $stmtCopyToDonHang->bind_param("i", $donHangId);
+        $stmtCopyToDonHang->execute();
+
+        
+        // Clear the cart
+        $sqlDeleteFromCart = "DELETE FROM giohang";
+        $conn->query($sqlDeleteFromCart);
+
+        $conn->commit();
+
+        return true;
+    } else {
+        // Handle errors
+        return false;
+    }
+}
+
 ?>
-
-
-
 
 
 <!DOCTYPE html>
@@ -245,7 +330,7 @@ if ($result->num_rows > 0) {
 
     <select name="quantity" class="quantity-dropdown" data-id-product="<?= $item['id_product'] ?>" data-id-color="<?= $item['id_color'] ?>" data-size="<?= $item['size'] ?>" data-selected-quantity="<?= $selectedQuantity ?>">
     <?php
-    $sql = "SELECT quantity FROM giohang5 WHERE id_product = ? AND id_color = ? and size = ?";
+    $sql = "SELECT quantity FROM giohang WHERE id_product = ? AND id_color = ? and size = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('iis', $item['id_product'], $item['id_color'], $item['size']);
     $stmt->execute();
@@ -264,8 +349,6 @@ if ($result->num_rows > 0) {
     }
     ?>
 </select>
-
-
                     <button class="delete-button" data-id_product="<?= $item['id_product'] ?>" data-id_color="<?= $item['id_color'] ?>" data-size="<?= $item['size'] ?>">Xóa</button>
                 </div>
             </div>

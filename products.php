@@ -119,7 +119,7 @@ function getColorsForProduct($conn, $productId) {
                             WHERE p.id_product = ?";
 
     $stmt = $conn->prepare($sqlColorsForProduct);
-    $stmt->bind_param('i', $productId);
+    $stmt->bind_param('s', $productId);
     $stmt->execute();
     $resultColorsForProduct = $stmt->get_result();
     $colors = [];
@@ -171,9 +171,12 @@ function getColorsForProduct($conn, $productId) {
     <div id="product-info">
         <div class="product-container">
             <?php
-            foreach ($productList as $product) {
-                $productId = $product['id_product'];
-                $colors = $product['colors'];
+           foreach ($productList as $product) {
+            $productId = $product['id_product'];
+            $colors = $product['colors'];
+        
+            // Check if $colors is not empty before accessing its elements
+            if (!empty($colors) && isset($colors[0]['id_color'])) {
                 echo '<div class="product">';
                 echo '<a href="product_detail.php?id_product=' . $productId . '&color_id=' . $colors[0]['id_color'] . '">';
                 echo '<img id="product-image-' . $productId . '" src="' . $colors[0]['link_hinh_anh'] . '" alt="' . $product['ten_san_pham'] . '">';
@@ -192,6 +195,7 @@ function getColorsForProduct($conn, $productId) {
                 echo '</a>';
                 echo '</div>';
             }
+        }
             ?>
         </div>
     </div>
