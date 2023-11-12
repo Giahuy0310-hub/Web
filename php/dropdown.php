@@ -95,6 +95,8 @@ foreach ($categoryList as $category) {
     </div>
     <a href="#"><i class="fa-regular fa-user"></i></a>
     <a href="cart.php"><i class="fa-solid fa-cart-shopping"></i></a>
+    <a href="logout.php" class="logout-button"><i class="fa-solid fa-sign-out"></i></a>
+
 </div>
 
 <script>

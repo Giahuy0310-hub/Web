@@ -1,13 +1,45 @@
 <?php
+session_start();
+
 require_once('php/db_connection.php');
+
+$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+
+
+
+if (!$user_id) {
+    // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
+    header("Location: login.html");
+    exit;
+}
+
+// Kiểm tra người dùng trong bảng login
+$sqlCheckUser = "SELECT * FROM login WHERE id = ?";
+$stmtCheckUser = $conn->prepare($sqlCheckUser);
+$stmtCheckUser->bind_param('i', $user_id);
+$stmtCheckUser->execute();
+$resultCheckUser = $stmtCheckUser->get_result();
+
+if ($resultCheckUser->num_rows > 0) {
+    // Người dùng tồn tại trong bảng login
+    // Tiếp tục xử lý mã của bạn
+} else {
+    echo "Người dùng không tồn tại.";
+    exit;
+}
+
+$stmtCheckUser->close();
 
 // Fetch provinces for dropdown
 $sqlProvince = "SELECT * FROM province";
 $resultProvince = $conn->query($sqlProvince);
 
 // Fetch cart items
-$sqlCart = "SELECT * FROM giohang";
-$resultCart = $conn->query($sqlCart);
+$sqlCart = "SELECT * FROM giohang WHERE nguoidung_id = ?";
+$stmtCart = $conn->prepare($sqlCart);
+$stmtCart->bind_param('i', $user_id);
+$stmtCart->execute();
+$resultCart = $stmtCart->get_result();
 
 $cartItems = array();
 
@@ -17,7 +49,6 @@ if ($resultCart->num_rows > 0) {
     }
 }
 
-// Check if the form is submitted
 if (isset($_POST['submit'])) {
     // Check all required fields in $_POST to ensure they exist and are not empty
     $requiredFields = ['fullname', 'phone', 'email', 'address', 'province', 'district', 'wards', 'note', 'totalPrice'];
@@ -46,18 +77,18 @@ if (isset($_POST['submit'])) {
         // Assuming $date is declared and assigned somewhere
         $date = date("Y-m-d H:i:s");
 
-        if (createOrder($conn, $fullname, $phone, $email, $address, $province, $district, $wards, $note, $totalPrice, $date, $cartItems)) {
+        if (createOrder($conn, $fullname, $phone, $email, $address, $province, $district, $wards, $note, $totalPrice, $date, $cartItems, $user_id)) {
             $successMessage = "Đơn hàng đã được đặt thành công! Số đơn hàng của bạn là: " . $donHangId . ". Tổng tiền: " . $totalPrice . ". Thời gian đặt hàng: " . $date;
         } else {
             // Handle errors
             echo "Lỗi: Không thể tạo đơn hàng.";
+            $conn->rollback(); // Rollback the transaction
         }
     } else {
         // Handle errors
         echo "Lỗi: Dữ liệu không hợp lệ.";
     }
 }
-
 function createOrder($conn, $fullname, $phone, $email, $address, $province, $district, $wards, $note, $totalPrice, $date, $cartItems) {
     $sqlInsertIntoDonHang = "INSERT INTO DonHang (hoten, sodienthoai, email, sonha_duong, tinh_thanh, quan_huyen, phuong_xa, ghichu, totalPrice, date)
         VALUES (?, ?, ?, ?, (SELECT name FROM province WHERE province_id = ? LIMIT 1), (SELECT name FROM district WHERE district_id = ? LIMIT 1), (SELECT name FROM wards WHERE wards_id = ? LIMIT 1), ?, ?, ?)";
@@ -150,8 +181,8 @@ function createOrder($conn, $fullname, $phone, $email, $address, $province, $dis
         return false;
     }
 }
-
 ?>
+
 
 
 <!DOCTYPE html>
