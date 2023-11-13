@@ -215,7 +215,7 @@ function addToCart(ten_san_pham, gia, id_color, link_hinh_anh, id_product, user_
       // Ẩn văn bản "Thêm vào giỏ hàng" bằng opacity
       text.style.opacity = 0;
 
-      cartIcon.style.transition = 'left 4s';
+      cartIcon.style.transition = 'left 2s';
       cartIcon.style.left = '100%';
 
       // Bắt đầu sự kiện rơi của chiếc áo
@@ -229,7 +229,7 @@ function addToCart(ten_san_pham, gia, id_color, link_hinh_anh, id_product, user_
 
         // Hiển thị văn bản lại bằng opacity
         text.style.opacity = 1;
-      }, 4000);
+      }, 2000);
     }
   };
 

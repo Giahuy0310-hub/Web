@@ -36,7 +36,6 @@ $json_data = json_encode($data);
 <body>
     <!-- Adjust the size of the canvas -->
     <canvas id="myChart" width="400" height="200"></canvas>
-
     <script>
         // Lấy dữ liệu từ PHP và chuyển thành mảng JavaScript
         var data = <?php echo $json_data; ?>;
@@ -64,7 +63,9 @@ $json_data = json_encode($data);
                         'rgb(255, 99, 132)',
                         'rgb(54, 162, 235)',
                         'rgb(255, 205, 86)',
-                        'rgb(255, 205, 90)',
+                        'rgb(204, 255, 255)',
+                        'rgb(102, 0, 255)',
+                        'rgb(255, 153, 204)',
                         // Add more colors as needed
                     ],
                     hoverOffset: 4

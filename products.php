@@ -154,6 +154,7 @@ function getColorsForProduct($conn, $productId) {
     <a href="home.php"><img src="images/logo.png" alt=""></a>
     <div class="navbar_list"></div>
     <?php include('php/dropdown.php'); ?>
+</br>
     <form method="get" id="sort-form">
     <label for="sort1">Sắp xếp:</label>
     <select name="sort1" id="sort1">

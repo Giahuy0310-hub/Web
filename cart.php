@@ -77,7 +77,7 @@ if (isset($_POST['submit'])) {
         // Assuming $date is declared and assigned somewhere
         $date = date("Y-m-d H:i:s");
 
-        if (createOrder($conn, $fullname, $phone, $email, $address, $province, $district, $wards, $note, $totalPrice, $date, $cartItems, $user_id)) {
+        if (createOrder($conn, $fullname, $phone, $email, $address, $province, $district, $wards, $note, $totalPrice, $date, $cartItems)) {
             $successMessage = "Đơn hàng đã được đặt thành công! Số đơn hàng của bạn là: " . $donHangId . ". Tổng tiền: " . $totalPrice . ". Thời gian đặt hàng: " . $date;
         } else {
             // Handle errors
