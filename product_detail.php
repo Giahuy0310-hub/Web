@@ -186,10 +186,10 @@ if (empty($loaisanphamList)) {
 </div>
     <footer>
     </footer>
-    <!-- <div id="imageModal" class="modal">
+    <div id="imageModal" class="modal">
         <span class="closeModal" onclick="closeModal()">&times;</span>
         <img id="modalImage" src="" alt="Ảnh lớn" class="modal-content">
-    </div> -->
+    </div>
 
     <script>
 function addToCart(ten_san_pham, gia, id_color, link_hinh_anh, id_product, user_id) {

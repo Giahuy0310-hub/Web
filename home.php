@@ -44,7 +44,7 @@ while ($row = $resultTopSelling->fetch_assoc()) {
     }
 }
 
-// Truy vấn để lấy top 8 sản phẩm bán chạy
+// Truy vấn để lấy top 8 sản phẩm giá cao
 $sqlTopExpensive = "SELECT p.id_product, p.ten_san_pham, p.gia, c.tenmau, c.hex_color
         FROM products p
         LEFT JOIN color c ON p.id_color = c.id_color
@@ -116,6 +116,7 @@ function getColorsForProduct($conn, $productId) {
     <script src="js/products.js"></script>
 
     <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
           @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,200&display=swap');
@@ -213,6 +214,8 @@ function getColorsForProduct($conn, $productId) {
             $colors = $product['colors'];
             echo '<div class="pro--sold">';
             echo '<a href="product_detail.php?id_product=' . $productId . '&color_id=' . $colors[0]['id_color'] . '">';
+
+            
             echo '<img id="product-image-' . $productId . '-sold" src="' . $colors[0]['link_hinh_anh'] . '" alt="' . $product['ten_san_pham'] . '">';
             echo '<p>' . $product['ten_san_pham'] . '</p>';
             echo '<p class="product-price">Giá: ' . $product['gia'] . '</p>';

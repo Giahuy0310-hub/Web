@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Sử dụng flexbox để xếp cột */
+    height: 100vh; /* Chiều cao 100% của viewport */
+}
+
+nav {
+    background-color: #333;
+    overflow: hidden;
+    width: fit-content;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: none; /* Chuyển từ float sang không float để xếp cột */
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+main {
+    flex-grow: 1; /* Chia phần còn lại của trang */
+    padding: 20px;
+}
+
+/* Thêm CSS cho canvas */
+canvas {
+    max-width: 600px; /* Đặt kích thước tối đa cho chiều rộng */
+    width: 100%; /* Chiếm toàn bộ chiều rộng của phần tử cha */
+    height: auto; /* Đảm bảo chiều cao tự động điều chỉnh */
+    margin: auto;
+    display: block;
+}
