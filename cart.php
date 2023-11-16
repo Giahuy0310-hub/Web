@@ -350,36 +350,44 @@ function createOrder($conn, $fullname, $phone, $email, $address, $province, $dis
                         </span>
                     </div>
                     <div class="product_selection">
-    <select name="size" class="size-dropdown">
+    <select name="size" class="size-dropdown" data-item-id="<?= $item['id']; ?>">
         <?php
-        $size = $item['size']; 
-        echo '<option value="' . $size . '">Size ' . strtoupper($size) . '</option>';
+        $sizes = ['S', 'M', 'L', 'XL', 'XXL', '3XL', '4XL']; // Các kích thước
+        $selectedSize = $item['size'];
+
+        foreach ($sizes as $size) {
+            $selected = ($size == $selectedSize) ? 'selected' : '';
+            echo '<option value="' . $size . '" ' . $selected . '>Size ' . strtoupper($size) . '</option>';
+        }
         ?>
     </select>
 
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="js/cart_size.js"></script>
+
+
     x
-
-    <select name="quantity" class="quantity-dropdown" data-id-product="<?= $item['id_product'] ?>" data-id-color="<?= $item['id_color'] ?>" data-size="<?= $item['size'] ?>" data-selected-quantity="<?= $selectedQuantity ?>">
+    <select name="quantity" class="quantity-dropdown" data-item-id="<?= $item['id']; ?>">
     <?php
-    $sql = "SELECT quantity FROM giohang WHERE id_product = ? AND id_color = ? and size = ?";
+    // Truy vấn số lượng từ cơ sở dữ liệu
+    $sql = "SELECT quantity FROM giohang WHERE id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('iis', $item['id_product'], $item['id_color'], $item['size']);
+    $stmt->bind_param('i', $item['id']);
     $stmt->execute();
-    $result = $stmt->get_result();
+    $stmt->bind_result($dbQuantity);
+    $stmt->fetch();
+    $stmt->close();
 
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $quantity = $row['quantity'];
-
-            echo '<option value="' . $quantity . '" ' . ($quantity == $selectedQuantity ? 'selected' : '') . '>';
-            echo  $quantity ;
-            echo '</option>';
-        }
-    } else {
-        echo '<option value="" disabled>No quantities available</option>';
+    // Tạo tùy chọn cho số lượng từ 1 đến 10
+    for ($i = 1; $i <= 10; $i++) {
+        $selected = ($i == $dbQuantity) ? 'selected' : '';
+        echo '<option value="' . $i . '" ' . $selected . '>' . $i . '</option>';
     }
     ?>
 </select>
+<script src="js/cart_size.js"></script>
+
                     <button class="delete-button" data-id_product="<?= $item['id_product'] ?>" data-id_color="<?= $item['id_color'] ?>" data-size="<?= $item['size'] ?>">Xóa</button>
                 </div>
             </div>
