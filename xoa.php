@@ -1,25 +1,35 @@
 <?php
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "project129";
+
+$conn = new mysqli($servername, $username, $password, $database);
+
+if ($conn->connect_error) {
+    die("Kết nối không thành công: " . $conn->connect_error);
+}
 require_once('php/db_connection.php');
 
+header('Content-Type: application/json'); // Thêm dòng này để chỉ định loại nội dung là JSON
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_product'])) {
-    $productIdToDelete = $_POST['id_product_to_delete'];
-    $colorIdToDelete = $_POST['id_color_to_delete'];
-    
+    $productIdToDelete = isset($_POST['id_product_to_delete']) ? $_POST['id_product_to_delete'] : null;
+    $colorIdToDelete = isset($_POST['id_color_to_delete']) ? $_POST['id_color_to_delete'] : null;
     $sizeToDelete = isset($_POST['size_to_delete']) ? $_POST['size_to_delete'] : null;
 
-    // Kết nối CSDL và thực hiện truy vấn SQL để xóa sản phẩm
-    require_once('php/db_connection.php');
-
-    // Sử dụng câu lệnh SQL DELETE để xóa sản phẩm dựa vào 'id_product', 'id_color', và 'size'
-    if ($sizeToDelete !== null) {
-        $sql = "DELETE FROM giohang5 WHERE id_product = ? AND id_color = ? AND size = ?";
+    // Kiểm tra xem có đủ thông tin cần thiết hay không
+    if ($productIdToDelete !== null && $colorIdToDelete !== null && $sizeToDelete !== null) {
+        // Sử dụng câu lệnh SQL DELETE với prepared statements để xóa sản phẩm
+        $sql = "DELETE FROM giohang WHERE id_product = ? AND id_color = ? AND size = ?";
         $stmt = $conn->prepare($sql);
 
         if ($stmt) {
             $stmt->bind_param('iis', $productIdToDelete, $colorIdToDelete, $sizeToDelete);
 
             if ($stmt->execute()) {
-                // Xóa thành công, không cần trả về bất kỳ dữ liệu nào
+                // Xóa thành công
                 echo json_encode(["status" => "success"]);
                 exit();
             } else {
@@ -34,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_product'])) {
             exit();
         }
     } else {
-        // Size not provided
-        echo json_encode(["status" => "error", "message" => "Lỗi: Size not provided."]);
+        // Thông tin cần thiết không đủ
+        echo json_encode(["status" => "error", "message" => "Lỗi: Thông tin cần thiết không đủ."]);
         exit();
     }
 }

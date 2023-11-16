@@ -325,68 +325,74 @@ function createOrder($conn, $fullname, $phone, $email, $address, $province, $dis
             </div>
         </div>
         <div class="body_products">
-            <legend>Giỏ hàng của bạn</legend>
-            <?php
-            $totalPrice = 0;
-            if (isset($cartItems) && is_array($cartItems)) :
-                foreach ($cartItems as $item) :
-                    // Calculate the subtotal for each item
-                    $subtotal = isset($item['quantity']) ? $item['gia'] * $item['quantity'] : 0;
-
-                    // Add the subtotal to the total price
-                    $totalPrice += $subtotal;
-            ?>
-            <div class="body_products product" data-id_product="<?= $item['id_product'] ?>">
-                <img src="<?= $item['link_hinh_anh'] ?>" alt="<?= $item['ten_san_pham'] ?>">
-                <div class="product_group">
-                    <div class="product_content">
-                        <h4><?= $item['ten_san_pham'] ?></h4>
-                        <span><?= number_format($item['gia'], 0, ',', '.') ?> VNĐ</span>
-                        <strong> x </strong>
-                        <span><?= isset($item['quantity']) ? $item['quantity'] : '0' ?></span>
-                        =
-                        <span style="color: brown;">
-                            <?= number_format($subtotal, 0, ',', '.') ?> VNĐ
-                        </span>
-                    </div>
-                    <div class="product_selection">
-    <select name="size" class="size-dropdown" data-item-id="<?= $item['id']; ?>">
-        <?php
-        $sizes = ['S', 'M', 'L', 'XL', 'XXL', '3XL', '4XL']; // Các kích thước
-        $selectedSize = $item['size'];
-
-        foreach ($sizes as $size) {
-            $selected = ($size == $selectedSize) ? 'selected' : '';
-            echo '<option value="' . $size . '" ' . $selected . '>Size ' . strtoupper($size) . '</option>';
-        }
-        ?>
-    </select>
-
-
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="js/cart_size.js"></script>
-
-
-    x
-    <select name="quantity" class="quantity-dropdown" data-item-id="<?= $item['id']; ?>">
+    <legend>Giỏ hàng của bạn</legend>
     <?php
-    // Truy vấn số lượng từ cơ sở dữ liệu
-    $sql = "SELECT quantity FROM giohang WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('i', $item['id']);
-    $stmt->execute();
-    $stmt->bind_result($dbQuantity);
-    $stmt->fetch();
-    $stmt->close();
+    $totalPrice = 0;
+    if (isset($cartItems) && is_array($cartItems)) :
+        foreach ($cartItems as $item) :
+            // Calculate the subtotal for each item
+            $subtotal = isset($item['quantity']) ? $item['gia'] * $item['quantity'] : 0;
 
-    // Tạo tùy chọn cho số lượng từ 1 đến 10
-    for ($i = 1; $i <= 10; $i++) {
-        $selected = ($i == $dbQuantity) ? 'selected' : '';
-        echo '<option value="' . $i . '" ' . $selected . '>' . $i . '</option>';
-    }
+            // Add the subtotal to the total price
+            $totalPrice += $subtotal;
     ?>
-</select>
+    <div class="body_products product" data-id_product="<?= $item['id_product'] ?>">
+        <img src="<?= $item['link_hinh_anh'] ?>" alt="<?= $item['ten_san_pham'] ?>">
+        <div class="product_group">
+            <div class="product_content">
+                <h4><?= $item['ten_san_pham'] ?></h4>
+                <span><?= number_format($item['gia'], 0, ',', '.') ?> VNĐ</span>
+                <strong> x </strong>
+                <span><?= isset($item['quantity']) ? $item['quantity'] : '0' ?></span>
+                =
+                <span style="color: brown;" class="subtotal" data-item-id="<?= $item['id']; ?>">
+                    <?= number_format($subtotal, 0, ',', '.') ?> VNĐ
+                </span>
+            </div>
+            <div class="product_selection">
+                <select name="size" class="size-dropdown" data-item-id="<?= $item['id']; ?>">
+                    <?php
+                    // $sizes = ['S', 'M', 'L', 'XL', 'XXL', '3XL', '4XL']; // Các kích thước
+                    $sizes = ['S', 'M', 'L', 'XL']; // Các kích thước
+
+                    $selectedSize = $item['size'];
+
+                    foreach ($sizes as $size) {
+                        $selected = ($size == $selectedSize) ? 'selected' : '';
+                        echo '<option value="' . $size . '" ' . $selected . '>Size ' . strtoupper($size) . '</option>';
+                    }
+                    ?>
+                </select>
+                x
+                <select name="quantity" class="quantity-dropdown" data-item-id="<?= $item['id']; ?>">
+                    <?php
+                    // Truy vấn số lượng từ cơ sở dữ liệu
+                    $sql = "SELECT quantity FROM giohang WHERE id = ?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param('i', $item['id']);
+                    $stmt->execute();
+                    $stmt->bind_result($dbQuantity);
+                    $stmt->fetch();
+                    $stmt->close();
+
+                    // Tạo tùy chọn cho số lượng từ 1 đến 10
+                    for ($i = 1; $i <= 10; $i++) {
+                        $selected = ($i == $dbQuantity) ? 'selected' : '';
+                        echo '<option value="' . $i . '" ' . $selected . '>' . $i . '</option>';
+                    }
+                    ?>
+                </select>
+                <script src="js/cart_quantity.js"></script>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="js/cart.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="js/cart_size.js"></script>
+<script src="js/cart_quantity.js"></script>
 
                     <button class="delete-button" data-id_product="<?= $item['id_product'] ?>" data-id_color="<?= $item['id_color'] ?>" data-size="<?= $item['size'] ?>">Xóa</button>
                 </div>

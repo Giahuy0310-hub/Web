@@ -1,4 +1,24 @@
 // abc.js
+
+// Function to update total price
+function updateTotalPrice() {
+    // Tính tổng giá dựa trên số sản phẩm còn lại trong giỏ hàng
+    let total = 0;
+    $(".product").each(function () {
+        const price = parseFloat($(this).find(".product-content span").text().replace(" VNĐ", "").replace(",", ""));
+        const quantity = parseInt($(this).find(".product-selection input").val());
+        total += price * quantity;
+    });
+
+    // Cập nhật tổng giá trên giao diện
+    $(".total-price").text(formatCurrency(total) + " VNĐ");
+}
+
+// Function to format currency
+function formatCurrency(value) {
+    return value.toLocaleString("vi-VN");
+}
+
 // Lắng nghe sự kiện khi lựa chọn tỉnh/thành phố thay đổi
 document.getElementById('province').addEventListener('change', function () {
     var selectedProvince = this.value;
@@ -62,7 +82,7 @@ $(document).ready(function () {
         // Gửi yêu cầu AJAX với cả id_product, id_color, và size
         $.ajax({
             type: "POST",
-            url: "xoa.php",
+            url: "php/xoa.php",
             data: { 
                 delete_product: 1, 
                 id_product_to_delete: productId, 
@@ -71,13 +91,16 @@ $(document).ready(function () {
             },
             success: function (response) {
                 try {
-                    const responseData = JSON.parse(response);
-
+                    const responseData = typeof response === 'object' ? response : JSON.parse(response);
+            
+            
                     if (responseData.status === "success") {
                         // Loại bỏ sản phẩm khỏi DOM
                         $(".product[data-id_product=" + productId + "][data-id_color=" + colorId + "][data-size=" + size + "]").remove();
                         // Cập nhật tổng giá
                         updateTotalPrice();
+                        location.reload();
+
                     } else {
                         console.error("Xóa sản phẩm không thành công. Response:", responseData);
                     }
@@ -91,28 +114,6 @@ $(document).ready(function () {
         });
     });
 
-    function updateTotalPrice() {
-        // Tính tổng giá dựa trên số sản phẩm còn lại trong giỏ hàng
-        let total = 0;
-        $(".product").each(function () {
-            const price = parseFloat($(this).find(".product-content span").text().replace(" VNĐ", "").replace(",", ""));
-            const quantity = parseInt($(this).find(".product-selection input").val());
-            total += price * quantity;
-        });
-
-        // Cập nhật tổng giá trên giao diện
-        $(".total-price").text(formatCurrency(total) + " VNĐ");
-    }
-
-    function formatCurrency(value) {
-        return value.toLocaleString("vi-VN");
-    }
-});
-
-
-
-
-
     window.onload = function () {
         if (window.history && window.history.pushState) {
             window.history.pushState('forward', null);
@@ -124,3 +125,4 @@ $(document).ready(function () {
             };
         }
     }
+});

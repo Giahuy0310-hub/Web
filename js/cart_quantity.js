@@ -11,6 +11,8 @@ $(document).ready(function () {
             success: function (response) {
                 console.log('Dữ liệu đã được cập nhật thành công!');
                 console.log('Response:', response);
+                location.reload();
+
             },
             error: function (error) {
                 console.error('Lỗi khi cập nhật dữ liệu: ', error);

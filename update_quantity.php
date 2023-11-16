@@ -1,10 +1,11 @@
 <?php
 // Nếu có yêu cầu Ajax
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["quantity"]) && isset($_POST["itemId"])) {
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["itemId"])) {
     require_once('php/db_connection.php');
 
     $quantity = $_POST["quantity"];
     $itemId = $_POST["itemId"];
+echo 'itemId: ' . $itemId; 
 
     // Cập nhật số lượng trong bảng giohang
     $stmtUpdateQuantity = $conn->prepare("UPDATE giohang SET quantity = ? WHERE id = ?");
