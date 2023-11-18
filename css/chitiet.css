@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+h2{
+    text-align:center;
+}
+table {
+    width: 100%; /* Thiết lập chiều ngang là 100% */
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+.thumbnail {
+max-width: 200px;
+max-height: 100px;
+margin: auto;
+display: block;
+}
