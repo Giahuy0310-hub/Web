@@ -8,7 +8,7 @@
     $sql = "SELECT donhang.id, donhang.hoten, donhang.sodienthoai, donhang.email, donhang.sonha_duong, donhang.phuong_xa, 
             donhang.quan_huyen, donhang.tinh_thanh, donhang.ghichu, donhang.totalPrice, donhang.date, chitietdonhang.ten_san_pham
             FROM donhang
-            LEFT JOIN chitietdonhang ON donhang.id = chitietdonhang.id_donhang";
+            LEFT JOIN chitietdonhang ON donhang.id = chitietdonhang.id_donhang ";
     $result = $conn->query($sql);
     ?>
     

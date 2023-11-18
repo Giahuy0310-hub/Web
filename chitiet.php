@@ -18,7 +18,7 @@
     $id_donhang = $_GET['id'];
 
     // Truy vấn để lấy dữ liệu từ bảng chitietdohang dựa trên id_donhang
-    $sql = "SELECT * FROM chitietdonhang WHERE id_donhang = $id_donhang";
+    $sql = "SELECT ct.id, ct.id_donhang, ct.ten_san_pham, ct.id_product,c.tenmau, ct.gia,ct.size,ct.quantity,ct.link_hinh_anh FROM chitietdonhang ct JOIN color c on c.id_color = ct.id_color WHERE id_donhang = $id_donhang ";
     $result = $conn->query($sql);
     ?>
 
@@ -46,7 +46,7 @@
                         echo "<td>{$row['id_donhang']}</td>";
                         echo "<td>{$row['ten_san_pham']}</td>";
                         echo "<td>{$row['id_product']}</td>";
-                        echo "<td>{$row['id_color']}</td>";
+                        echo "<td>{$row['tenmau']}</td>";
                         echo "<td>{$row['gia']}</td>";
                         echo "<td>{$row['size']}</td>";
                         echo "<td>{$row['quantity']}</td>";
