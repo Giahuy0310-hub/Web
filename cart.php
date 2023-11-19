@@ -77,7 +77,7 @@ if (isset($_POST['submit'])) {
         // Assuming $date is declared and assigned somewhere
         $date = date("Y-m-d H:i:s");
 
-        if (createOrder($conn, $fullname, $phone, $email, $address, $province, $district, $wards, $note, $totalPrice, $date, $cartItems)) {
+        if (createOrder($conn, $fullname,$user_id, $phone, $email, $address, $province, $district, $wards, $note, $totalPrice, $date, $cartItems)) {
             $successMessage = "Đơn hàng đã được đặt thành công! Số đơn hàng của bạn là: " . $donHangId . ". Tổng tiền: " . $totalPrice . ". Thời gian đặt hàng: " . $date;
         } else {
             // Handle errors
@@ -89,12 +89,12 @@ if (isset($_POST['submit'])) {
         echo "Lỗi: Dữ liệu không hợp lệ.";
     }
 }
-function createOrder($conn, $fullname, $phone, $email, $address, $province, $district, $wards, $note, $totalPrice, $date, $cartItems) {
-    $sqlInsertIntoDonHang = "INSERT INTO DonHang (hoten, sodienthoai, email, sonha_duong, tinh_thanh, quan_huyen, phuong_xa, ghichu, totalPrice, date)
-        VALUES (?, ?, ?, ?, (SELECT name FROM province WHERE province_id = ? LIMIT 1), (SELECT name FROM district WHERE district_id = ? LIMIT 1), (SELECT name FROM wards WHERE wards_id = ? LIMIT 1), ?, ?, ?)";
+function createOrder($conn, $fullname,$user_id, $phone, $email, $address, $province, $district, $wards, $note, $totalPrice, $date, $cartItems) {
+    $sqlInsertIntoDonHang = "INSERT INTO DonHang (hoten, id_nguoidung, sodienthoai, email, sonha_duong, tinh_thanh, quan_huyen, phuong_xa, ghichu, totalPrice, date)
+        VALUES (?, ?, ?, ?,?, (SELECT name FROM province WHERE province_id = ? LIMIT 1), (SELECT name FROM district WHERE district_id = ? LIMIT 1), (SELECT name FROM wards WHERE wards_id = ? LIMIT 1), ?, ?, ?)";
 
     $stmtInsertIntoDonHang = $conn->prepare($sqlInsertIntoDonHang);
-    $stmtInsertIntoDonHang->bind_param("ssssssssds", $fullname, $phone, $email, $address, $province, $district, $wards, $note, $totalPrice, $date);
+    $stmtInsertIntoDonHang->bind_param("sssssssssds", $fullname,$user_id, $phone, $email, $address, $province, $district, $wards, $note, $totalPrice, $date);
 
     if ($stmtInsertIntoDonHang->execute()) {
         $donHangId = $stmtInsertIntoDonHang->insert_id;

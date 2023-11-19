@@ -7,7 +7,8 @@ CREATE TABLE login (
     fullname VARCHAR(255),
     phone_number VARCHAR(20),
     email VARCHAR(255),
-    password VARCHAR(255)
+    password VARCHAR(255),
+    type default 2
 );
 
 CREATE TABLE product_id (
@@ -63,6 +64,7 @@ CREATE TABLE DonHang (
     tinh_thanh VARCHAR(100),
     ghichu TEXT,
     totalPrice FLOAT,
+    id_nguoidung int,
     date TIMESTAMP
 );
 
@@ -125,6 +127,7 @@ CREATE TABLE `wards` (
 ALTER TABLE district ADD FOREIGN KEY (`province_id`) REFERENCES province(`province_id`);
 ALTER TABLE wards ADD FOREIGN KEY (`district_id`) REFERENCES district(`district_id`);
 
+ALTER TABLE donhang ADD CONSTRAINT fk_id_nguoidung FOREIGN KEY (id_nguoidung) REFERENCES login(id);
 
 
 https://drive.google.com/file/d/1yXm76S6_ofiDpN0sVNSUcWxauSWDX8hE/view
