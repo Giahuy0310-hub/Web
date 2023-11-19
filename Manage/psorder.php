@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once('php/db_connection.php');
+require_once('db_connection.php');
 
 // Kiểm tra nếu người dùng đã đăng nhập
 $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;

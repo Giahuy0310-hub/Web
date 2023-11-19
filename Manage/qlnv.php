@@ -1,5 +1,5 @@
 <?php
-require_once('php/db_connection.php');
+require_once('db_connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = isset($_POST['action']) ? $_POST['action'] : null;

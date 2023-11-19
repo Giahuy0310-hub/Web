@@ -8,7 +8,7 @@
 <body>
 
 <?php
-require_once('php/db_connection.php');
+require_once('db_connection.php');
 
 // Khởi tạo các biến với giá trị mặc định là rỗng
 $id_product = $id_color = $tendanhmuc_selected = $ten_san_pham = $loaisanpham = $gia = $link_hinh_anh = $img1 = $img2 = $img3 = $img4 = $size_S = $size_M = $size_L = $size_XL = '';

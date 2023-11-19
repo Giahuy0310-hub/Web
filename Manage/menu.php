@@ -1,5 +1,5 @@
 <?php
-require_once('php/db_connection.php');
+require_once('db_connection.php');
 
 function getUserInfoAndType($userId, $conn) {
     $userInfo = [];
@@ -61,11 +61,13 @@ $userType = $userData['userType'];
                 <?php elseif ($userType == 1): ?>
                     <li><a href='profile.php'>Thông Tin Cá Nhân</a></li>
                     <li><a href='pass.php'>Đổi Mật Khẩu</a></li>
+                    <li><a href='them.php'>Thêm sản phẩm</a></li>
                     <li><a href='order.php'>Danh Sách Đơn Hàng</a></li>
                 <?php elseif ($userType == 0): ?>
                     <li><a href='qlnv.php'>Quản Lý Nhân Viên</a></li>
+                    <li><a href='them.php'>Thêm sản phẩm</a></li>
                     <li><a href='order.php'>Danh Sách Đơn Hàng</a></li>
-                    <li><a href='chart/dtdm.php'>Thống Kê</a></li>
+                    <li><a href='../chart/dtdm.php'>Thống Kê</a></li>
                 <?php endif; ?>
             <?php else: ?>
                 <p>Không có dữ liệu loại người dùng.</p>

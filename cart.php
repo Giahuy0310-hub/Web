@@ -5,8 +5,6 @@ require_once('php/db_connection.php');
 
 $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
-
-
 if (!$user_id) {
     // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
     header("Location: login.html");

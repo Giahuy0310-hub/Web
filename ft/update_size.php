@@ -1,6 +1,10 @@
 <?php
-require_once('php/db_connection.php');
-if (isset($_POST['size']) && isset($_POST['itemId'])) {
+require_once('db_connection.php');
+
+
+if ($conn->connect_error) {
+    die("Kết nối không thành công: " . $conn->connect_error);
+}if (isset($_POST['size']) && isset($_POST['itemId'])) {
     $size = $_POST['size'];
     $itemId = $_POST['itemId'];
 

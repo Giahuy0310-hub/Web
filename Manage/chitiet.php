@@ -11,7 +11,7 @@
 
     <?php
     // Kết nối với cơ sở dữ liệu (điều này cần được cập nhật để phản ánh cấu trúc thực tế của cơ sở dữ liệu)
-    require_once('php/db_connection.php');
+    require_once('db_connection.php');
 
 
     // Lấy id từ tham số truyền vào

@@ -1,5 +1,5 @@
 <?php
-require_once('php/db_connection.php');
+require_once('db_connection.php');
 
 $sql = "SELECT tendanhmuc, SUM(quantity * p.gia) as total 
         FROM chitietdonhang ct
@@ -28,7 +28,7 @@ $json_data = json_encode($data);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/chart.css">
+    <link rel="stylesheet" href="chart.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -39,7 +39,7 @@ $json_data = json_encode($data);
 
 <nav>
     <ul>
-        <li><a href="home.php">Trang chủ</a></li>
+    <li><a href="../home.php">Trang chủ</a></li>
 
         <li><a href="dtn.php">Doanh thu theo ngày </a></li>
 

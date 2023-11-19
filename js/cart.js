@@ -27,7 +27,7 @@ document.getElementById('province').addEventListener('change', function () {
 
     // Gửi một yêu cầu AJAX để lấy danh sách quận/huyện dựa trên tỉnh/thành phố được chọn
     var xhrDistrict = new XMLHttpRequest();
-    xhrDistrict.open('GET', 'get.php?province=' + selectedProvince, true);
+    xhrDistrict.open('GET', 'ft/get.php?province=' + selectedProvince, true);
 
     xhrDistrict.onload = function () {
         if (xhrDistrict.status === 200) {
@@ -54,7 +54,7 @@ document.getElementById('district').addEventListener('change', function () {
 
     // Gửi một yêu cầu AJAX để lấy danh sách phường/xã dựa trên quận/huyện được chọn
     var xhrWards = new XMLHttpRequest();
-    xhrWards.open('GET', 'get.php?district=' + selectedDistrict, true);
+    xhrWards.open('GET', 'ft/get.php?district=' + selectedDistrict, true);
 
     xhrWards.onload = function () {
         if (xhrWards.status === 200) {
@@ -82,7 +82,7 @@ $(document).ready(function () {
         // Gửi yêu cầu AJAX với cả id_product, id_color, và size
         $.ajax({
             type: "POST",
-            url: "php/xoa.php",
+            url: "ft/xoa.php",
             data: { 
                 delete_product: 1, 
                 id_product_to_delete: productId, 

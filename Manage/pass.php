@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('php/db_connection.php');
+require_once('db_connection.php');
 
 $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
@@ -60,20 +60,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Chủ</title>
+    <link rel="stylesheet" href="css/menu.css">
+
     <link rel="stylesheet" href="css/pf.css">
 
 </head>
 <body>
     <div class="navbar">
-        <a href="home.php"><img src="images/logo.png" alt=""></a>
+        <a href="home.php"><img src="../images/logo.png" alt=""></a>
         <div class="navbar_list"></div>
-        <?php include('php/dropdown.php'); ?>
+        <?php include('dropdown.php'); ?>
     </div>
 
 
     <main>
         <div class="left-column">
-            <?php include('php/menu.php'); ?>
+            <?php include('menu.php'); ?>
         </div>
         <div class="left-column">
 

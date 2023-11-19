@@ -1,7 +1,8 @@
 <?php
+require_once('db_connection.php');
+
 // Nếu có yêu cầu Ajax
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["itemId"])) {
-    require_once('php/db_connection.php');
 
     $quantity = $_POST["quantity"];
     $itemId = $_POST["itemId"];

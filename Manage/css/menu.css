@@ -1,0 +1,199 @@
+
+a.category-button {
+    text-decoration: none;
+}
+
+
+.navbar{
+    height: 80px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    position: fixed;
+    top:0;
+    z-index: 1;
+}
+
+.navbar img{
+    height: 55px;
+    margin: 5px 15px;
+}
+
+.navbar_list{
+    display: flex;
+    align-items: center;
+}
+
+.navbar_list a{
+    font-size: 17px;
+    font-weight: 100;
+    font-family: 'Times New Roman', Times, serif;
+    color: black;
+    font-weight: 400;
+    margin: 10px 20px;
+    /* text-transform: uppercase; */
+    list-style: none;
+    text-decoration: none;
+    transition: ease 0.3s;
+}
+
+.navbar_list li:hover{
+    color: brown;
+    cursor: pointer;
+}
+
+.navbar_logo{
+    display: flex;
+    align-items: center;
+    margin-right: 20px ;
+}
+
+.navbar_logo a i{
+    font-size: 20px;
+    color: rgba(128, 128, 128, 0.7);
+    margin: 5px;
+    transition: ease 0.5s;
+}
+
+.navbar_logo a i:hover{
+    color: black;
+}
+
+.sorting {
+    position: relative; /* hoặc position: absolute; tùy theo cần thiết */
+    z-index: 9999; /* Số cao hơn so với lớp navbar_list */
+}
+
+/*  */
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-menu a {
+    color: black;
+    padding: 8px 10px;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+}
+
+.dropdown a {
+    text-decoration: none;
+}
+
+.dropdown:hover .dropdown-menu,
+.dropdown:focus-within .dropdown-menu,
+.dropdown.active .dropdown-menu {
+    display: block;
+}
+
+.title{
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 1.1;
+    margin-top: 15px;
+    text-transform: uppercase;
+    font-family: "Montserrat", Tahoma, Geneva, sans-serif;
+}
+
+
+    .pagination {
+        text-align: center;
+    }
+
+    .pagination-list {
+        list-style: none;
+        display: inline-flex;
+    }
+
+    .pagination-item {
+        margin: 0 5px;
+    }
+
+    .pagination-item a {
+        display: block;
+        padding: 7px 7px;
+        background-color: #b6b6b6;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .pagination-item.active a {
+        background-color: #0056b3;
+    }
+
+    .pagination-item.disabled a {
+        pointer-events: none;
+        background-color: #ccc;
+    }
+
+    .pagination-item a:hover {
+        background-color: #0056b3;
+    }
+
+    .category-button {
+        justify-content: center;
+        gap: 10px;
+        background-color: transparent;
+        padding: 0.1px;
+        width: 142px;
+        text-align: center;
+        color: rgb(0, 0, 0);
+        cursor: pointer;
+        transition: background-color 0.2s;
+        display: inline-block;
+        margin: 0 10px;
+        border: 0px;
+        position: relative;
+    }
+    
+    .category-button::before {
+        content: "";
+        display: block;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        background-color: transparent;
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.2s, background-color 0.2s;
+    }
+    
+    .category-button:hover::before {
+        transform: scaleX(1);
+        background-color: #afafaf;
+    }
+    
+/* Existing styles */
+
+.search-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.search-input {
+    width: 150px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    /* margin-top: 10px;  */
+    z-index: 2000;
+}
+
+#search-icon {
+    cursor: pointer;
+}
+
+#search-icon i {
+    position: relative;
+}

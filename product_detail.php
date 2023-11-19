@@ -197,7 +197,7 @@ function addToCart(ten_san_pham, gia, id_color, link_hinh_anh, id_product, user_
   var quantity = document.getElementById('quantity').value;
 
   var xhttp = new XMLHttpRequest();
-  xhttp.open('POST', 'add.php', true);
+  xhttp.open('POST', 'ft/add.php', true);
   xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
   xhttp.onreadystatechange = function () {

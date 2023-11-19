@@ -1,5 +1,5 @@
 <?php
-require_once('php/db_connection.php');
+require_once('db_connection.php');
 
 $sqlDate = "SELECT DISTINCT DATE(date) as orderDate FROM donhang ORDER BY orderDate ASC";
 $stmtDate = $conn->prepare($sqlDate);
@@ -47,14 +47,14 @@ $json_data = json_encode($data);
     <script src="https://cdn.jsdelivr.net/npm/luxon"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/chart.css">
+    <link rel="stylesheet" href="chart.css">
 
     <title>Line Chart</title>
 </head>
 <body>
 <nav>
     <ul>
-        <li><a href="home.php">Trang chủ</a></li>
+        <li><a href="../home.php">Trang chủ</a></li>
 
         <li><a href="dtn.php">Doanh thu theo ngày </a></li>
 

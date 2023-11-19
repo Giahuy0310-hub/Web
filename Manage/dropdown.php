@@ -1,5 +1,5 @@
 <?php
-require_once('php/db_connection.php');
+require_once('db_connection.php');
 
 $selectedCategory = isset($_GET['ID_DM']) ? $_GET['ID_DM'] : null;
 $selectedSubcategory = isset($_GET['loaisanpham']) ? $_GET['loaisanpham'] : null;
@@ -71,13 +71,13 @@ foreach ($categoryList as $category) {
 
     $subcategoryLinks = [];
     foreach ($subcategoryList as $subcategory) {
-        $subcategoryLink = "products.php?ID_DM=$categoryID&loaisanpham=" . urlencode($subcategory);
+        $subcategoryLink = "../products.php?ID_DM=$categoryID&loaisanpham=" . urlencode($subcategory);
         $isActiveSubcategory = $subcategory == $selectedSubcategory ? 'active' : '';
         $subcategoryLinks[] = "<a class='subcategory-button $isActiveSubcategory' href='$subcategoryLink'>$subcategory</a>";
     }
 
     echo "<div class='dropdown'>";
-    echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID'>$categoryName</a>";
+    echo "<a class='category-button $isActive' href='../products.php?ID_DM=$categoryID'>$categoryName</a>";
     if (!empty($subcategoryLinks)) {
         echo "<div class='dropdown-menu'>";
         echo implode($subcategoryLinks);
@@ -93,9 +93,9 @@ foreach ($categoryList as $category) {
         </div>
         <a href="#"><i class="fa-solid fa-magnifying-glass" id="search-icon"></i></a>
     </div>
-    <a href="manage/manage.php"><i class="fa-regular fa-user"></i></a>
-    <a href="cart.php"><i class="fa-solid fa-cart-shopping"></i></a>
-    <a href="logout.php" class="logout-button"><i class="fa-solid fa-sign-out"></i></a>
+    <a href="manage.php"><i class="fa-regular fa-user"></i></a>
+    <a href="../cart.php"><i class="fa-solid fa-cart-shopping"></i></a>
+    <a href="../logout.php" class="logout-button"><i class="fa-solid fa-sign-out"></i></a>
 
 
 </div>
@@ -119,7 +119,7 @@ foreach ($categoryList as $category) {
 
     function performSearch(searchTerm) {
         // Chuyển hướng đến tệp search.php với tham số searchTerm
-        window.location.href = 'search.php?searchTerm=' + encodeURIComponent(searchTerm);
+        window.location.href = '../search.php?searchTerm=' + encodeURIComponent(searchTerm);
     }
 
 

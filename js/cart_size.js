@@ -6,7 +6,7 @@ $(document).ready(function () {
         // Gửi yêu cầu Ajax đến máy chủ để cập nhật dữ liệu trong cơ sở dữ liệu
         $.ajax({
             type: 'POST',
-            url: 'update_size.php',
+            url: 'ft/update_size.php',
             data: { size: selectedSize, itemId: itemId },
             success: function (response) {
                 console.log('Dữ liệu đã được cập nhật thành công!');
