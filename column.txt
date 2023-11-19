@@ -1,5 +1,6 @@
 -- Sử dụng cơ sở dữ liệu "project"
-USE project129;
+CREATE DATABASE project130;
+USE project130;
 
 
 CREATE TABLE login (
@@ -8,7 +9,7 @@ CREATE TABLE login (
     phone_number VARCHAR(20),
     email VARCHAR(255),
     password VARCHAR(255),
-    type default 2
+    type int default 2
 );
 
 CREATE TABLE product_id (
@@ -123,11 +124,11 @@ CREATE TABLE `wards` (
   `district_id` int NOT NULL,
   `name` varchar(64) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Xã Phường';
+ALTER TABLE donhang ADD CONSTRAINT fk_id_nguoidung FOREIGN KEY (id_nguoidung) REFERENCES login(id);
 
 ALTER TABLE district ADD FOREIGN KEY (`province_id`) REFERENCES province(`province_id`);
 ALTER TABLE wards ADD FOREIGN KEY (`district_id`) REFERENCES district(`district_id`);
 
-ALTER TABLE donhang ADD CONSTRAINT fk_id_nguoidung FOREIGN KEY (id_nguoidung) REFERENCES login(id);
 
 
 https://drive.google.com/file/d/1yXm76S6_ofiDpN0sVNSUcWxauSWDX8hE/view

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 12, 2023 lúc 01:20 PM
+-- Thời gian đã tạo: Th10 19, 2023 lúc 09:22 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 8.2.0
 
@@ -66,7 +66,28 @@ CREATE TABLE `chitietdonhang` (
 --
 
 INSERT INTO `chitietdonhang` (`id`, `id_donhang`, `ten_san_pham`, `id_product`, `id_color`, `gia`, `size`, `quantity`, `link_hinh_anh`) VALUES
-(1, 1, 'E', 'QT02', 2, 1234, 'S', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg');
+(1, 1, 'E', 'QT02', 2, 1, 'S', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(2, 2, 'E', 'QT02', 2, 1, 'S', 2, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(14, 7, 'Giày', 'QT03', 3, 1, 'S', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(25, 2937, 'aaa', 'D02', 1, 123, 'S', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(26, 2937, 'aaa', 'D02', 1, 123, 'S', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(27, 2937, 'aaa', 'D02', 1, 123, 'S', 2, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(28, 2938, 'aaa', 'D02', 1, 123, 'XXL', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(29, 2938, 'abc', 'MP02', 2, 123, 'XL', 4, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(30, 2938, 'Giày', 'QT03', 3, 12341234, 'S', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(31, 2939, 'abc', 'QT02', 2, 123, 'XXL', 2, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(32, 2940, 'abc', 'QT02', 2, 123, 'S', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(33, 2941, 'abc', 'QT02', 2, 123, 'S', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(34, 2942, 'abc', 'QT02', 2, 123, 'M', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(35, 2943, 'abc', 'QT02', 2, 123, 'L', 5, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(36, 2943, 'abc', 'QT02', 2, 123, 'S', 3, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(37, 2943, 'abc', 'QT02', 2, 123, 'M', 8, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(38, 2943, 'aaa', 'D02', 1, 123, 'M', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(42, 2944, 'Giày', 'QT03', 3, 12341234, 'S', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(43, 2945, 'aaa', 'D02', 1, 123, 'M', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(44, 2946, 'aaa', 'D02', 1, 123, 'L', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(45, 2947, 'aaa', 'QT01', 1, 123, 'L', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(46, 2948, 'aaa', 'D02', 1, 123, 'L', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg');
 
 -- --------------------------------------------------------
 
@@ -830,15 +851,32 @@ CREATE TABLE `donhang` (
   `tinh_thanh` varchar(100) DEFAULT NULL,
   `ghichu` text DEFAULT NULL,
   `totalPrice` float DEFAULT NULL,
-  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `id_nguoidung` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `donhang`
 --
 
-INSERT INTO `donhang` (`id`, `hoten`, `sodienthoai`, `email`, `sonha_duong`, `phuong_xa`, `quan_huyen`, `tinh_thanh`, `ghichu`, `totalPrice`, `date`) VALUES
-(1, 'Gia Huy', '0898877325', 'Giahuyletan@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Đại Bái', 'Huyện Gia Bình', ' Bắc Ninh', '213', 1234, '2023-11-12 06:16:00');
+INSERT INTO `donhang` (`id`, `hoten`, `sodienthoai`, `email`, `sonha_duong`, `phuong_xa`, `quan_huyen`, `tinh_thanh`, `ghichu`, `totalPrice`, `date`, `id_nguoidung`) VALUES
+(1, 'Gia Huy', '0898877325', 'Giahuyletan@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Đại Bái', 'Huyện Gia Bình', ' Bắc Ninh', '213', 1000, '2023-11-16 06:14:07', NULL),
+(2, 'Gia Huy', '0898877325', 'Giahuyletan@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Hồng Châu', 'Huyện Yên Lạc', ' Vĩnh Phúc', '123', 1, '2023-11-15 06:14:07', NULL),
+(7, 'Gia Huy', '0898877325', 'hbpharma@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Phú Lương', 'Huyện Lương Tài', ' Bắc Ninh', '123', 11234, '2023-11-10 06:14:07', NULL),
+(23, 'Gia Huy', '0898877325', 'hbpharma@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Thống Kênh', 'Huyện Gia Lộc', ' Hải Dương', '123', 1, '2023-11-12 06:14:07', NULL),
+(24, 'Gia Huy', '0898877325', 'hbpharma@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Thống Kênh', 'Huyện Gia Lộc', ' Hải Dương', '123', 1, '2023-11-14 06:14:07', NULL),
+(2937, 'Gia Huy', '0898877325', 'Giahuyletan@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Phường Phú Mỹ', 'Quận 7', ' Hồ Chí Minh', 'nhanh', 492, '2023-11-16 03:31:04', NULL),
+(2938, 'Gia Huy', '0898877325', 'Giahuyletan@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Hiệp Lực', 'Huyện Ninh Giang', ' Hải Dương', '123', 615, '2023-11-16 08:37:34', NULL),
+(2939, 'Gia Huy', '0898877325', 'hb@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Hồng Phong', 'Huyện Thanh Miện', ' Hải Dương', '123', 246, '2023-11-16 08:43:29', NULL),
+(2940, 'Gia Huy', '0898877325', 'Giahuyletan@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Phường Yên Thọ', 'Thị xã Đông Triều', ' Quảng Ninh', '123', 123, '2023-11-16 08:46:33', NULL),
+(2941, 'Gia Huy', '0898877325', 'Giahuyletan@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Hồng Phong', 'Huyện Thanh Miện', ' Hải Dương', '123', 123, '2023-11-16 09:24:38', NULL),
+(2942, 'Gia Huy', '0898877325', 'gia009281@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Thanh Giang', 'Huyện Thanh Miện', ' Hải Dương', '213', 123, '2023-11-16 10:06:11', NULL),
+(2943, 'Gia Huy', '0898877325', 'Giahuyletan@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Hoàng Xá', 'Huyện Thanh Thuỷ', ' Phú Thọ', '123', 123, '2023-11-18 12:21:18', NULL),
+(2944, 'Gia Huy', '0898877325', 'Giahuyletan@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Hiệp Lực', 'Huyện Ninh Giang', ' Hải Dương', '123', 12341200, '2023-11-18 12:33:08', NULL),
+(2945, 'Gia Huy', '0898877325', 'gia0029281@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Sóc Hà', 'Huyện Hà Quảng', ' Cao Bằng', '123124', 123, '2023-11-18 12:34:35', NULL),
+(2946, 'Gia Huy', '0898877325', 'hbpharma@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Cao Mã Pờ', 'Huyện Quản Bạ', ' Hà Giang', '123', 123, '2023-11-18 12:43:39', NULL),
+(2947, 'Gia Huy', '0898877325', 'hbpharma@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Phường Phương Liên', 'Quận Đống Đa', ' Hà Nội', '1211', 123, '2023-11-18 12:44:21', 6),
+(2948, 'Gia Huy', '0898877325', 'gia009281@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Cộng Lạc', 'Huyện Tứ Kỳ', ' Hải Dương', '123', 123, '2023-11-19 01:59:02', 8);
 
 -- --------------------------------------------------------
 
@@ -869,8 +907,22 @@ CREATE TABLE `login` (
   `fullname` varchar(255) DEFAULT NULL,
   `phone_number` varchar(20) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL
+  `password` varchar(255) DEFAULT NULL,
+  `type` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `login`
+--
+
+INSERT INTO `login` (`id`, `fullname`, `phone_number`, `email`, `password`, `type`) VALUES
+(2, 'Gia Huy', '0898877325', 'gle410371@gmail.com', '$2y$10$CKpzvrc2be3uz.oTic4TC.H1KTl0psbgiFafW.ORsglAF7TQafqW6', 1),
+(3, 'Gia Huy', '0898877325', 'gg@gmail.com', '$2y$10$nO/9Y8.6dnYHhBAaTnI7OevcEWQHrZv28p0vnDt0w0.ml1XE5htfW', 0),
+(4, 'Gia Huy', '0898877325', 'giahuye1@gmail.com', '$2y$10$ewTatYKOGXodZW6U/WEG8uORTWa5uHIZDigt7SEZc1Xc2XRTU39Wa', 1),
+(5, 'Lê Tấn Gia Huy', '0990245678', 'gia123@gmail.com', '$2y$10$gKgymkNyh7ubcC/VWPDoz.01TwLsgaIRpkgR.K0.sbP6J9ry6ndVW', 1),
+(6, 'Lê Tấn Gia Huy', '0908979126', 'gia1e@gmail.com', '$2y$10$SCllHjt66HK4ODxINlONPuFOfSS939wU0w4umfyigxzNvDS67f7Fm', 0),
+(7, 'Gia Huy', '0898877325', '123@gmail.com', NULL, 1),
+(8, 'Gia Huy', '0898877325', 'giahuye@gmail.com', '$2y$10$YppQK1tpXZPAGCGgFiWFcOiPxIUnr2ad17TIME/BrMgkkpPnCxtRy', 0);
 
 -- --------------------------------------------------------
 
@@ -905,13 +957,17 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `id_product`, `id_color`, `id_dm`, `ten_san_pham`, `link_hinh_anh`, `loaisanpham`, `gia`, `img1`, `img2`, `img3`, `img4`, `rating`, `so_danh_gia`, `so_luong_da_ban`, `size_S`, `size_M`, `size_L`, `size_XL`) VALUES
-(1, 'QT01', 1, 1, 'ABc', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Quần', 1000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 9, 98, NULL, NULL),
-(2, 'QT02', 2, 4, 'E', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Áo', 1234, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 8, 56, NULL, NULL),
-(3, 'QT03', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(4, 'QT04', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(5, 'AT05', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(6, 'AT03', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(7, 'AT01', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(1, 'QT01', 1, 1, 'ABc', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Quần', 1000, NULL, NULL, NULL, NULL, NULL, NULL, 27, 0, 8, 7, 10),
+(2, 'QT02', 2, 2, 'E', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Áo', 1234, NULL, NULL, NULL, NULL, NULL, NULL, 25, 1, 9, 10, 6),
+(3, 'QT03', 3, 3, 'Giày', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Giày', 12341234, NULL, NULL, NULL, NULL, NULL, NULL, 14, 5, 10, 10, 10),
+(4, 'QT04', 4, 4, 'Dép', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Dép', 1000, NULL, NULL, NULL, NULL, NULL, NULL, 6, 9, 10, 10, 10),
+(11, 'MP01', 2, 4, 'abc', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Áo sơ mi', 1000, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', NULL, NULL, NULL, 3, 11, 123, 119),
+(12, 'MP02', 2, 2, 'abc', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Áo thun', 12311, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', NULL, NULL, NULL, 0, 8, 0, 0),
+(13, 'MP03', 2, 2, 'abc', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Áo thun', 12311, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', NULL, NULL, NULL, 0, 8, 0, 0),
+(14, 'D01', 2, 4, 'abc', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Dép l', 123, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', NULL, NULL, NULL, 0, 8, 9, 5),
+(15, 'D02', 1, 4, 'aaa', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Dép dép', 123, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', NULL, NULL, NULL, 0, 0, 0, 4),
+(16, 'D03', 1, 4, 'aaa', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Dép dép', 123, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', NULL, NULL, NULL, 0, 0, 0, 4),
+(17, 'D04', 1, 4, 'aaa', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Dép dép', 123, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', NULL, NULL, NULL, 0, 0, 0, 4);
 
 -- --------------------------------------------------------
 
@@ -934,6 +990,13 @@ INSERT INTO `product_id` (`id`, `id_product`) VALUES
 (9, 'AT03'),
 (8, 'AT04'),
 (7, 'AT05'),
+(16, 'D01'),
+(17, 'D02'),
+(19, 'D03'),
+(20, 'D04'),
+(11, 'MP01'),
+(12, 'MP02'),
+(14, 'MP03'),
 (1, 'QT01'),
 (5, 'QT02'),
 (4, 'QT03'),
@@ -11663,7 +11726,8 @@ ALTER TABLE `district`
 -- Chỉ mục cho bảng `donhang`
 --
 ALTER TABLE `donhang`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_id_nguoidung` (`id_nguoidung`);
 
 --
 -- Chỉ mục cho bảng `giohang`
@@ -11716,7 +11780,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT cho bảng `chitietdonhang`
 --
 ALTER TABLE `chitietdonhang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT cho bảng `color`
@@ -11728,31 +11792,31 @@ ALTER TABLE `color`
 -- AUTO_INCREMENT cho bảng `donhang`
 --
 ALTER TABLE `donhang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2949;
 
 --
 -- AUTO_INCREMENT cho bảng `giohang`
 --
 ALTER TABLE `giohang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT cho bảng `login`
 --
 ALTER TABLE `login`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT cho bảng `product_id`
 --
 ALTER TABLE `product_id`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -11765,6 +11829,12 @@ ALTER TABLE `chitietdonhang`
   ADD CONSTRAINT `chitietdonhang_ibfk_1` FOREIGN KEY (`id_color`) REFERENCES `color` (`id_color`),
   ADD CONSTRAINT `chitietdonhang_ibfk_2` FOREIGN KEY (`id_product`) REFERENCES `product_id` (`id_product`),
   ADD CONSTRAINT `chitietdonhang_ibfk_3` FOREIGN KEY (`id_donhang`) REFERENCES `donhang` (`id`);
+
+--
+-- Các ràng buộc cho bảng `donhang`
+--
+ALTER TABLE `donhang`
+  ADD CONSTRAINT `fk_id_nguoidung` FOREIGN KEY (`id_nguoidung`) REFERENCES `login` (`id`);
 
 --
 -- Các ràng buộc cho bảng `giohang`
