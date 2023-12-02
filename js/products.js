@@ -69,30 +69,65 @@ if (window.location.search) {
 
 
 
-function changeProductImage(productId, imageUrl, productName, productPrice) {
+function changeProductImage(productId, imageUrl) {
+    console.log('Change image for product: ', productId);
+
     const productImage = document.getElementById('product-image-' + productId);
     if (imageUrl) {
         productImage.src = imageUrl;
     }
 
-    // Hiển thị tên sản phẩm và giá
-    const productInfoElement = document.getElementById('product-info');
-    productInfoElement.innerHTML = `Tên sản phẩm: ${productName}<br>Gía: ${productPrice}`;
+    // Đặt tên và giá sản phẩm
+    changeProductDetails(productId, imageUrl);
 }
 
 function resetProductImage(productId, imageUrl) {
+    console.log('Reset image for product: ', productId);
+
     const productImage = document.getElementById('product-image-' + productId);
     if (imageUrl) {
         productImage.src = imageUrl;
     }
 
-    // Đặt lại thông tin sản phẩm
-    const productInfoElement = document.getElementById('product-info');
-    productInfoElement.innerHTML = '';
+    // Đặt lại tên và giá sản phẩm
+    resetProductDetails(productId, imageUrl);
 }
 
 
+// Function to attach event listeners for a specific category
+function attachEventListeners(category) {
+    const productList = document.querySelector('.list_product[data-category="' + category + '"]');
+    console.log(productList);
 
+    productList.addEventListener('mouseover', function (event) {
+        const productElement = event.target.closest('.pro--' + category);
+        if (productElement) {
+            const productId = productElement.getAttribute('data-product-id');
+            const imageUrl = productElement.getAttribute('data-image-url');
+            console.log('Mouseover on product in category ' + category);
+
+            changeProductDetails(category, productId, imageUrl);
+        }
+    });
+
+    productList.addEventListener('mouseout', function (event) {
+        const productElement = event.target.closest('.pro--' + category);
+        if (productElement) {
+            const productId = productElement.getAttribute('data-product-id');
+            const imageUrl = productElement.getAttribute('data-image-url');
+            console.log('Mouseout on product in category ' + category);
+
+            resetProductDetails(category, productId, imageUrl);
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Attach event listeners for different categories
+    attachEventListeners('new');
+    attachEventListeners('hot');
+    attachEventListeners('sold');
+});
 
 
 var sortDropdown1 = document.getElementById('sort1');

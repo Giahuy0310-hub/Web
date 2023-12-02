@@ -7,7 +7,7 @@ $color_id = isset($_GET['color_id']) ? $_GET['color_id'] : null;
 
 $sortParam = isset($_GET['sort']) ? '&sort=' . $_GET['sort'] : '';  // phân trang
 
-$productsPerPage = 8;
+$productsPerPage = 12;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1;
 
 $bindParams = [];
@@ -166,17 +166,15 @@ function getColorsForProduct($conn, $productId) {
     <label for="sort2">Sắp xếp theo giá:</label>
     <input type="range" name="sort2" id="sort2" min="0" max="1000" value="<?php echo $sort2; ?>">
 </form>
-<script src="js/products.js"></script>
 
-
-    <div id="product-info">
-        <div class="product-container">
-            <?php
-           foreach ($productList as $product) {
+<script> src ='js/products.js'</script>
+<div id="product-info">
+    <div class="product-container">
+        <?php
+        foreach ($productList as $product) {
             $productId = $product['id_product'];
             $colors = $product['colors'];
-        
-            // Check if $colors is not empty before accessing its elements
+
             if (!empty($colors) && isset($colors[0]['id_color'])) {
                 echo '<div class="product">';
                 echo '<a href="product_detail.php?id_product=' . $productId . '&color_id=' . $colors[0]['id_color'] . '">';
@@ -189,7 +187,7 @@ function getColorsForProduct($conn, $productId) {
                     $colorHex = $color['hex_color'];
                     $colorId = $color['id_color'];
                     echo '<a href="product_detail.php?id_product=' . $productId . '&color_id=' . $colorId . '">';
-                    echo '<div class="color-option" style="background-color: ' . $colorHex . ';" onmouseover="changeProductImage(' . $productId . ', \'' . $color['link_hinh_anh'] . '\')" onmouseout="resetProductImage(' . $productId . ', \'' . $colors[0]['link_hinh_anh'] . '\')"></div>';
+                    echo '<div class="color-option" style="background-color: ' . $colorHex . ';" onmouseover="changeProductImage(\'' . $productId . '\', \'' . $color['link_hinh_anh'] . '\')" onmouseout="resetProductImage(\'' . $productId . '\', \'' . $colors[0]['link_hinh_anh'] . '\')"></div>';
                     echo '</a>';
                 }
                 echo '</div>';
@@ -197,9 +195,12 @@ function getColorsForProduct($conn, $productId) {
                 echo '</div>';
             }
         }
-            ?>
-        </div>
+        ?>
     </div>
+</div>
+
+
+
     <div class="pagination">
         <ul class="pagination-list">
             <?php

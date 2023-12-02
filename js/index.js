@@ -66,13 +66,18 @@ btnprev_hot.addEventListener("click", () =>{
 
 function changeProductImage(productId, imageUrl, type) {
     const productImage = document.getElementById('product-image-' + productId + '-' + type);
-    productImage.src = imageUrl;
+    if (productImage) {
+        productImage.src = imageUrl;
+    }
 }
 
 function resetProductImage(productId, imageUrl, type) {
     const productImage = document.getElementById('product-image-' + productId + '-' + type);
-    productImage.src = imageUrl;
+    if (productImage) {
+        productImage.src = imageUrl;
+    }
 }
+
 
 // Gắn sự kiện cho cả ba danh sách sản phẩm
 const productItemsNew = document.querySelectorAll('.product_new .pro--new img');

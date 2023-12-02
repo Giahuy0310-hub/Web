@@ -45,7 +45,7 @@ $sqlProductDetail = "SELECT p.*, c.tenmau, c.hex_color, p.size_S, p.size_M, p.si
 $stmt = $conn->prepare($sqlProductDetail);
 
 // Bind parameters
-$stmt->bind_param('ii', $id_product, $color_id);
+$stmt->bind_param('si', $id_product, $color_id);
 
 $stmt->execute();
 $resultProductDetail = $stmt->get_result();
