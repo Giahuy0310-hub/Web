@@ -86,14 +86,20 @@ foreach ($categoryList as $category) {
     echo "</div>";
 }
 ?>
+<link rel="stylesheet" href="css/menu.css">
+<style>
+    a{
+        text-decoration: none;
+    }
+</style>
 <div class="navbar_logo">
     <div class="search-container">
         <div class="search-input-container">
             <input type="text" id="search-input" class="search-input" placeholder="Enter your search...">
         </div>
-        <a href="#"><i class="fa-solid fa-magnifying-glass" id="search-icon"></i></a>
+        <a class="search" href="#"><i class="fa-solid fa-magnifying-glass" id="search-icon"></i></a>
     </div>
-    <a href="manage.php"><i class="fa-regular fa-user"></i></a>
+    <a href="./manage.php"><i class="fa-regular fa-user"></i></a>
     <a href="../cart.php"><i class="fa-solid fa-cart-shopping"></i></a>
     <a href="../logout.php" class="logout-button"><i class="fa-solid fa-sign-out"></i></a>
 

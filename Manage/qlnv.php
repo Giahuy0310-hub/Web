@@ -74,6 +74,11 @@ if (isset($_GET['action'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản Lý Người Dùng</title>
     <style>
+         @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,200&display=swap');
+        html ,body{
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+        }
         table {
             border-collapse: collapse;
             width: 100%;
@@ -92,6 +97,71 @@ if (isset($_GET['action'])) {
         form {
             margin-bottom: 20px;
         }
+        h2{
+            margin: 20px;
+        }
+        h3{
+            font-size: 30px;
+            display: flex;
+            justify-content: center;
+        }
+        .font-edit{
+            display: flex;
+            justify-content: center;
+        }
+        .font-label{
+            width: 150px;
+            display: flex;
+            flex-direction: column;
+        }
+        .font-label label{
+            height: 30px;
+            margin: 2.5px;
+        }
+        .font-input input{
+            padding-left: 10px;
+            width: 200px;
+            height: 25px;
+            margin: 2.5px;
+            border-radius: 6px;
+            border: 1px solid gray;
+        }
+        .font-submit{
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .font-submit input{
+            height: 50px;
+            width: 200px;
+            border: none;
+            border-radius: 10px;
+            background-color: #444;
+            color: white;
+            font-size: 15px;
+            transition: ease 0.3s;
+        }
+        .font-submit input:hover{
+            background-color: rgb(200,200,200);
+            color: black;
+            cursor: pointer;
+        }
+
+        a:nth-child(1){
+            text-decoration: none;
+            color: blue;
+        }
+        a:nth-child(1):hover{
+            color: black;
+            text-decoration: underline;
+        }
+        a:nth-child(2){
+            text-decoration: none;
+            color: red;
+        }
+        a:nth-child(2):hover{
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -100,7 +170,7 @@ if (isset($_GET['action'])) {
         <?php
         if (isset($userData)) {
             // Nếu là tác vụ sửa, hiển thị dữ liệu người dùng cần chỉnh sửa
-            echo "<h3>Chỉnh Sửa Người Dùng</h3>";
+            echo '<h3>Chỉnh Sửa Người Dùng</h3>';
             echo "<input type='hidden' name='action' value='update'>";
             echo "<input type='hidden' name='id' value='" . $userData['id'] . "'>";
         } else {
@@ -109,21 +179,30 @@ if (isset($_GET['action'])) {
             echo "<input type='hidden' name='action' value='add'>";
         }
         ?>
+        <div class="font-edit">
+            <div class="font-label">
+            <label for="fullname">Full Name:</label>
 
-        <label for="fullname">Full Name:</label>
-        <input type="text" id="fullname" name="fullname" value="<?php echo isset($userData) ? $userData['fullname'] : ''; ?>" required><br>
+            <label for="phone_number">Phone Number:</label>
 
-        <label for="phone_number">Phone Number:</label>
-        <input type="text" id="phone_number" name="phone_number" value="<?php echo isset($userData) ? $userData['phone_number'] : ''; ?>" required><br>
+            <label for="email">Email:</label>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="<?php echo isset($userData) ? $userData['email'] : ''; ?>" required><br>
+            <label for="type">Type:</label>
 
-        <label for="type">Type:</label>
-        <input type="text" id="type" name="type" value="<?php echo isset($userData) ? $userData['type'] : ''; ?>" required><br>
-        
-
-        <input type="submit" value="<?php echo isset($userData) ? 'Cập Nhật' : 'Thêm Người Dùng'; ?>">
+            </div>
+            <div class="font-input">
+                <input type="text" id="fullname" name="fullname" value="<?php echo isset($userData) ? $userData['fullname'] : ''; ?>" required><br>
+                
+            <input type="text" id="phone_number" name="phone_number" value="<?php echo isset($userData) ? $userData['phone_number'] : ''; ?>" required><br>
+            
+            <input type="email" id="email" name="email" value="<?php echo isset($userData) ? $userData['email'] : ''; ?>" required><br>
+            
+            <input type="text" id="type" name="type" value="<?php echo isset($userData) ? $userData['type'] : ''; ?>" required><br>
+            </div>
+        </div>
+        <div class="font-submit">
+            <input type="submit" value="<?php echo isset($userData) ? 'Cập Nhật' : 'Thêm Người Dùng'; ?>">
+        </div>
     </form>
 
     <h2 >Quản Lý Nhân Viên</h2>

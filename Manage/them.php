@@ -4,8 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thêm Dữ Liệu</title>
+    <style>
+                  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,200&display=swap');
+        body{
+            font-family: 'Montserrat', sans-serif;
+            background-image: linear-gradient(to right, rgb(50, 50, 50), rgb(120, 120, 120),rgb(200, 200, 200)) ;
+            color: white; 
+        }
+        .tilte h2{
+            color: rgb(255, 255, 255);
+            padding-left: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid beige;
+        }
+
+        .content_input{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+        }
+
+        .content_input p{
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .content_input input, .content_input select{
+            height: 50px;
+            width: 250px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: none;
+            box-shadow:inset 0 0 5px 5px #dfdede;
+            background: #ebebeb;
+            padding: 5px 5px 5px 20px;
+        }
+        .button{
+            width: 150px;
+            height: 40px;
+        }
+
+        .button:hover{
+            cursor: pointer;
+            opacity: 60%;
+            
+        }
+        #file-1-preview img
+        ,#file-2-preview img,
+        #file-3-preview img,
+        #file-4-preview img,
+        #file-5-preview img{
+            width: 60px;
+            height: 60px;
+            position: absolute;
+        }
+
+        #file-1-preview div
+        ,#file-2-preview div,
+        #file-3-preview div,
+        #file-4-preview div,
+        #file-5-preview div{
+            height: 15px;
+            width: 60px;
+            position: relative;
+            top: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #999;
+        }
+
+        .form_elements{
+            width: 250px;
+        }
+
+        .form_elements input{
+            display: block;
+        }
+    </style>
 </head>
 <body>
+<div class="tilte">
+        <h2>
+            Tạo mới sản phẩm
+        </h2>
+    </div>
 
 <?php
 require_once('db_connection.php');
@@ -79,14 +162,36 @@ $categoryResult = $conn->query($categoryQuery);
 
 <!-- Form để nhập dữ liệu -->
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-    <!-- Thêm các trường input cho từng cột trong bảng -->
-    ID Product: <input type="text" name="id_product" value="<?php echo $id_product; ?>"><br>
-    ID Color: <input type="text" name="id_color" value="<?php echo $id_color; ?>"><br>
-    
-    <!-- Sử dụng select box cho Tendanhmuc -->
-    Tendanhmuc:
-    <select name="tendanhmuc">
-        <?php
+
+<div class="container">
+        <div class="content_input">
+            <div>
+                <p>ID Product:</p>
+                <input type="text" name="id_product" value="<?php echo $id_product; ?>">
+            </div>
+            <div>
+                <p>ID Color:</p>
+                <input type="text" name="id_color" value="<?php echo $id_color; ?>">
+            </div>
+            <div>
+                <p>Tên Sản Phẩm: </p>
+                <input type="text" name="ten_san_pham" value="<?php echo $ten_san_pham; ?>"><br>
+            </div>
+            <div>
+                <p>Loại sản phẩm:</p>
+                <input type="text" name="loaisanpham" value="<?php echo $loaisanpham; ?>"><br>
+            </div>
+            <div>
+                <p>Giá:</p>
+                <input type="text" name="gia" value="<?php echo $gia; ?>"><br>
+            </div>
+        </div>
+        
+        <div class="content_input">
+            <div>
+                <p>Danh mục: </p>
+                <select name="tendanhmuc">
+                <?php
             // Hiển thị danh sách tendanhmuc trong select box
             while($row = $categoryResult->fetch_assoc()) {
                 $selected = ($row['tendanhmuc'] == $tendanhmuc_selected) ? 'selected' : '';
@@ -95,25 +200,51 @@ $categoryResult = $conn->query($categoryQuery);
             // Đặt con trỏ về đầu danh sách để sử dụng lại
             $categoryResult->data_seek(0);
         ?>
-    </select><br>
-    
-    Tên Sản Phẩm: <input type="text" name="ten_san_pham" value="<?php echo $ten_san_pham; ?>"><br>
-    Loại sản phẩm: <input type="text" name="loaisanpham" value="<?php echo $loaisanpham; ?>"><br>
-    Giá: <input type="text" name="gia" value="<?php echo $gia; ?>"><br>
-    Hình ảnh: <input type="text" name="link_hinh_anh" value="<?php echo $link_hinh_anh; ?>"><br>
-    Hình ảnh 1: <input type="text" name="img1" value="<?php echo $img1; ?>"><br>
-    Hình ảnh 2: <input type="text" name="img2" value="<?php echo $img2; ?>"><br>
-    Hình ảnh 3: <input type="text" name="img3" value="<?php echo $img3; ?>"><br>
-    Hình ảnh 4: <input type="text" name="img4" value="<?php echo $img4; ?>"><br>
-    Size S: <input type="text" name="size_S" value="<?php echo $size_S; ?>"><br>
-    Size M: <input type="text" name="size_M" value="<?php echo $size_M; ?>"><br>
-    Size L: <input type="text" name="size_L" value="<?php echo $size_L; ?>"><br>
-    Size XL: <input type="text" name="size_XL" value="<?php echo $size_XL; ?>"><br>
-
-    <!-- Thêm các trường input cho các cột khác -->
-
-    <input type="submit" value="Thêm Dữ Liệu">
-</form>
+                </select>
+            </div>
+            <div>
+                <p>Size S:</p>
+                <input class="number" type="number" min="0" name="size_S" value="<?php echo $size_S; ?>"><br>
+            </div>
+            <div>
+                <p>Size M: </p>
+                <input class="number" type="number" min="0" name="size_M" value="<?php echo $size_M; ?>"><br>
+            </div>
+            <div>
+                <p>Size L: </p>
+                <input class="number" type="number" min="0" name="size_L" value="<?php echo $size_L; ?>"><br>
+            </div>
+            <div>
+                <p>Size XL:  </p>
+                <input class="number" type="number" min="0" name="size_XL" value="<?php echo $size_XL; ?>"><br>
+            </div>
+            
+        </div>
+        <div class="content_input">
+            <div class="form_elements">
+                <p>Hình ảnh: </p>
+                <input style="color:black; padding-top: 15px;" id="file-1" type="file" name="link_hinh_anh" accept="image/*" value="<?php echo $link_hinh_anh; ?>">
+            </div>
+            <div class="form_elements">
+                <p>Hình ảnh 1: </p>
+                <input style="color:black; padding-top: 15px;" id="file-2" type="file" name="img1" accept="image/*" value="<?php echo $img1; ?>">
+            </div>
+            <div class="form_elements">
+                <p>Hình ảnh 2: </p>
+                <input style="color:black; padding-top: 15px;" id="file-3" type="file" name="img2" accept="image/*" value="<?php echo $img2; ?>">
+            </div>
+            <div class="form_elements">
+                <p>Hình ảnh 3:</p>
+                <input style="color:black; padding-top: 15px;" id="file-4" type="file" name="img3" accept="image/*" value="<?php echo $img3; ?>">
+            </div>
+            <div class="form_elements">
+                <p>Hình ảnh 4: </p>
+                <input style="color:black; padding-top: 15px;" id="file-5" type="file" name="img4" accept="image/*" value="<?php echo $img4; ?>">
+            </div>
+        </div>
+            <input class="button" style="margin-top: 100px; margin-right: 50px; background-color: #444; float: right; color: white; border-radius: 10px;" type="submit" onclick="alert('Thêm sản phẩm thành công!!!')" value="Thêm Dữ Liệu">
+    </div>
+    </form>
 
 <!-- JavaScript để chặn quay lại trang -->
 <script>

@@ -20,7 +20,19 @@
     <link rel="stylesheet" href="css/order.css">
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    
+    <style>
+        body{
+            margin: 0;
+        }
+        a{
+            text-decoration: none;
+            color: red;
+        }
+        a:hover{
+            text-decoration: underline;
+
+        }
+    </style>
 </head>
 <body>
 

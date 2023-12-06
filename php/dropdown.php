@@ -1,6 +1,23 @@
 <?php
 require_once('php/db_connection.php');
 
+$id_product = isset($_GET['id_product']) ? $_GET['id_product'] : null;
+$color_id = isset($_GET['color_id']) ? $_GET['color_id'] : null;
+$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+
+
+
+
+
+// Kiểm tra người dùng trong bảng login
+$sqlCheckUser = "SELECT * FROM login WHERE id = ?";
+$stmtCheckUser = $conn->prepare($sqlCheckUser);
+$stmtCheckUser->bind_param('i', $user_id);
+$stmtCheckUser->execute();
+$resultCheckUser = $stmtCheckUser->get_result();
+
+
+
 $selectedCategory = isset($_GET['ID_DM']) ? $_GET['ID_DM'] : null;
 $selectedSubcategory = isset($_GET['loaisanpham']) ? $_GET['loaisanpham'] : null;
 $id_product = isset($_GET['id_product']) ? $_GET['id_product'] : null;
@@ -93,12 +110,19 @@ foreach ($categoryList as $category) {
         </div>
         <a href="#"><i class="fa-solid fa-magnifying-glass" id="search-icon"></i></a>
     </div>
-    <a href="manage/manage.php"><i class="fa-regular fa-user"></i></a>
+
+    <?php
+    if (!$user_id) {
+        echo '<a href="login.html"><i class="fa-regular fa-user"></i></a>';
+    } else {
+        echo '<a href="manage/manage.php"><i class="fa-regular fa-user"></i></a>';
+    }
+    ?>
     <a href="cart.php"><i class="fa-solid fa-cart-shopping"></i></a>
     <a href="logout.php" class="logout-button"><i class="fa-solid fa-sign-out"></i></a>
-
-
 </div>
+
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {

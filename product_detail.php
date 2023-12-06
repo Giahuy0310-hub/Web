@@ -170,10 +170,9 @@ if (empty($loaisanphamList)) {
                 echo '<option value="' . $i . '">' . $i . '</option>';
             }
         }
-        // Thêm các tùy chọn số lượng khác tại đây
         echo '</select>';
 
-        // Echo the "Thêm vào giỏ hàng" button
+        //"Thêm vào giỏ hàng" button
         echo '<button id="addToCartButton" class="add-to-cart-button" onclick="addToCart(\'' . $productDetail['ten_san_pham'] . '\', ' . $productDetail['gia'] . ', ' . $productDetail['id_color'] . ', \'' . $productDetail['link_hinh_anh'] . '\', \'' . $id_product . '\', \'' . $user_id . '\')">
         <span class="text">Thêm vào giỏ hàng</span>
                 <i class="cart-icon fa-solid fa-cart-shopping"></i>

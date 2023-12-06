@@ -87,6 +87,12 @@ a.category-button {
 .dropdown a {
     text-decoration: none;
 }
+.dropdown-menu a:hover{
+    background-color: #dbdbdb !important;
+}
+.subcategory-button:hover{
+    background-color: #dbdbdb !important;
+}
 
 .dropdown:hover .dropdown-menu,
 .dropdown:focus-within .dropdown-menu,

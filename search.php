@@ -3,29 +3,6 @@ session_start();
 
 require_once('php/db_connection.php');
 
-// $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
-
-// // Validate input
-// if (!$user_id) {
-//     // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
-//     header("Location: login.html");
-//     exit;
-// }
-
-// // Kiểm tra người dùng trong bảng login
-// $sqlCheckUser = "SELECT * FROM login WHERE id = ?";
-// $stmtCheckUser = $conn->prepare($sqlCheckUser);
-// $stmtCheckUser->bind_param('i', $user_id);
-// $stmtCheckUser->execute();
-// $resultCheckUser = $stmtCheckUser->get_result();
-
-// if ($resultCheckUser->num_rows <= 0) {
-//     echo "Người dùng không tồn tại.";
-//     exit;
-// }
-
-// $stmtCheckUser->close();
-
 $selectedCategory = isset($_GET['ID_DM']) ? $_GET['ID_DM'] : null;
 $selectedSubcategory = isset($_GET['loaisanpham']) ? urldecode($_GET['loaisanpham']) : null;
 $color_id = isset($_GET['color_id']) ? $_GET['color_id'] : null;

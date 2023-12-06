@@ -34,10 +34,23 @@ $stmtCheckUser->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Chủ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        .main-user{
+            margin-top: 90px;
+        }
+        .main-user h1{
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
-
-<div>
+<div class="navbar">
+        <a href="../home.php"><img src="../images/logo.png" alt=""></a>
+        <div class="navbar_list"></div>
+        <?php include('dropdown.php'); ?>
+    </div>
+<div class="main-user">
     <h1>Trang Chủ</h1>
     <?php include(__DIR__ . '\menu.php');; ?>
 

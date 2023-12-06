@@ -39,12 +39,25 @@ $stmtCheckUser->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Chủ</title>
     <link rel="stylesheet" href="css/pf.css">
-
+    <style>
+        .main{
+            width: 100%;
+        }
+        .right-column{
+            width: 50%;
+            margin-left: 50px;
+        }
+        a{
+            border: none;
+        }
+    </style>
 </head>
 <body>
     <div class="navbar">
         <a href="../home.php"><img src="../images/logo.png" alt=""></a>
-        <div class="navbar_list"></div>
+        <div class="navbar_list">
+            
+        </div>
         <?php include('dropdown.php'); ?>
     </div>
 

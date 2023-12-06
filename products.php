@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require_once('php/db_connection.php');
 
 $selectedCategory = isset($_GET['ID_DM']) ? $_GET['ID_DM'] : null;

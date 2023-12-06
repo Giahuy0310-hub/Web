@@ -63,11 +63,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/menu.css">
 
     <link rel="stylesheet" href="css/pf.css">
-
+    <style>
+        .main{
+            width: 100%;
+        }
+        .right-column{
+            width: 50%;
+            margin-left: 100px;
+        }
+        form{
+            display: flex;
+        }
+        .font-label{
+            display: flex;
+            flex-direction: column;
+        }
+        .font-label label{
+            height: 30px;
+            width: 160px;
+            margin: 2.5px;
+        }
+        .font-input input{
+            padding: 5px 0 5px 10px;
+            width: 200px;
+            margin: 2.5px;
+            height: 20px;
+            border: 1px solid gray;
+            border-radius: 5px;
+        }
+        .font-submit{
+            margin: 10px 0 10px 100px;
+        }
+        .font-submit button{
+            height: 50px;
+            width: 200px;
+            background-color: #444;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-size: 15px;
+            font-weight: 300;
+        }
+        .font-submit button:hover{
+            cursor: pointer;
+            background-color: white;
+            color: #444;
+        }
+    </style>
 </head>
 <body>
     <div class="navbar">
-        <a href="home.php"><img src="../images/logo.png" alt=""></a>
+        <a href="../home.php"><img src="../images/logo.png" alt=""></a>
         <div class="navbar_list"></div>
         <?php include('dropdown.php'); ?>
     </div>
@@ -77,22 +124,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="left-column">
             <?php include('menu.php'); ?>
         </div>
-        <div class="left-column">
+        <div class="right-column">
 
     <h2>Change Password</h2>
     <form action="" method="post">
+        <div class="font-label">
         <label for="email">Email:</label>
-        <input type="email" name="email" required><br>
-        
+
         <label for="current_password">Current Password:</label>
-        <input type="password" name="current_password" required><br>
-        
+
         <label for="new_password">New Password:</label>
-        <input type="password" name="new_password" required><br>
+
+        </div>
+        <div class="font-input">
+            <input type="email" name="email" required><br>
+            
+            <input type="password" name="current_password" required><br>
+            
+            <input type="password" name="new_password" required><br>
+        </div>
         
-        <button type="submit">Change Password</button>
     </form>
-            <div class="left-column">
-            </div>
+    <div class="font-submit">
+        <button type="submit">Change Password</button>
+    </div>
 </body>
 </html>
