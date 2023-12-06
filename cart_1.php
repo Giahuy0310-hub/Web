@@ -193,14 +193,6 @@ function createOrder($conn, $fullname,$user_id, $phone, $email, $address, $provi
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-    <style>
-          @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,200&display=swap');
-        body{
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-        }
-    </style>
-
     <script>
         setTimeout(function () {
             document.getElementById('successMessage').style.display = 'none';
@@ -263,15 +255,15 @@ function createOrder($conn, $fullname,$user_id, $phone, $email, $address, $provi
                             <label class="control-label">Chọn tỉnh/ thành phố *</label>
                         </th>
                         <th class="select_group">
-                        <select class="flied_selection" name="province" id="province" required>
-                        <option value="">----Chọn tỉnh/ thành phố----</option>
-                        <?php
-                        while ($rowProvince = $resultProvince->fetch_assoc()) {
-                            $giaVanChuyen = ($rowProvince['province_id'] == 1 || $rowProvince['province_id'] == 50) ? 15000 : 30000;
-                            echo "<option value='" . $rowProvince['province_id'] . "' data-gia='" . $giaVanChuyen . "'>" . $rowProvince['name'] . "</option>";
-                        }
-                        ?>
-                    </select>
+                            <select class="flied_selection" name="province" id="province" required>
+                                <option value="">----Chọn tỉnh/ thành phố----</option>
+                                <?php
+                                // Hiển thị danh sách tỉnh/thành phố từ kết quả truy vấn
+                                while ($rowProvince = $resultProvince->fetch_assoc()) {
+                                    echo "<option value='" . $rowProvince['province_id'] . "'>" . $rowProvince['name'] . "</option>";
+                                }
+                                ?>
+                            </select>
                         </th>
                     </tr>
                     <tr class="form_group">
@@ -302,18 +294,38 @@ function createOrder($conn, $fullname,$user_id, $phone, $email, $address, $provi
                             <textarea style="border-color: rgba(128, 128, 128,0.2);" name="note" id="note"></textarea>
                         </th>
                     </tr>
+                    <!-- Hidden input for totalPrice -->
                     <input type="hidden" name="totalPrice" value="<?= $totalPrice ?>">
                 </table>
-                <div class="pay-div">
-                    <input class="body_pay pay" type="submit" name="submit" value="Thanh Toán" >
-                </div>
+                <input class="body_pay pay" type="submit" name="submit" value="Thanh Toán" >
             </form>
+            
+            <div class="body_pay">
+                <legend>Hình thức thanh toán</legend>
+                <div class="body_pay option">
+                    <label class="option_cod" for="payment_cod">
+                        <input type="radio" name="payment" id="payment_cod" value="cod">
+                        <i class="fa-solid fa-house"></i>
+                        <div>
+                            <span>COD</span>
+                            <p>Thanh Toán khi nhận hàng.</p>
+                        </div>
+                    </label>
+                    <label class="option_banking" for="payment_banking">
+                        <input type="radio" name="payment" id="payment_banking" value="banking">
+                        <i class="fa-solid fa-money-check-dollar"></i>
+                        <div>
+                            <span>Banking</span>
+                            <p>Phương thức thanh toán Online</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
         </div>
         <div class="body_products">
     <legend>Giỏ hàng của bạn</legend>
     <?php
     $totalPrice = 0;
-    $shipPrice  = 0;
     if (isset($cartItems) && is_array($cartItems)) :
         foreach ($cartItems as $item) :
             // Calculate the subtotal for each item
@@ -321,6 +333,7 @@ function createOrder($conn, $fullname,$user_id, $phone, $email, $address, $provi
 
             // Add the subtotal to the total price
             $totalPrice += $subtotal;
+
     ?>
     <div class="body_products product" data-id_product="<?= $item['id_product'] ?>">
         <img src="<?= $item['link_hinh_anh'] ?>" alt="<?= $item['ten_san_pham'] ?>">
@@ -350,24 +363,25 @@ function createOrder($conn, $fullname,$user_id, $phone, $email, $address, $provi
                     ?>
                 </select>
                 x
-                <select name="quantity" class="quantity-dropdown" data-item-id="<?= $item['id']; ?>">
-                    <?php
-                    // Truy vấn số lượng từ cơ sở dữ liệu
-                    $sql = "SELECT quantity FROM giohang WHERE id = ?";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->bind_param('i', $item['id']);
-                    $stmt->execute();
-                    $stmt->bind_result($dbQuantity);
-                    $stmt->fetch();
-                    $stmt->close();
 
-                    // Tạo tùy chọn cho số lượng từ 1 đến 10
-                    for ($i = 1; $i <= 10; $i++) {
-                        $selected = ($i == $dbQuantity) ? 'selected' : '';
-                        echo '<option value="' . $i . '" ' . $selected . '>' . $i . '</option>';
-                    }
-                    ?>
-                </select>
+                <select name="quantity" class="quantity-dropdown" data-item-id="<?= $item['id']; ?>">
+    <?php
+    // Truy vấn số lượng từ cơ sở dữ liệu
+    $sql = "SELECT quantity FROM giohang WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $item['id']);
+    $stmt->execute();
+    $stmt->bind_result($dbQuantity);
+    $stmt->fetch();
+    $stmt->close();
+
+    // Tạo tùy chọn cho số lượng từ 1 đến 10
+    for ($i = 1; $i <= 10; $i++) {
+        $selected = ($i == $dbQuantity) ? 'selected' : '';
+        echo '<option value="' . $i . '" ' . $selected . '>' . $i . '</option>';
+    }
+    ?>
+</select>
                 <script src="js/cart_quantity.js"></script>
 
 
@@ -378,7 +392,6 @@ function createOrder($conn, $fullname,$user_id, $phone, $email, $address, $provi
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="js/cart_size.js"></script>
-<script src="js/cart_quantity.js"></script>
 
                     <button class="delete-button" data-id_product="<?= $item['id_product'] ?>" data-id_color="<?= $item['id_color'] ?>" data-size="<?= $item['size'] ?>">Xóa</button>
                 </div>
@@ -391,15 +404,11 @@ function createOrder($conn, $fullname,$user_id, $phone, $email, $address, $provi
             <div class="product_total">
                 <legend>Tổng:</legend>
                 <div>
-                <span>Số tiền mua sản phẩm</span>
-             <h4 id="productTotalPrice"><?= number_format($totalPrice, 0, ',', '.') ?> VNĐ</h4>
-                </div>
+            <span>Số tiền mua sản phẩm</span>
+            <h4 id="productTotalPrice"><?= number_format($totalPrice, 0, ',', '.') ?> VNĐ</h4>
+        </div>
 
-                <div>
-    <span>Số tiền vận chuyển</span>
-    <h4 id="shipPrice">0 VNĐ</h4>
-</div>
-
+                <legend>Vận chuyển</legend>
                 <div>
                     <legend id="end">Tổng tiền thanh toán</legend>
                     <h4 id="totalPrice" data-value="<?= $totalPrice ?>" name="totalPrice"><?= number_format($totalPrice, 0, ',', '.') ?> VNĐ</h4>
@@ -407,92 +416,24 @@ function createOrder($conn, $fullname,$user_id, $phone, $email, $address, $provi
             </div>
         </div>
     </div>
-    <footer class="footer">
-<div class="footer_banner">
-    <a href="">
-        <img src="images/slide-map-footer-slide-19.jpg" alt="">
-    </a>
-    <div class="footer_main">
-        <div class="footer_main--link">
-            <div class="link_connect">
-                <h4>kết nối với 4men</h4>
-                    <div class="icon">
-                        <a href=""><i class="fa-brands fa-facebook" id="link_connect facebook" style="color: rgb(70, 70, 203)"></i></a>
-                        <a href=""><i class="fa-brands fa-instagram" id="link_connect instagram" style="color: purple ;"></i></a>
-                        <a href=""><i class="fa-brands fa-youtube" id="link_connect youtube" style="color: rgb(255, 77, 77);"></i></a>
-                    </div>
-                <span for="">Nhận Email từ chúng tôi</span>
-                    <div>
-                        <input type="email" placeholder="Email của bạn">
-                        <button>Đăng Ký</button>
-                    </div>
-            </div>
-            <div class="link_brand">
-                <h4>Thương hiệu thời trang nam 4men</h4>
-                <span>Email mua hàng: khangtranmm@gmail.com</span>
-                <span>Hotline: 0899.037390</span>
-            </div>
-            <div class="link_contact">
-                <h4>về chúng tôi</h4>
-                <a href="">Giới thiệu 4MEN</a>
-                <a href="">Liên hệ</a>
-                <a href="">Tuyển dụng</a>
-                <a href="">Tin tức 4MEN</a>
-            </div>
-            <div class="link_helped">
-                <h4>trợ giúp</h4>
-                <a href="">Hưỡng dẫn mua hàng</a>
-                <a href="">Hướng dẫn chọn size</a>
-                <a href="">Câu hỏi thường gặp</a>
-            </div>
-            <div class="link_policy">
-                <h4>chính sách</h4>
-                <a href="">Chính sách khách VIP</a>
-                <a href="">Thanh toán - Giao hàng</a>
-                <a href="">Chính sách đổi hàng</a>
-            </div>
-        </div>
-        <div class="footer_main-contact">
-            <div class="contact_link">
-                <a href="">Tư vấn thời trang</a>
-                |
-                <a href="">Cách phối đồ nam</a>
-                |
-                <a href="">Xu hướng thời trang</a>
-                |
-                <a href="">Chính sách bảo mật thông tin</a>
-                |
-                <a href="">Chính sách Cookie</a>
-            </div>
-            <img src="images/gov.png" alt="">
-            <div class="contact_content">
-                <h4>cty tnhh 4men group</h4>
-                <span>Giấy CNĐKDN: 0899037390 - Ngày cấp 07/09/2023 - Nơi cấp: Sở kế hoạch và Đầu Tư Tp.HCM</span>
-            </br>
-                <span>Copyright 2023 · by 4MEN.COM.VN All rights reserved</span>
-            </div>
-        </div>
-    </div>
-</div>
-</footer>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="js/cart.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector("form");
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector("form");
 
-    const totalPriceElement = document.getElementById("totalPrice");
+        const totalPriceElement = document.getElementById("totalPrice");
 
-    form.addEventListener("submit", function (event) {
-        const currentTotalPrice = parseFloat(totalPriceElement.getAttribute("data-value"));
+        form.addEventListener("submit", function(event) {
+            const currentTotalPrice = parseFloat(totalPriceElement.getAttribute("data-value"));
 
-        const hiddenTotalPriceInput = form.querySelector("input[name='totalPrice']");
-        hiddenTotalPriceInput.value = currentTotalPrice;
+            const hiddenTotalPriceInput = form.querySelector("input[name='totalPrice']");
+            hiddenTotalPriceInput.value = currentTotalPrice;
+        });
     });
-});
 
-$(document).ready(function () {
-    $('.size-dropdown, .quantity-dropdown').change(function () {
+    $(document).ready(function() {
+    $('.size-dropdown, .quantity-dropdown').change(function() {
         // Lấy giá trị mới của size và quantity
         var newSize = $(this).closest('.product_group').find('.size-dropdown').val();
         var newQuantity = $(this).closest('.product_group').find('.quantity-dropdown').val();
@@ -509,48 +450,35 @@ $(document).ready(function () {
         updateSubtotal();
     });
 
-    function calculateSubtotal(quantity, price) {
-        var subtotal = quantity * price;
-        return price + ' VNĐ' + ' x ' + quantity + ' = ' + subtotal.toLocaleString('en-US') + ' VNĐ';
-    }
 
-    function updateSubtotal() {
-        var productTotalPrice = 0;
 
-        $('.product_group').each(function () {
-            var subtotalText = $(this).find('.subtotal').text();
-            var subtotalValue = parseFloat(subtotalText.replace(' VNĐ', '').replace(',', '').split('=')[1]);
+        function calculateSubtotal(quantity, price) {
+            var subtotal = quantity * price;
+            return price + ' VNĐ' + ' x ' + quantity + ' = ' + subtotal.toLocaleString('en-US') + ' VNĐ';
+        }
 
-            if (!isNaN(subtotalValue)) {
-                productTotalPrice += subtotalValue;
-            }
-        });
+        function updateSubtotal() {
+    var totalPrice = $totalPrice + $shipPrice; // Add shipping cost to total price
 
-        // Get the shipping cost
-        var shipPrice = parseFloat($('#shipPrice').text().replace(' VNĐ', '').replace(',', ''));
+    $('.product_group').each(function () {
+        var subtotalText = $(this).find('.subtotal').text();
+        var subtotalValue = parseFloat(subtotalText.replace(' VNĐ', '').replace(',', '').split('=')[1]);
 
-        // Calculate the total price
-        var totalPrice = shipPrice + productTotalPrice;
-
-        // Hiển thị tổng giá vào thẻ h4 có id là 'totalPrice'
-        $('#totalPrice').text(totalPrice.toLocaleString('en-US') + ' VNĐ');
-        $('#totalPrice').attr('data-value', totalPrice);
-
-        // Cập nhật số tiền mua sản phẩm
-        $('#productTotalPrice').text(productTotalPrice.toLocaleString('en-US') + ' VNĐ');
-    }
-
-    $('#province').change(function () {
-        var selectedOption = $(this).find(':selected');
-        var giaVanChuyen = parseFloat(selectedOption.data('gia'));
-
-        $('#shipPrice').text(giaVanChuyen.toLocaleString('en-US') + ' VNĐ');
-
-        updateSubtotal(); // Call the updateSubtotal function when the province changes
+        if (!isNaN(subtotalValue)) {
+            totalPrice += subtotalValue;
+        }
     });
-});
 
+    // Hiển thị tổng giá vào thẻ h4 có id là 'totalPrice'
+    $('#totalPrice').text(totalPrice.toLocaleString('en-US') + ' VNĐ');
+    $('#totalPrice').attr('data-value', totalPrice);
+
+    // Cập nhật số tiền mua sản phẩm
+    $('#productTotalPrice').text(totalPrice.toLocaleString('en-US') + ' VNĐ');
+}
+    });
 </script>
+
 
 </body>
 </html>

@@ -164,7 +164,8 @@ function getColorsForProduct($conn, $productId) {
 </form>
 <form method="get" id="sort-form">
     <label for="sort2">Sắp xếp theo giá:</label>
-    <input type="range" name="sort2" id="sort2" min="0" max="1000" value="<?php echo $sort2; ?>">
+    <input type="range" name="sort2" id="sort2" min="0" max="10000" value="<?php echo $sort2; ?>">
+    <span id="sort2-value">Giá: <?php echo $sort2; ?></span>
 </form>
 
 <script> src ='js/products.js'</script>

@@ -79,6 +79,8 @@ function resetProductImage(productId, imageUrl, type) {
 }
 
 
+
+
 // Gắn sự kiện cho cả ba danh sách sản phẩm
 const productItemsNew = document.querySelectorAll('.product_new .pro--new img');
 productItemsNew.forEach(image => {
@@ -115,3 +117,46 @@ productItemsHot.forEach(image => {
         resetProductImage(productId, this.src, 'hot');
     });
 });
+
+
+
+// function changeProductImage(productId, imageUrl, type) {
+//     console.log('Changing image for product ' + productId + ' (' + type + ') to ' + imageUrl);
+//     updateProductInfo(productId, '', '', imageUrl, type);
+// }
+
+// function resetProductImage(productId, imageUrl, type) {
+//     console.log('Resetting image for product ' + productId + ' (' + type + ') to ' + imageUrl);
+//     updateProductInfo(productId, 'Tên sản phẩm không tồn tại', '', imageUrl, type);
+// }
+
+// function changeProductInfo(productId, productName, productPrice, imageUrl, type) {
+//     console.log('Changing info for product ' + productId + ' (' + type + ') to ' + productName + ', ' + productPrice);
+//     const productNameElement = document.querySelector('#product-name-' + productId + '-' + type);
+//     const productPriceElement = document.querySelector('#product-price-' + productId + '-' + type);
+//     const productImage = document.getElementById('product-image-' + productId + '-' + type);
+
+//     productNameElement.textContent = productName;
+//     productPriceElement.textContent = 'Giá: ' + productPrice;
+//     productImage.src = imageUrl;
+// }
+
+// function resetProductInfo(productId, productName, productPrice, imageUrl, type) {
+//     console.log('Resetting info for product ' + productId + ' (' + type + ') to ' + productName + ', ' + productPrice);
+//     const productNameElement = document.querySelector('#product-name-' + productId + '-' + type);
+//     const productPriceElement = document.querySelector('#product-price-' + productId + '-' + type);
+//     const productImage = document.getElementById('product-image-' + productId + '-' + type);
+
+//     productNameElement.textContent = productName;
+//     productPriceElement.textContent = 'Giá: ' + productPrice;
+//     productImage.src = imageUrl;
+// }
+
+// // Hàm chung để cập nhật thông tin sản phẩm
+// function updateProductInfo(productId, productName, productPrice, imageUrl, type) {
+//     if (type === 'new') {
+//         changeProductInfo(productId, productName, productPrice, imageUrl, type);
+//     } else {
+//         resetProductInfo(productId, productName, productPrice, imageUrl, type);
+//     }
+// }

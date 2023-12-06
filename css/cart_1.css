@@ -1,5 +1,6 @@
 
 
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,200&display=swap');
 
 /*-----body_information----*/
 
@@ -179,14 +180,12 @@
     margin: 5px 0 0 0;
     font-style: italic;
 }
-.pay-div{
-    width: 600px;
-    display: flex;
-    justify-content: right;
-}
+
 .pay{
     height: 50px;
     width: 250px;
+    margin-right: 20px;
+    margin-left: 100px;
     color: white;
     font-size: 20px;
     background-color: rgba(28, 27, 27,0.9);

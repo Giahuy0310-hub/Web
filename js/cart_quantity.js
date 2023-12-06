@@ -11,7 +11,7 @@ $(document).ready(function () {
             success: function (response) {
                 console.log('Dữ liệu đã được cập nhật thành công!');
                 console.log('Response:', response);
-                location.reload();
+                // location.reload();
 
             },
             error: function (error) {

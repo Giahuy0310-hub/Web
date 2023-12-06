@@ -147,6 +147,7 @@ function getColorsForProduct($conn, $productId) {
     <script src="js/products.js"></script>
 
     <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
           @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,200&display=swap');
@@ -161,43 +162,13 @@ function getColorsForProduct($conn, $productId) {
     </style>
 </head>
 <body>
-
-
 <div class="navbar">
     <a href="home.php"><img src="images/logo.png" alt=""></a>
     <div class="navbar_list">
         
     </div>
-            <?php
-            echo "<a href='php/products.php' class='category-button'>Tất cả</a>";
+    <?php include('php/dropdown.php'); ?>
 
-            foreach ($categoryList as $category) {
-                $categoryID = $category['ID_DM'];
-                $categoryName = $category['TenDanhMuc'];
-                $isActive = $categoryID == $selectedCategory ? 'active' : '';
-                $subcategoryList = $category['LoaiSanPham'];
-
-                $subcategoryLinks = [];
-                foreach ($subcategoryList as $subcategory) {
-                    $subcategoryLink = "products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id&loaisanpham=" . urlencode($subcategory);
-                    $isActiveSubcategory = $subcategory == $selectedSubcategory ? 'active' : '';
-                    $subcategoryLinks[] = "<a class='subcategory-button $isActiveSubcategory' href='$subcategoryLink'>$subcategory</a>";
-                }
-
-                echo "<div class='dropdown'>";
-                echo "<a class='category-button $isActive' href='products.php?ID_DM=$categoryID&id_product=$id_product&color_id=$color_id'>$categoryName</a>";
-                if (!empty($subcategoryLinks)) {
-                    echo "<div class='dropdown-menu'>";
-                    echo implode($subcategoryLinks);
-                    echo "</div>";
-                }
-                echo "</div>";
-            }
-            ?>
-                    <div class="navbar_logo">
-            <a href=""><i class="fa-solid fa-magnifying-glass"></i></a>
-            <a href=""><i class="fa-regular fa-user"></i></a>
-            <a href="cart.php"><i class="fa-solid fa-cart-shopping"></i></a>
         </div>
         </div>
         <div class="body">
@@ -208,13 +179,47 @@ function getColorsForProduct($conn, $productId) {
                     <!-- <button id="next" onclick="next()"><i class="fa-solid fa-chevron-right"></i></button> -->
                 </div>
             </div>
+            
+            <div class="product_new" id="product_new">
+    <h2 id="product_title--new">SẢN PHẨM MỚI NHẤT</h2>
+    <div class="list_product--new">
+        <?php
+foreach ($productList as $product) {
+    $productId = $product['id_product'];
+    $colors = $product['colors'];
+    echo '<div class="pro--new">';
+    echo '<a href="product_detail.php?id_product=' . $productId . '&color_id=' . $colors[0]['id_color'] . '">';
+    echo '<img id="product-image-' . $productId . '-new" src="' . $colors[0]['link_hinh_anh'] . '" alt="' . (isset($product['ten_san_pham']) ? $product['ten_san_pham'] : '') . '">';
+    
+    // Kiểm tra xem khóa 'ten_san_pham' có tồn tại hay không
+    $tenSanPham = isset($product['ten_san_pham']) ? $product['ten_san_pham'] : 'Tên sản phẩm không tồn tại';
+    echo '<p>' . $tenSanPham . '</p>';
+    
+    echo '<p class="product-price">Giá: ' . $product['gia'] . '</p>';
+    echo '<div class="color-options">';
+    
+    foreach ($colors as $color) {
+        $colorHex = $color['hex_color'];
+        $colorId = $color['id_color'];
+        echo '<a href="product_detail.php?id_product=' . $productId . '&color_id=' . $colorId . '">';
+        echo '<div class="color-option" style="background-color: ' . $colorHex . ';" onmouseover="changeProductImage(\'' . $productId . '\', \'' . $color['link_hinh_anh'] . '\', \'new\')" onmouseout="resetProductImage(\'' . $productId . '\', \'' . $colors[0]['link_hinh_anh'] . '\', \'new\')"></div>';
+        echo '</a>';
+    }
+    
+    echo '</div>';
+    echo '</a>';
+    echo '</div>';
+}
 
-            <div class="product_button--new">
+        ?>
+    </div>
+</div>
+<div class="product_button--new">
                     <button id="pro_prev"><i class="fa-solid fa-chevron-left"></i></button>
                     <button id="pro_next"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
-            </div>
-            <div class="policy">
+
+                <div class="policy">
                 <div class="policy_container">
                     <div class="ship">
                         <i class="fa-solid fa-plane"></i>
@@ -238,34 +243,6 @@ function getColorsForProduct($conn, $productId) {
                     </div>
                 </div>
             </div>
-            <div class="product_new">
-    <h2 id="product_title--new">SẢN PHẨM MỚI NHẤT</h2>
-    <div class="list_product--new">
-        <?php
-        foreach ($productList as $product) {
-            $productId = $product['id_product'];
-            $colors = $product['colors'];
-            echo '<div class="pro--new">';
-            echo '<a href="product_detail.php?id_product=' . $productId . '&color_id=' . $colors[0]['id_color'] . '">';
-            echo '<img id="product-image-' . $productId . '-new" src="' . $colors[0]['link_hinh_anh'] . '" alt="' . $product['ten_san_pham'] . '">';
-            echo '<p>' . $product['ten_san_pham'] . '</p>';
-            echo '<p class="product-price">Giá: ' . $product['gia'] . '</p>';
-
-            echo '<div class="color-options">';
-            foreach ($colors as $color) {
-                $colorHex = $color['hex_color'];
-                $colorId = $color['id_color'];
-                echo '<a href="product_detail.php?id_product=' . $productId . '&color_id=' . $colorId . '">';
-                echo '<div class="color-option" style="background-color: ' . $colorHex . ';" onmouseover="changeProductImage(\'' . $productId . '\', \'' . $color['link_hinh_anh'] . '\', \'new\')" onmouseout="resetProductImage(\'' . $productId . '\', \'' . $colors[0]['link_hinh_anh'] . '\', \'new\')"></div>';                
-                echo '</a>';
-            }
-            echo '</div>';
-            echo '</a>';
-            echo '</div>';
-        }
-        ?>
-    </div>
-</div>
 
 <div class="product_sold">
     <h2 id="product_title--sold">SẢN PHẨM BÁN CHẠY NHẤT</h2>
