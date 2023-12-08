@@ -147,8 +147,16 @@ function getColorsForProduct($conn, $productId) {
     <link rel="stylesheet" href="css/products.css">
     <link rel="stylesheet" href="css/menu.css">
     <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="js/products.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,200&display=swap');
+        html ,body,p{
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+    </style>
 </head>
 
 <body>
@@ -157,18 +165,20 @@ function getColorsForProduct($conn, $productId) {
     <div class="navbar_list"></div>
     <?php include('php/dropdown.php'); ?>
 </br>
-    <form method="get" id="sort-form">
+<div class="filter">
+    <div method="get" id="sort-form">
     <label for="sort1">Sắp xếp:</label>
     <select name="sort1" id="sort1">
         <option value="asc" <?php echo ($sort1 === 'asc') ? 'selected' : ''; ?>>Tăng dần (ASC)</option>
         <option value="desc" <?php echo ($sort1 === 'desc') ? 'selected' : ''; ?>>Giảm dần (DESC)</option>
     </select>
-</form>
-<form method="get" id="sort-form">
+</div>
+<div method="get" id="sort-form">
     <label for="sort2">Sắp xếp theo giá:</label>
     <input type="range" name="sort2" id="sort2" min="0" max="10000" value="<?php echo $sort2; ?>">
-    <span id="sort2-value">Giá: <?php echo $sort2; ?></span>
-</form>
+    <span id="sort2-value"> Giá: <?php echo $sort2 . ' ₫'; ?></span>
+</div>
+</div>
 
 <script> src ='js/products.js'</script>
 <div id="product-info">
@@ -183,7 +193,7 @@ function getColorsForProduct($conn, $productId) {
                 echo '<a href="product_detail.php?id_product=' . $productId . '&color_id=' . $colors[0]['id_color'] . '">';
                 echo '<img id="product-image-' . $productId . '" src="' . $colors[0]['link_hinh_anh'] . '" alt="' . $product['ten_san_pham'] . '">';
                 echo '<p>' . $product['ten_san_pham'] . '</p>';
-                echo '<p class="product-price">Giá: ' . $product['gia'] . '</p>';
+                echo '<p class="product-price">Giá: ' . $product['gia'] . ' ₫' . '</p>';
 
                 echo '<div class="color-options">';
                 foreach ($colors as $color) {
@@ -263,5 +273,7 @@ function navigateToPage(page) {
     window.location.href = newURL;
 }
 </script>
+
 </body>
+<?php require_once "footer.php"?>;
 </html>

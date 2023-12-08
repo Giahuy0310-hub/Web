@@ -1,6 +1,10 @@
 /* CSS chung */
-body{
-    font-family:'Times New Roman', Times, serif;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,200&display=swap');
+
+.container {
+    width: 100%;
+    margin: 20px;
+    padding: 10px;
 }
 .container {
     max-width: 1200px;
@@ -36,6 +40,12 @@ ul li {
 }
 
 
+.images_show{
+    width: 60%;
+    display: flex;
+}
+
+
 
 .product-detail-container {
     text-align: center;
@@ -53,9 +63,45 @@ ul li {
     top: -25px; /* Đặt top là giá trị âm để dịch lên trên */
 }
 
+.product-detail-info h2{
+    text-transform: uppercase;
+}
+
+.product-detail-title-info{
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.info-size,.info-quantity{
+    width: 230px;
+    display: flex;
+    flex-direction: column;
+}
+
+.info-size select, .info-quantity select{
+    height: 34px;
+    line-height: 34px;
+    padding-left: 15px;
+    margin-top: 10px;
+    border: 1px solid #cfcfcf;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.info-size label, .info-quantity label{
+    font-size: 15px;
+}
+
 .product-detail-price {
-    font-weight: bold;
-    font-size: 28px;
+    font-size: 18px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(181, 181, 181,0.5);
+}
+
+.product-detail-image{
+    width: 100%;
 }
 
 /* Lớp CSS cho 4 hình ảnh nhỏ */
@@ -249,24 +295,55 @@ link[rel="icon"] {
     height: 32px;
 }
 
-
-
-
-.add-to-cart-button {
-    background-color: #007bff;
-    color: #fff;
+.buy-to-cart-button{
+    font-weight: 300;
+    height: 50px;
+    background-color: white;
+    color: #444;
     padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
+    border: 1px solid #444;
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    margin-top: 10px;
+    font-size: 18px;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    transition: all ;
 }
 
+.buy-to-cart-button:hover{
+    background-color: #444;
+    color: white;
+}
+
+.add-to-cart-button {
+    font-weight: 300;
+    height: 50px;
+    background-color: #444;
+    color: #fff;
+    padding: 10px 20px;
+    border: 1px solid #444;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    margin-top: 10px;
+    font-size: 18px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.add-to-cart-button:hover{
+    background-color: white;
+    color: #444;
+    
+}
+
+
 .add-to-cart-button .cart-icon {
+    color: white;
     position: absolute;
-    left: 0;
-    top: 10px;
+    left: -30px;
+    top: 14px;
     transition: left 2s, top 2s;
 }
 
@@ -279,24 +356,63 @@ link[rel="icon"] {
 .shirt-icon {
     position: absolute;
     left: 50%;
-    top: -40px;
+    top: -45px;
+    font-size: 30px;
     transform: translateX(-50%); /* To center horizontally */
-    height: 40px; /* Set an appropriate height */
-    width: 40px; /* Set an appropriate width */
     /* background-image: url('images/icons8-clothes-50.png'); */
     background-size: cover;
     opacity: 1; /* Ensure it's fully visible */
     animation: carAnimation 2s ease-in-out;
     animation-fill-mode: forwards;
 }
+.policy_container{
+    height: 100%;
+    width: 100%;
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ship , .trade, .discount, .hotline{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.ship h4 , .trade h4, .discount h4, .hotline h4{
+    font-size: 13px;
+}
+
+.ship span , .trade span, .discount span, .hotline span{
+    font-size: 13px;
+}
+
+.product_content{
+    margin-top: 20px;
+}  
+.product_content h9{
+    display: block;
+    inline-size: auto;
+    width: 100%;
+    font-size: 15px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(181, 181, 181,0.5) ;
+}
+
+.product_content p{
+    margin: 5px 10px;
+    font-size: 13px;
+}
 
   
   @keyframes fallFromTop {
     0% {
-      top: -40px;
+      top: -60px;
     }
     100% {
-      top: 10px;
+      top: 100%;
     }
   }
   

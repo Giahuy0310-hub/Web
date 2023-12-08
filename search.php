@@ -231,4 +231,5 @@ if (isset($_GET['searchTerm'])) {
 
 <?php include('php/dropdown.php'); ?>
 </body>
+
 </html>

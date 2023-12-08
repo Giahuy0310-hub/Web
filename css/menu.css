@@ -78,6 +78,7 @@ a.category-button {
 
 .dropdown-menu a {
     color: black;
+    box-sizing: border-box;
     padding: 8px 10px;
     text-decoration: none;
     text-align: center;
@@ -86,6 +87,12 @@ a.category-button {
 
 .dropdown a {
     text-decoration: none;
+}
+.dropdown-menu a:hover{
+    background-color: #dbdbdb !important;
+}
+.subcategory-button:hover{
+    background-color: #dbdbdb !important;
 }
 
 .dropdown:hover .dropdown-menu,
@@ -125,20 +132,6 @@ a.category-button {
         color: #fff;
         text-decoration: none;
     }
-
-    .pagination-item.active a {
-        background-color: #0056b3;
-    }
-
-    .pagination-item.disabled a {
-        pointer-events: none;
-        background-color: #ccc;
-    }
-
-    .pagination-item a:hover {
-        background-color: #0056b3;
-    }
-
     .category-button {
         justify-content: center;
         gap: 10px;

@@ -94,9 +94,21 @@ if (empty($loaisanphamList)) {
 <head>
     <link rel="stylesheet" href="css/products_detail.css">
     <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="js/product_detail.js"></script>
     <script src="js/products.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,200&display=swap');
+        html ,body{
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        
+    </style>
 </head>
 <body>
     <div class="navbar">
@@ -121,6 +133,7 @@ if (empty($loaisanphamList)) {
         echo '<script>modalVisible = false;</script>';
     }
     if (isset($productDetail)) {
+        echo '<div class="images_show">';
         echo "<div class='additional-data'>";
         $imgFields = ['img1', 'img2', 'img3', 'img4'];
 
@@ -134,13 +147,19 @@ if (empty($loaisanphamList)) {
         echo "<div class='product-detail-image'>";
         echo "<img id='largeImage' src='" . $productDetail['link_hinh_anh'] . "' alt='" . $productDetail['ten_san_pham'] . "' onclick='openModal()'>";
         echo "</div>";
+        echo '</div>';
         echo "<div class='product-detail-info'>";
         echo "<h2>" . $productDetail['ten_san_pham'] . "</h2>";
         echo "<div class='product-detail-price'>Giá: " . $productDetail['gia'] . "</div>";
 
         // Combobox cho Size
+        echo '<div class="product-detail-title-info">';
+        
+        echo '<div class="info-size">';
         echo '<label for="size">Size:</label>';
         echo '<select id="size" name="size">';
+        echo '</div>';
+        
         if (!empty($productDetail['size_S'])) {
             echo '<option value="S">S</option>';
         }
@@ -155,8 +174,14 @@ if (empty($loaisanphamList)) {
         }
         // Thêm các tùy chọn size khác tại đây
         echo '</select>';
+        echo '<button id="buyToCartButton" class="buy-to-cart-button" onclick="buyToCart(\'' . $productDetail['ten_san_pham'] . '\', ' . $productDetail['gia'] . ', ' . $productDetail['id_color'] . ', \'' . $productDetail['link_hinh_anh'] . '\', \'' . $id_product . '\', \'' . $user_id . '\')">
+        <span class="text">mua ngay</span>
+                <i class="cart-icon fa-solid fa-cart-shopping"></i>
+              </button>';
+              echo '</div>';
 
         // Combobox cho Số lượng
+        echo '<div class="info-quantity">';
         echo '<label for="quantity">Số lượng:</label>';
         echo '<select id="quantity" name="quantity">';
         for ($i = 1; $i <= 5; $i++) {  // Thay đổi số lượng tùy theo nhu cầu
@@ -176,13 +201,41 @@ if (empty($loaisanphamList)) {
         echo '<button id="addToCartButton" class="add-to-cart-button" onclick="addToCart(\'' . $productDetail['ten_san_pham'] . '\', ' . $productDetail['gia'] . ', ' . $productDetail['id_color'] . ', \'' . $productDetail['link_hinh_anh'] . '\', \'' . $id_product . '\', \'' . $user_id . '\')">
         <span class="text">Thêm vào giỏ hàng</span>
                 <i class="cart-icon fa-solid fa-cart-shopping"></i>
-                <div class="shirt-icon">
-                    <img src="images/icons8-clothes-50.png" alt="Áo" />
-                </div>
+               
               </button>';
     }
+    
+    echo '</div>';
+    echo '</div>';
+    echo '<div class="policy">
+    <div class="policy_container">
+        <div class="ship">
+            <i class="fa-solid fa-plane"></i>
+            <h4>MIỄN PHÍ VẬN CHUYỂN</h4>
+            <span>Cho đơn hàng từ 399K</span>
+        </div>
+        <div class="trade">
+            <i class="fa-solid fa-handshake"></i>
+            <h4>ĐỔI TRẢ DỄ DÀNG</h4>
+            <span>Trong vòng 15 ngày</span>
+        </div>
+        <div class="hotline">
+            <i class="fa-solid fa-headphones"></i>
+            <h4>HOTLINE 0899.037.390</h4>
+            <span>Hỗ trợ từ 8h30 - 22h</span>
+        </div>
+    </div>
+</div>';
+    echo '<div class="product_content">
+    <h9>ĐIỂM NỔI BẬT</h9>
+        <p>Form: Regular</p>
+        <p>Form: Regular </p>
+        <p>Size: S - M - L - XL - XXL </p>
+    </div>';
+    echo '</div>';
+    echo "</div>";
+echo '</div>';
     ?>
-</div>
     <footer>
     </footer>
     <div id="imageModal" class="modal">
@@ -209,7 +262,6 @@ function addToCart(ten_san_pham, gia, id_color, link_hinh_anh, id_product, user_
       const button = document.getElementById('addToCartButton');
       const cartIcon = button.querySelector('.cart-icon');
       const text = button.querySelector('.text');
-      const shirtIcon = button.querySelector('.shirt-icon');
 
       // Ẩn văn bản "Thêm vào giỏ hàng" bằng opacity
       text.style.opacity = 0;
@@ -218,8 +270,6 @@ function addToCart(ten_san_pham, gia, id_color, link_hinh_anh, id_product, user_
       cartIcon.style.left = '100%';
 
       // Bắt đầu sự kiện rơi của chiếc áo
-      shirtIcon.style.animation = 'fallFromTop 2s ease-in-out';
-      shirtIcon.style.animationFillMode = 'forwards';
 
       setTimeout(function () {
         button.classList.remove('clicked');
@@ -251,7 +301,62 @@ function addToCart(ten_san_pham, gia, id_color, link_hinh_anh, id_product, user_
 
   xhttp.send(data);
 }
+
+
+function buyToCart(ten_san_pham, gia, id_color, link_hinh_anh, id_product, user_id) {
+  var size = document.getElementById('size').value;
+  var quantity = document.getElementById('quantity').value;
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.open('POST', 'ft/add.php', true);
+  xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+  xhttp.onreadystatechange = function () {
+  if (xhttp.readyState == 4) {
+    console.log(xhttp.status); // Kiểm tra status của response
+    console.log(xhttp.responseText); // Kiểm tra nội dung response
+
+    const button = document.getElementById('buyToCartButton');
+    const cartIcon = button.querySelector('.cart-icon');
+    const text = button.querySelector('.text');
+
+    setTimeout(function () {
+      button.classList.remove('clicked');
+
+
+      // Hiển thị văn bản lại bằng opacity
+      text.style.opacity = 1;
+
+      // Redirect to cart.php
+      window.location.href = 'cart.php';
+    }, 0);
+  }
+};
+
+  var data =
+    'ten_san_pham=' +
+    encodeURIComponent(ten_san_pham) +
+    '&gia=' +
+    gia +
+    '&id_color=' +
+    id_color +
+    '&link_hinh_anh=' +
+    encodeURIComponent(link_hinh_anh) +
+    '&id_product=' +
+    id_product +
+    '&size=' +
+    size +
+    '&quantity=' +
+    quantity +
+    '&user_id=' + user_id; 
+
+  xhttp.send(data);
+
+
+}
 </script>
 
 </body>
+<?php require_once "footer.php"?>;
+
 </html>

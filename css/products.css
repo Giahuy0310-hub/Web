@@ -21,26 +21,10 @@ header {
     text-align: center;
 }
 
-li::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 3px;
-    background-color: #f10697;
-    bottom: 0;
-    left: 0;
-    transform: translateX(-100%);
-    transition: transform 1s;
-}
 
-li:hover::before {
-    transform: translateX(0);
-    background-color: #dd4747;
-}
 
-li:hover {
-    color: #dd4747;
-}
+
+
 
 body {
     display: flex;
@@ -52,6 +36,51 @@ link[rel="icon"] {
     width: 32px;
     height: 32px;
 }
+
+.filter{
+    display: flex;
+    margin: 10px 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgb(216, 216, 216);
+}
+
+.filter div{
+    margin: 0 5px;
+}
+
+.filter div:nth-child(1){
+    display: flex;
+    align-items: center;
+}
+
+.filter div:nth-child(2){
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 400px;
+    border: 1px solid rgb(203, 203, 203);
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+#sort2-value{
+    margin-left: 10px;
+}
+
+.filter div:nth-child(1) label:nth-child(1){
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+#sort1{
+    height: 50px;
+    width: 200px;
+    padding: 0 30px;
+    border-color: rgb(203, 203, 203);
+}
+
+
 
 .product {
     text-align: center;
@@ -70,16 +99,16 @@ link[rel="icon"] {
 }
 
 .product p {
-    text-align: left;
     margin: 5px 0;
+    font-weight: 600;
 }
 
 .product-price {
-    font-weight: bold;
-    text-align: left;
+    font-weight: 400 !important;
 }
 
 .product-container {
+    overflow: hidden;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
@@ -119,6 +148,28 @@ link[rel="icon"] {
 
 .centered {
     text-align: center;
+    margin: 30px 0 10px;
+}
+
+.pagination-item a{
+    margin-bottom: 25px;
+    border-radius: 50px;
+}
+
+.prev-page a:hover,
+.next-page a:hover{
+    background-color: #444 ;
+    transition: ease 0.3s;
+}
+
+.active a{
+    background-color: #444 !important;
+}
+
+.active a:hover{
+    background-color: rgb(223, 222, 222) !important;
+    color: black;
+    transition: ease 0.7s;
 }
 
 

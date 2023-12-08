@@ -153,10 +153,9 @@ function getColorsForProduct($conn, $productId) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
           @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,200&display=swap');
-        html ,body{
+        html ,body,a{
             margin: 0;
-            font-family: 'Montserrat', sans-serif;
-            background-color: #fff;
+            font-family: 'Montserrat', sans-serif !important;
             width: 100%;
             position: relative;
         }
@@ -165,7 +164,7 @@ function getColorsForProduct($conn, $productId) {
 </head>
 <body>
 <div class="navbar">
-    <a href="home.php"><img src="images/logo.png" alt=""></a>
+<a href="home.php"><img src="images/logoo.png" alt="" style="width:130px; height:100px"></a>
     <div class="navbar_list">
         
     </div>
@@ -178,7 +177,7 @@ function getColorsForProduct($conn, $productId) {
                 <img src="images/banner1.jpg" alt="" id="slider">
                 <div class="banner_button">
                     <button id="prev" onclick="prev()"><i class="fa-solid fa-chevron-left"></i></button>
-                    <!-- <button id="next" onclick="next()"><i class="fa-solid fa-chevron-right"></i></button> -->
+                    <button id="next" onclick="next()"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
             </div>
             
@@ -197,7 +196,7 @@ foreach ($productList as $product) {
     $tenSanPham = isset($product['ten_san_pham']) ? $product['ten_san_pham'] : 'Tên sản phẩm không tồn tại';
     echo '<p>' . $tenSanPham . '</p>';
     
-    echo '<p class="product-price">Giá: ' . $product['gia'] . '</p>';
+    echo '<p class="product-price">Giá: ' . $product['gia'] .' ₫' . '</p>';
     echo '<div class="color-options">';
     
     foreach ($colors as $color) {
@@ -215,11 +214,11 @@ foreach ($productList as $product) {
 
         ?>
     </div>
+    <div class="product_button--new">
+                        <button id="pro_prev"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button id="pro_next"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
 </div>
-<div class="product_button--new">
-                    <button id="pro_prev"><i class="fa-solid fa-chevron-left"></i></button>
-                    <button id="pro_next"><i class="fa-solid fa-chevron-right"></i></button>
-                </div>
 
                 <div class="policy">
                 <div class="policy_container">
@@ -257,7 +256,7 @@ foreach ($productList as $product) {
             echo '<a href="product_detail.php?id_product=' . $productId . '&color_id=' . $colors[0]['id_color'] . '">';
             echo '<img id="product-image-' . $productId . '-sold" src="' . $colors[0]['link_hinh_anh'] . '" alt="' . $product['ten_san_pham'] . '">';
             echo '<p>' . $product['ten_san_pham'] . '</p>';
-            echo '<p class="product-price">Giá: ' . $product['gia'] . '</p>';
+            echo '<p class="product-price">Giá: ' . $product['gia'] .' ₫' . '</p>';
 
             echo '<div class "color-options">';
             foreach ($colors as $color) {
@@ -273,11 +272,11 @@ foreach ($productList as $product) {
         }
         ?>
     </div>
+    <div class="product_button--sold">
+                        <button id="pro_prev--sold"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button id="pro_next--sold"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
 </div>
-<div class="product_button--sold">
-                    <button id="pro_prev--sold"><i class="fa-solid fa-chevron-left"></i></button>
-                    <button id="pro_next--sold"><i class="fa-solid fa-chevron-right"></i></button>
-                </div>
             </div>
 <div class="product_hot">
     <h2 id="product_title--hot">SẢN PHẨM NỔI BẬT</h2>
@@ -290,7 +289,7 @@ foreach ($productList as $product) {
             echo '<a href="product_detail.php?id_product=' . $productId . '&color_id=' . $colors[0]['id_color'] . '">';
             echo '<img id="product-image-' . $productId . '-hot" src="' . $colors[0]['link_hinh_anh'] . '" alt="' . $product['ten_san_pham'] . '">';
             echo '<p>' . $product['ten_san_pham'] . '</p>';
-            echo '<p class="product-price">Giá: ' . $product['gia'] . '</p>';
+            echo '<p class="product-price">Giá: ' . $product['gia'] .' ₫' . '</p>';
 
             echo '<div class="color-options">';
             foreach ($colors as $color) {
@@ -306,11 +305,11 @@ foreach ($productList as $product) {
         }
         ?>
     </div>
+    <div class="product_button--hot">
+                        <button id="pro_prev--hot"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button id="pro_next--hot"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
 </div>
-<div class="product_button--hot">
-                    <button id="pro_prev--hot"><i class="fa-solid fa-chevron-left"></i></button>
-                    <button id="pro_next--hot"><i class="fa-solid fa-chevron-right"></i></button>
-                </div>
             </div>
 
 <script src="js/index.js"></script>
@@ -354,74 +353,8 @@ foreach ($productList as $product) {
     </div>
 </div>
 </div>
-<footer class="footer">
-<div class="footer_banner">
-    <a href="">
-        <img src="images/slide-map-footer-slide-19.jpg" alt="">
-    </a>
-    <div class="footer_main">
-        <div class="footer_main--link">
-            <div class="link_connect">
-                <h4>kết nối với 4men</h4>
-                    <div class="icon">
-                        <a href=""><i class="fa-brands fa-facebook" id="link_connect facebook" style="color: rgb(70, 70, 203)"></i></a>
-                        <a href=""><i class="fa-brands fa-instagram" id="link_connect instagram" style="color: purple ;"></i></a>
-                        <a href=""><i class="fa-brands fa-youtube" id="link_connect youtube" style="color: rgb(255, 77, 77);"></i></a>
-                    </div>
-                <span for="">Nhận Email từ chúng tôi</span>
-                    <div>
-                        <input type="email" placeholder="Email của bạn">
-                        <button>Đăng Ký</button>
-                    </div>
-            </div>
-            <div class="link_brand">
-                <h4>Thương hiệu thời trang nam 4men</h4>
-                <span>Email mua hàng: khangtranmm@gmail.com</span>
-                <span>Hotline: 0899.037390</span>
-            </div>
-            <div class="link_contact">
-                <h4>về chúng tôi</h4>
-                <a href="">Giới thiệu 4MEN</a>
-                <a href="">Liên hệ</a>
-                <a href="">Tuyển dụng</a>
-                <a href="">Tin tức 4MEN</a>
-            </div>
-            <div class="link_helped">
-                <h4>trợ giúp</h4>
-                <a href="">Hưỡng dẫn mua hàng</a>
-                <a href="">Hướng dẫn chọn size</a>
-                <a href="">Câu hỏi thường gặp</a>
-            </div>
-            <div class="link_policy">
-                <h4>chính sách</h4>
-                <a href="">Chính sách khách VIP</a>
-                <a href="">Thanh toán - Giao hàng</a>
-                <a href="">Chính sách đổi hàng</a>
-            </div>
-        </div>
-        <div class="footer_main-contact">
-            <div class="contact_link">
-                <a href="">Tư vấn thời trang</a>
-                |
-                <a href="">Cách phối đồ nam</a>
-                |
-                <a href="">Xu hướng thời trang</a>
-                |
-                <a href="">Chính sách bảo mật thông tin</a>
-                |
-                <a href="">Chính sách Cookie</a>
-            </div>
-            <img src="images/gov.png" alt="">
-            <div class="contact_content">
-                <h4>cty tnhh 4men group</h4>
-                <span>Giấy CNĐKDN: 0899037390 - Ngày cấp 07/09/2023 - Nơi cấp: Sở kế hoạch và Đầu Tư Tp.HCM</span>
-            </br>
-                <span>Copyright 2023 · by 4MEN.COM.VN All rights reserved</span>
-            </div>
-        </div>
-    </div>
-</div>
-</footer>
+
 </div>
 </body>
+<?php require_once "footer.php";?>
 </html>

@@ -26,7 +26,7 @@
 }
 
 .body_banner img{
-    height: 700px;
+    height: 900px;
     width: 100%;
     object-fit:cover;
 }
@@ -239,7 +239,7 @@
 .blog_title{
     display: flex;
     justify-content: center;
-    margin: 0;
+    margin: 10px 0;
     margin-bottom: 10px;
 }
 
@@ -387,8 +387,8 @@
     }
 
     .pro--new,
-    .pro-sold,
-    .pro-hot
+    .pro--sold,
+    .pro--hot
     {
         text-align: center;
         padding: 10px;
@@ -405,10 +405,15 @@
     .pro--new p,
     .pro--new h4,
     .pro--sold p,
-    .pro--sold h4
+    .pro--sold h4,
     .pro--hot p,
     .pro--hot h4 {
-        margin: 5   px 0;
+        font-weight: 600;
+        margin: 10px 0;
+    }
+    
+    .product-price{
+        font-weight: 400 !important;
     }
 
     /* Điều chỉnh màu nền của sản phẩm */

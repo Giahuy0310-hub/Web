@@ -1,4 +1,11 @@
 
+.dropdown-menu a:hover{
+    background-color: #dbdbdb !important;
+}
+.subcategory-button:hover{
+    background-color: #dbdbdb !important;
+}
+
 a.category-button {
     text-decoration: none;
 }
@@ -29,7 +36,6 @@ a.category-button {
 .navbar_list a{
     font-size: 17px;
     font-weight: 100;
-    font-family: 'Times New Roman', Times, serif;
     color: black;
     font-weight: 400;
     margin: 10px 20px;
@@ -78,6 +84,7 @@ a.category-button {
 
 .dropdown-menu a {
     color: black;
+    box-sizing: border-box;
     padding: 8px 10px;
     text-decoration: none;
     text-align: center;
@@ -132,17 +139,9 @@ a.category-button {
         text-decoration: none;
     }
 
-    .pagination-item.active a {
-        background-color: #0056b3;
-    }
+
 
     .pagination-item.disabled a {
-        pointer-events: none;
-        background-color: #ccc;
-    }
-
-    .pagination-item a:hover {
-        background-color: #0056b3;
     }
 
     .category-button {
