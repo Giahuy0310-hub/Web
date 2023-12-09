@@ -55,7 +55,6 @@
             </div>
             <div class="link_policy">
                 <h4>chính sách</h4>
-                <a href="">Chính sách khách VIP</a>
                 <a href="chinhsachvanchuyen.php">Thanh toán - Giao hàng</a>
                 <a href="chinhsachdoitra.php">Chính sách đổi hàng</a>
             </div>
@@ -71,15 +70,7 @@
                 <a href="chinhsachbaomat.php">Chính sách bảo mật thông tin</a>
                 |
                 <a href="">Chính sách Cookie</a>
-            </div>
-            <img src="images/gov.png" alt="">
-            <div class="contact_content">
-                <h4>cty tnhh 4men group</h4>
-                <span>Giấy CNĐKDN: 0899037390 - Ngày cấp 07/09/2023 - Nơi cấp: Sở kế hoạch và Đầu Tư Tp.HCM</span>
-            </br>
-                <span>Copyright 2023 · by 4MEN.COM.VN All rights reserved</span>
-            </div>
-        </div>
+
     </div>
 </div>
 </footer>

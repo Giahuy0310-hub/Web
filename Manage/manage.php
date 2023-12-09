@@ -46,7 +46,8 @@ $stmtCheckUser->close();
 </head>
 <body>
 <div class="navbar">
-        <a href="../home.php"><img src="../images/logo.png" alt=""></a>
+
+        <a href="../home.php"><img src="../images/logoo.png" alt="" style="width:130px; height:80px"></a>
         <div class="navbar_list"></div>
         <?php include('dropdown.php'); ?>
     </div>

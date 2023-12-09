@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 19, 2023 lúc 09:22 AM
+-- Thời gian đã tạo: Th12 08, 2023 lúc 10:38 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 8.2.0
 
@@ -87,7 +87,15 @@ INSERT INTO `chitietdonhang` (`id`, `id_donhang`, `ten_san_pham`, `id_product`, 
 (43, 2945, 'aaa', 'D02', 1, 123, 'M', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
 (44, 2946, 'aaa', 'D02', 1, 123, 'L', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
 (45, 2947, 'aaa', 'QT01', 1, 123, 'L', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
-(46, 2948, 'aaa', 'D02', 1, 123, 'L', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg');
+(46, 2948, 'aaa', 'D02', 1, 123, 'L', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(47, 2949, 'abc', 'MP02', 2, 123, 'S', 6, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(48, 2949, 'abc', 'MP03', 4, 12311, 'L', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(50, 2950, 'abc', 'D01', 3, 123, 'M', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(51, 2950, 'abc', 'MP03', 4, 12311, 'M', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(52, 2950, 'ABc', 'QT01', 1, 10010, 'M', 10, 'https://4men.com.vn/thumbs/2023/10/ao-so-mi-tay-dai-ra-nguc-theu-4m-form-slimfit-sm140-mau-nau-34693-p.jpg'),
+(53, 2951, 'ABc', 'QT01', 1, 10010, 'M', 4, 'https://4men.com.vn/thumbs/2023/10/ao-so-mi-tay-dai-ra-nguc-theu-4m-form-slimfit-sm140-mau-nau-34693-p.jpg'),
+(54, 2951, 'abc', 'D01', 3, 123, 'M', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(56, 2952, 'abc', 'D01', 3, 123, 'M', 1, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg');
 
 -- --------------------------------------------------------
 
@@ -876,7 +884,11 @@ INSERT INTO `donhang` (`id`, `hoten`, `sodienthoai`, `email`, `sonha_duong`, `ph
 (2945, 'Gia Huy', '0898877325', 'gia0029281@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Sóc Hà', 'Huyện Hà Quảng', ' Cao Bằng', '123124', 123, '2023-11-18 12:34:35', NULL),
 (2946, 'Gia Huy', '0898877325', 'hbpharma@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Cao Mã Pờ', 'Huyện Quản Bạ', ' Hà Giang', '123', 123, '2023-11-18 12:43:39', NULL),
 (2947, 'Gia Huy', '0898877325', 'hbpharma@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Phường Phương Liên', 'Quận Đống Đa', ' Hà Nội', '1211', 123, '2023-11-18 12:44:21', 6),
-(2948, 'Gia Huy', '0898877325', 'gia009281@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Cộng Lạc', 'Huyện Tứ Kỳ', ' Hải Dương', '123', 123, '2023-11-19 01:59:02', 8);
+(2948, 'Gia Huy', '0898877325', 'gia009281@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Cộng Lạc', 'Huyện Tứ Kỳ', ' Hải Dương', '123', 123, '2023-11-19 01:59:02', 8),
+(2949, 'Gia Huy', '0898877325', 'Giahuyletan@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Thái Sơn', 'Huyện Bảo Lâm', ' Cao Bằng', '213', 13049, '2023-12-06 03:32:33', 8),
+(2950, 'Gia Huy', '0898877325', 'hb@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Minh Đức', 'Huyện Tứ Kỳ', ' Hải Dương', 'jj', 235.311, '2023-12-06 03:33:15', 8),
+(2951, 'Gia Huy', '0898877325', 'Giahuyletan@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Cổ Đông', 'Thị xã Sơn Tây', ' Hà Nội', '12312', 55163, '2023-12-06 04:21:06', 8),
+(2952, 'Gia Huy', '0898877325', 'gia009281@gmail.com', '861 Trần Xuân Soạn Quận 7', 'Xã Vinh Quang', 'Huyện Vĩnh Bảo', ' Hải Phòng', '123', 30123, '2023-12-06 04:22:49', 8);
 
 -- --------------------------------------------------------
 
@@ -896,6 +908,16 @@ CREATE TABLE `giohang` (
   `link_hinh_anh` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `giohang`
+--
+
+INSERT INTO `giohang` (`id`, `nguoidung_id`, `id_product`, `ten_san_pham`, `id_color`, `size`, `gia`, `quantity`, `link_hinh_anh`) VALUES
+(70, 8, 'D02', 'aaa', 1, 'XL', '123.00', 8, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(71, 8, 'MP03', 'abc', 4, 'M', '12311.00', 3, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(72, 8, 'MP013', 'abc', 4, 'M', '1000.00', 2, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg'),
+(73, 8, 'MP013', 'abc', 4, 'S', '1000.00', 2, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg');
+
 -- --------------------------------------------------------
 
 --
@@ -908,7 +930,7 @@ CREATE TABLE `login` (
   `phone_number` varchar(20) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
-  `type` int(11) DEFAULT NULL
+  `type` int(11) DEFAULT 2
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -922,7 +944,7 @@ INSERT INTO `login` (`id`, `fullname`, `phone_number`, `email`, `password`, `typ
 (5, 'Lê Tấn Gia Huy', '0990245678', 'gia123@gmail.com', '$2y$10$gKgymkNyh7ubcC/VWPDoz.01TwLsgaIRpkgR.K0.sbP6J9ry6ndVW', 1),
 (6, 'Lê Tấn Gia Huy', '0908979126', 'gia1e@gmail.com', '$2y$10$SCllHjt66HK4ODxINlONPuFOfSS939wU0w4umfyigxzNvDS67f7Fm', 0),
 (7, 'Gia Huy', '0898877325', '123@gmail.com', NULL, 1),
-(8, 'Gia Huy', '0898877325', 'giahuye@gmail.com', '$2y$10$YppQK1tpXZPAGCGgFiWFcOiPxIUnr2ad17TIME/BrMgkkpPnCxtRy', 0);
+(8, 'Gia Huy', '0898877325', 'giahuye@gmail.com', '$2y$10$YppQK1tpXZPAGCGgFiWFcOiPxIUnr2ad17TIME/BrMgkkpPnCxtRy', 2);
 
 -- --------------------------------------------------------
 
@@ -957,17 +979,18 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `id_product`, `id_color`, `id_dm`, `ten_san_pham`, `link_hinh_anh`, `loaisanpham`, `gia`, `img1`, `img2`, `img3`, `img4`, `rating`, `so_danh_gia`, `so_luong_da_ban`, `size_S`, `size_M`, `size_L`, `size_XL`) VALUES
-(1, 'QT01', 1, 1, 'ABc', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Quần', 1000, NULL, NULL, NULL, NULL, NULL, NULL, 27, 0, 8, 7, 10),
-(2, 'QT02', 2, 2, 'E', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Áo', 1234, NULL, NULL, NULL, NULL, NULL, NULL, 25, 1, 9, 10, 6),
-(3, 'QT03', 3, 3, 'Giày', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Giày', 12341234, NULL, NULL, NULL, NULL, NULL, NULL, 14, 5, 10, 10, 10),
-(4, 'QT04', 4, 4, 'Dép', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Dép', 1000, NULL, NULL, NULL, NULL, NULL, NULL, 6, 9, 10, 10, 10),
-(11, 'MP01', 2, 4, 'abc', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Áo sơ mi', 1000, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', NULL, NULL, NULL, 3, 11, 123, 119),
-(12, 'MP02', 2, 2, 'abc', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Áo thun', 12311, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', NULL, NULL, NULL, 0, 8, 0, 0),
+(1, 'QT01', 1, 1, 'ABc', 'https://4men.com.vn/thumbs/2023/10/ao-so-mi-tay-dai-ra-nguc-theu-4m-form-slimfit-sm140-mau-nau-34693-p.jpg', 'Giày', 10010, NULL, NULL, NULL, NULL, NULL, NULL, 41, 0, 0, 7, 10),
+(2, 'QT02', 2, 2, 'E', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Áo', 1234, NULL, NULL, NULL, NULL, NULL, NULL, 31, 0, 9, 10, 6),
+(3, 'QT01', 3, 2, 'Giày', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Giày', 10100, NULL, NULL, NULL, NULL, NULL, NULL, 17, 5, 7, 10, 10),
+(4, 'QT04', 4, 4, 'Dép', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Dép', 1000, NULL, NULL, NULL, NULL, NULL, NULL, 8, 9, 9, 9, 10),
+(11, 'MP01', 2, 4, 'abc', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Áo sơ mi', 1000, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', NULL, NULL, NULL, 0, 11, 123, 119),
+(12, 'MP03', 4, 5, 'abc', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Áo thun', 12311, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', NULL, NULL, NULL, 0, 7, 0, 0),
 (13, 'MP03', 2, 2, 'abc', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Áo thun', 12311, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', NULL, NULL, NULL, 0, 8, 0, 0),
-(14, 'D01', 2, 4, 'abc', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Dép l', 123, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', NULL, NULL, NULL, 0, 8, 9, 5),
+(14, 'D01', 3, 3, 'abc', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Dép l', 123, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', NULL, NULL, NULL, 0, 5, 9, 5),
 (15, 'D02', 1, 4, 'aaa', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Dép dép', 123, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', NULL, NULL, NULL, 0, 0, 0, 4),
 (16, 'D03', 1, 4, 'aaa', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Dép dép', 123, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', NULL, NULL, NULL, 0, 0, 0, 4),
-(17, 'D04', 1, 4, 'aaa', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Dép dép', 123, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', NULL, NULL, NULL, 0, 0, 0, 4);
+(17, 'D04', 1, 4, 'aaa', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Dép dép', 123, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', NULL, NULL, NULL, 0, 0, 0, 4),
+(18, 'MP013', 4, 2, 'abc', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'Dép dép', 1000, 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', 'https://4men.com.vn/thumbs/2023/01/ao-so-mi-slimfit-khuy-noi-sm130-33691-p.jpg', '', NULL, NULL, NULL, 1, 1, 2, 4);
 
 -- --------------------------------------------------------
 
@@ -995,6 +1018,7 @@ INSERT INTO `product_id` (`id`, `id_product`) VALUES
 (19, 'D03'),
 (20, 'D04'),
 (11, 'MP01'),
+(21, 'MP013'),
 (12, 'MP02'),
 (14, 'MP03'),
 (1, 'QT01'),
@@ -11780,7 +11804,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT cho bảng `chitietdonhang`
 --
 ALTER TABLE `chitietdonhang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT cho bảng `color`
@@ -11792,13 +11816,13 @@ ALTER TABLE `color`
 -- AUTO_INCREMENT cho bảng `donhang`
 --
 ALTER TABLE `donhang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2949;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2953;
 
 --
 -- AUTO_INCREMENT cho bảng `giohang`
 --
 ALTER TABLE `giohang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT cho bảng `login`
@@ -11810,13 +11834,13 @@ ALTER TABLE `login`
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT cho bảng `product_id`
 --
 ALTER TABLE `product_id`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

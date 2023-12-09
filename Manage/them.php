@@ -1,3 +1,72 @@
+<?php
+require_once('db_connection.php');
+
+if (isset($_GET['id'])) {
+    $productId = $_GET['id'];
+
+    $getProductQuery = "SELECT * FROM products WHERE id_product = '$productId'";
+    $result = $conn->query($getProductQuery);
+
+    if ($result && $result->num_rows > 0) {
+        $productDetails = $result->fetch_assoc();
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Handle edit operation here
+            $ten_san_pham = $_POST["ten_san_pham"];
+            $gia = $_POST["gia"];
+            $size_S = $_POST["size_S"];
+            $size_M = $_POST["size_M"];
+            $size_L = $_POST["size_L"];
+            $size_XL = $_POST["size_XL"];
+
+            $updateProductQuery = "UPDATE products SET
+                ten_san_pham = '$ten_san_pham',
+                gia = '$gia',
+                size_S = '$size_S',
+                size_M = '$size_M',
+                size_L = '$size_L',
+                size_XL = '$size_XL'
+                WHERE id_product = '$productId'";
+
+            if ($conn->query($updateProductQuery) === TRUE) {
+                echo "Product updated successfully.";
+            } else {
+                echo "Error updating product: " . $conn->error;
+            }
+        } else {
+            echo "<form method='post' action='' class='form1'>" .
+            "ID Product: <input type='text' name='id_product' value='" . $productDetails['id_product'] . "' readonly><br>" .
+            "ID Color: <input type='text' name='id_color' value='" . $productDetails['id_color'] . "' readonly><br>" .
+            "Tên Sản Phẩm: <input type='text' name='ten_san_pham' value='" . $productDetails['ten_san_pham'] . "'><br>" .
+            "Giá: <input type='text' name='gia' value='" . $productDetails['gia'] . "' ><br>" .
+            "Size S: <input type='text' name='size_S' value='" . $productDetails['size_S'] . "' ><br>" .
+            "Size M: <input type='text' name='size_M' value='" . $productDetails['size_M'] . "' ><br>" .
+            "Size L: <input type='text' name='size_L' value='" . $productDetails['size_L'] . "' ><br>" .
+            "Size XL: <input type='text' name='size_XL' value='" . $productDetails['size_XL'] . "' ><br>" .
+            "<input type='submit' value='Update'>" .
+            "</form>";        
+        }
+        
+    } else {
+        echo "Product not found.";
+    }
+} else {
+    echo "Product ID not provided.";
+}
+
+if (isset($_GET['action']) && $_GET['action'] === 'delete') {
+    $deleteProductQuery = "DELETE FROM products WHERE id_product = '$productId'";
+    
+    if ($conn->query($deleteProductQuery) === TRUE) {
+        echo "Product deleted successfully.";
+    } else {
+        echo "Error deleting product: " . $conn->error;
+    }
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,6 +92,35 @@
             flex-wrap: wrap;
             justify-content: space-evenly;
         }
+        .form1 input[type="text"] {
+    color:black;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.form1 {
+    width: 60%;
+    max-width: 400px;
+    margin: 10px auto;
+    background-color: rgba(255, 255, 255, 0.8); 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form1 input {
+    width: 100%;
+    padding: 2px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.form1 input[type="submit"] {
+    background-color: #444;
+    color: #fff;
+    cursor: pointer;
+}
+
+
 
         .content_input p{
             font-weight: 600;
@@ -221,30 +319,68 @@ $categoryResult = $conn->query($categoryQuery);
             
         </div>
         <div class="content_input">
-            <div class="form_elements">
-                <p>Hình ảnh: </p>
-                <input style="color:black; padding-top: 15px;" id="file-1" type="file" name="link_hinh_anh" accept="image/*" value="<?php echo $link_hinh_anh; ?>">
-            </div>
-            <div class="form_elements">
-                <p>Hình ảnh 1: </p>
-                <input style="color:black; padding-top: 15px;" id="file-2" type="file" name="img1" accept="image/*" value="<?php echo $img1; ?>">
-            </div>
-            <div class="form_elements">
-                <p>Hình ảnh 2: </p>
-                <input style="color:black; padding-top: 15px;" id="file-3" type="file" name="img2" accept="image/*" value="<?php echo $img2; ?>">
-            </div>
-            <div class="form_elements">
-                <p>Hình ảnh 3:</p>
-                <input style="color:black; padding-top: 15px;" id="file-4" type="file" name="img3" accept="image/*" value="<?php echo $img3; ?>">
-            </div>
-            <div class="form_elements">
-                <p>Hình ảnh 4: </p>
-                <input style="color:black; padding-top: 15px;" id="file-5" type="file" name="img4" accept="image/*" value="<?php echo $img4; ?>">
-            </div>
-        </div>
-            <input class="button" style="margin-top: 100px; margin-right: 50px; background-color: #444; float: right; color: white; border-radius: 10px;" type="submit" onclick="alert('Thêm sản phẩm thành công!!!')" value="Thêm Dữ Liệu">
+        <div class="form_elements">
+        <p>Hình ảnh: </p>
+        <input style="color:black; padding-top: 15px;" id="file-1" type="file" name="link_hinh_anh" accept="image/*">
     </div>
+    <div class="form_elements">
+        <p>Hình ảnh 1: </p>
+        <input style="color:black; padding-top: 15px;" id="file-2" type="file" name="img1" accept="image/*">
+    </div>
+    <div class="form_elements">
+        <p>Hình ảnh 2: </p>
+        <input style="color:black; padding-top: 15px;" id="file-3" type="file" name="img2" accept="image/*">
+    </div>
+    <div class="form_elements">
+        <p>Hình ảnh 3:</p>
+        <input style="color:black; padding-top: 15px;" id="file-4" type="file" name="img3" accept="image/*">
+    </div>
+    <div class="form_elements">
+        <p>Hình ảnh 4: </p>
+        <input style="color:black; padding-top: 15px;" id="file-5" type="file" name="img4" accept="image/*">
+    </div>
+        </div>
     </form>
+    <input class="button" style=" margin-right: 50px; background-color: #444; float: right; color: white; border-radius: 10px;" type="submit" onclick="alert('Thêm sản phẩm thành công!!!')" value="Thêm Dữ Liệu">
+
+    <table border="1" style="margin-top: 50px; width: 100%;">
+    <tr>
+        <th>ID Product</th>
+        <th>ID Color</th>
+        <th>Tên Sản Phẩm</th>
+        <th>Giá</th>
+        <th>Số lượng đã bán</th>
+        <th>Size S</th>
+        <th>Size M</th>
+        <th>Size L</th>
+        <th>Size XL</th>
+        <th>Action</th>
+    </tr>
+
+    <?php
+    // Retrieve and display existing products
+    $getProductsQuery = "SELECT * FROM products";
+    $productsResult = $conn->query($getProductsQuery);
+
+    while ($row = $productsResult->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>".$row['id_product']."</td>";
+        echo "<td>".$row['id_color']."</td>";
+        echo "<td>".$row['ten_san_pham']."</td>";
+        echo "<td>".number_format($row['gia'])."</td>";
+        echo "<td>".$row['so_luong_da_ban']."</td>";
+        echo "<td>".$row['size_S']."</td>";
+        echo "<td>".$row['size_M']."</td>";
+        echo "<td>".$row['size_L']."</td>";
+        echo "<td>".$row['size_XL']."</td>";
+
+   
+        echo "<td><a href='them.php?action=edit&id=".$row['id_product']."'>Edit</a> | <a href='them.php?action=delete&id=".$row['id_product']."' onclick='return confirm(\"Bạn có chắc chắn muốn xóa?\")'>Delete</a></td>";
+        echo "</tr>";
+    }
+    ?>
+</table>
+
 
 <!-- JavaScript để chặn quay lại trang -->
 <script>
